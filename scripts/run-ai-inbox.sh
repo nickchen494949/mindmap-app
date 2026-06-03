@@ -156,4 +156,67 @@ Do whatever the task says. After finishing, briefly summarize what you did."
   fi
 fi
 
+# ── Generate status.json for dashboard ──
+cd "$REPO_DIR"
+TOTAL=$(find .ai/inbox -type f -name "task-*.md" 2>/dev/null | wc -l | tr -d ' ')
+DONE_COUNT=$(find .ai/done -type f -name "task-*.md" 2>/dev/null | wc -l | tr -d ' ')
+PENDING_COUNT=$((TOTAL - DONE_COUNT))
+PENDING_LIST=$(for f in .ai/inbox/task-*.md; do b=$(basename "$f"); [ ! -f ".ai/done/$b" ] && echo "\"$b\""; done | paste -sd, -)
+DONE_LIST=$(ls .ai/done/task-*.md 2>/dev/null | while read f; do echo "\"$(basename "$f")\""; done | paste -sd, -)
+PROJ_LIST=$(ls -d "$PROJECTS_DIR"/*/ 2>/dev/null | while read d; do echo "\"$(basename "$d")\""; done | paste -sd, -)
+
+# Build task details
+TASK_DETAILS="{"
+for f in .ai/inbox/task-*.md; do
+  b=$(basename "$f")
+  # Extract first line as title
+  TITLE=$(head -1 "$f" | sed 's/^#[[:space:]]*//')
+  # Extract target
+  TGT=$(grep -i '^target:' "$f" 2>/dev/null | head -1 | sed 's/^target:[[:space:]]*//' | tr -d '\r')
+  # Check if done
+  if [ -f ".ai/done/$b" ]; then
+    STATUS="done"
+    # Get completion time from git log
+    CTIME=$(git log -1 --format="%ci" -- ".ai/done/$b" 2>/dev/null | cut -d' ' -f1,2)
+    # Get summary from log file (last few meaningful lines)
+    SUMMARY=$(tail -5 ".ai/logs/$b.log" 2>/dev/null | head -3 | tr '\n' ' ' | sed 's/"/\\"/g' | cut -c1-200)
+  else
+    STATUS="pending"
+    CTIME=""
+    SUMMARY=""
+  fi
+  TASK_DETAILS="$TASK_DETAILS\"$b\":{\"title\":\"$TITLE\",\"target\":\"${TGT:-}\",\"status\":\"$STATUS\",\"completedAt\":\"${CTIME:-}\",\"summary\":\"${SUMMARY:-}\"},"
+done
+TASK_DETAILS="${TASK_DETAILS%,}}"
+
+# Build activity log from watcher log
+ACTIVITY_LOG="["
+tail -30 /Users/happygolucky/watcher.out.log 2>/dev/null | while IFS= read -r line; do
+  TIME=$(echo "$line" | grep -oE '^[A-Z][a-z]{2} [A-Z][a-z]{2} +[0-9]+ [0-9:]+' | head -1)
+  [ -z "$TIME" ] && continue
+  ACTION=$(echo "$line" | sed "s/^.*[0-9] //" | sed 's/"/\\"/g')
+  if echo "$ACTION" | grep -qi "Found task\|Running.*agy\|Completed\|pushed\|Syncing\|new project\|External project"; then
+    SENDER="agy"
+    echo "$ACTION" | grep -qi "Found task\|Pulling\|Syncing" && SENDER="watcher"
+    echo "{\"time\":\"$TIME\",\"sender\":\"$SENDER\",\"action\":\"$ACTION\"},"
+  fi
+done > /tmp/activity_lines.txt
+ACTIVITY_ENTRIES=$(cat /tmp/activity_lines.txt | tr -d '\n')
+ACTIVITY_LOG="[${ACTIVITY_ENTRIES%,}]"
+
+cat > status.json <<EOJSON
+{
+  "lastUpdate": "$(date '+%Y-%m-%d %H:%M:%S')",
+  "totalTasks": $TOTAL,
+  "doneTasks": $DONE_COUNT,
+  "pendingTasks": $PENDING_COUNT,
+  "pending": [${PENDING_LIST:-}],
+  "done": [${DONE_LIST:-}],
+  "projects": [${PROJ_LIST:-}],
+  "taskDetails": $TASK_DETAILS,
+  "activityLog": $ACTIVITY_LOG
+}
+EOJSON
+echo "$(date) status.json updated"
+
 echo "$(date) === Watcher run finished ==="
