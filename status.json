@@ -1,0 +1,9 @@
+{
+  "lastUpdate": "2026-06-03 13:49:13",
+  "totalTasks": 9,
+  "doneTasks": 9,
+  "pendingTasks": 0,
+  "pending": [],
+  "done": ["task-000-test.md","task-001-machine-learning.md","task-002-world-economic-history.md","task-003-world-economic-history-v2.md","task-004-world-economic-history-v3.md","task-005-canvas-title.md","task-006-pipeline-test.md","task-20260603-deploy-us-macro-dashboard-pages.md","task-20260603-us-macro-dashboard.md"],
+  "projects": ["chatgpt-pipeline-test","us-macro-dashboard"]
+}
