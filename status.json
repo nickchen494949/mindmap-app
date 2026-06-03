@@ -1,12 +1,12 @@
 {
-  "pendingTasks": 3,
-  "runningTasks": 1,
+  "pendingTasks": 1,
+  "runningTasks": 0,
   "reviewTasks": 2,
-  "failedTasks": 2,
-  "doneTasks": 15,
+  "failedTasks": 1,
+  "doneTasks": 13,
   "needsChatGPTAudit": [
-    "task-test-review-gate",
-    "task-20260603-control-tower-evidence-review-flow"
+    "task-20260603-control-tower-evidence-review-flow",
+    "task-20260603-fix-control-tower-public-data"
   ],
   "blocked": [],
   "heartbeat": {
@@ -19,27 +19,20 @@
     "lastTask": "task-20260603-control-tower-evidence-review-flow.md",
     "failedCount": 0
   },
-  "lastUpdate": "2026-06-03 11:03:07",
-  "totalTasks": 25,
+  "lastUpdate": "2026-06-03 11:03:53",
+  "totalTasks": 19,
   "pending": [
-    "task-task-test-fail-flow",
-    "task-test-inbox-visibility",
     "task-task-test-audit"
   ],
-  "running": [
+  "running": [],
+  "review": [
+    "task-20260603-control-tower-evidence-review-flow",
     "task-20260603-fix-control-tower-public-data"
   ],
-  "review": [
-    "task-test-review-gate",
-    "task-20260603-control-tower-evidence-review-flow"
-  ],
   "failed": [
-    "task-test-fail-flow",
     "task-test-audit"
   ],
   "done": [
-    "task-test-invalid-done",
-    "task-test-pass-flow",
     "task-20260603-no-api-chatgpt-audit-loop",
     "task-20260603-control-tower-dashboard",
     "task-20260603-add-qa-audit",
@@ -60,34 +53,6 @@
     "us-macro-dashboard"
   ],
   "taskDetails": {
-    "task-20260603-fix-control-tower-public-data": {
-      "title": "Fix Task",
-      "target": "mindmap-app",
-      "status": "running",
-      "completedAt": "",
-      "summary": "Task index updated",
-      "attempt": 1,
-      "maxAttempts": 3,
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-20260603-fix-control-tower-public-data/",
-      "chatgptVerdict": null,
-      "blockingErrors": []
-    },
-    "task-test-review-gate": {
-      "title": "Test 2 Title",
-      "target": "mindmap-app",
-      "status": "needs_chatgpt_audit",
-      "completedAt": "",
-      "summary": "Task index updated",
-      "attempt": 1,
-      "maxAttempts": 3,
-      "lastCommit": "33d255e9a362df06cffb962550e1ef195459a975",
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-test-review-gate/",
-      "chatgptVerdict": null,
-      "blockingErrors": []
-    },
     "task-20260603-control-tower-evidence-review-flow": {
       "title": "Task",
       "target": "mindmap-app",
@@ -102,31 +67,17 @@
       "chatgptVerdict": null,
       "blockingErrors": []
     },
-    "task-task-test-fail-flow": {
-      "title": "Fix Task for task-test-fail-flow (Attempt 2)",
+    "task-20260603-fix-control-tower-public-data": {
+      "title": "Fix Task",
       "target": "mindmap-app",
-      "status": "pending",
+      "status": "needs_chatgpt_audit",
       "completedAt": "",
       "summary": "Task index updated",
       "attempt": 1,
       "maxAttempts": 3,
       "lastCommit": null,
       "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-task-test-fail-flow/",
-      "chatgptVerdict": null,
-      "blockingErrors": []
-    },
-    "task-test-inbox-visibility": {
-      "title": "Test 1 Title",
-      "target": "mindmap-app",
-      "status": "pending",
-      "completedAt": "",
-      "summary": "Task index updated",
-      "attempt": 1,
-      "maxAttempts": 3,
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-test-inbox-visibility/",
+      "evidencePacketPath": ".ai/reports/task-20260603-fix-control-tower-public-data/",
       "chatgptVerdict": null,
       "blockingErrors": []
     },
@@ -144,23 +95,6 @@
       "chatgptVerdict": null,
       "blockingErrors": []
     },
-    "task-test-fail-flow": {
-      "title": "Test 4 Title",
-      "target": "mindmap-app",
-      "status": "failed",
-      "completedAt": "",
-      "summary": "Task index updated",
-      "attempt": 2,
-      "maxAttempts": 3,
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-test-fail-flow/",
-      "chatgptVerdict": "FAIL",
-      "blockingErrors": [
-        "Problem A",
-        "Problem B"
-      ]
-    },
     "task-test-audit": {
       "title": "Fix Task for task-test-audit (Attempt 2)",
       "target": "mindmap-app",
@@ -173,34 +107,6 @@
       "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
       "evidencePacketPath": ".ai/reports/task-test-audit/",
       "chatgptVerdict": null,
-      "blockingErrors": []
-    },
-    "task-test-invalid-done": {
-      "title": "Test 5 Title",
-      "target": "mindmap-app",
-      "status": "done",
-      "completedAt": "2026-06-03T11:03:07.892Z",
-      "summary": "Task index updated",
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-test-invalid-done/",
-      "chatgptVerdict": null,
-      "blockingErrors": [
-        "Task is marked done but lacks ChatGPT PASS verdict"
-      ]
-    },
-    "task-test-pass-flow": {
-      "title": "Test 3 Title",
-      "target": "mindmap-app",
-      "status": "done",
-      "completedAt": "2026-06-03T11:03:07.711Z",
-      "summary": "Task index updated",
-      "attempt": 1,
-      "maxAttempts": 3,
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-test-pass-flow/",
-      "chatgptVerdict": "PASS",
       "blockingErrors": []
     },
     "task-20260603-no-api-chatgpt-audit-loop": {
@@ -436,11 +342,5 @@
       "blockingErrors": []
     }
   },
-  "activityLog": [
-    {
-      "time": "Wed Jun  3 19:00:16",
-      "sender": "agy",
-      "action": "+08 2026 Running agy..."
-    }
-  ]
+  "activityLog": []
 }

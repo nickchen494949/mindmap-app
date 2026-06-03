@@ -1,0 +1,5 @@
+Commit: 3265e076a4e995b87bc00bfeb1785686a98149a9
+Author: nickchen494949
+Date: Wed Jun 3 19:03:36 2026 +0800
+Subject: fix: public control tower data mirror and dashboard fetch updates
+Body: 

@@ -1,0 +1,49 @@
+^DI will view the task description file to understand the requirements for fixing the control tower public data.
+I will list the files in the workspace directory to find the relevant code and dashboard files.
+I will list the contents of the `scripts` directory to see what automation or background script files exist.
+I will list the `.ai` directory to see what tasks, heartbeat, and audit structures are there.
+I will search for "Gatekeeper" in the repository to locate where the watcher or helper code implements Gatekeeper logic.
+I will view `scripts/generate-task-index.js` to see how the task index is compiled and where we can hook in to generate the sanitized public mirror `control-tower-data.json`.
+I will search for references to `generate-task-index` to see how it's executed in the pipeline or scripts.
+I will view `scripts/verify-control-tower.js` to understand how the control tower features are verified, which will help ensure our changes satisfy all acceptance criteria.
+I will run the existing control tower integration tests to make sure they pass on the unmodified codebase first.
+I will check the status of the verification tests task.
+I will search for occurrences of data loading (like `fetch`, `.json`, `.ai`, `status.json`) in `dashboard.html` to locate the dashboard's data fetching and rendering logic.
+I will search for all occurrences of the word `fetch` in `dashboard.html`.
+I will view `dashboard.html` around line 965 to inspect the fetching and fallback mechanisms.
+I will view more lines of `dashboard.html` starting from line 1101 to see how it processes the heartbeat, stale mirror, invalid done, etc.
+I will search for occurrences of `watcher.json` inside the `scripts` directory to understand how the watcher updates its heartbeat.
+I will view the heartbeat generation sections in `scripts/run-ai-inbox.sh` to check how they operate and ensure our implementation integrates cleanly with them.
+I will view the end of `scripts/run-ai-inbox.sh` to make sure we don't miss other locations where `watcher.json` is updated.
+I will view lines 1 to 40 in `scripts/run-ai-inbox.sh` to trace the execution of `generate-task-index.js`.
+I will view `scripts/collect-evidence.js` around line 569 to see if it calls `generate-task-index.js` and thus automatically triggers the index regeneration when evidence is collected.
+I will view `scripts/pipeline-helper.js` to see what tools, methods, or scripts run the main loop and how it handles task execution.
+I will view the end of `pipeline-helper.js` to see how reviews are processed and task indices are updated.
+I will view the contents of `/Users/happygolucky/mindmap-watcher.sh` to see if it delegates to `scripts/run-ai-inbox.sh` or contains its own copy, so we know if modifying `scripts/run-ai-inbox.sh` is sufficient.
+I will view `scripts/test-audit-loop.js` to see if there is another background loop that updates status and commits.
+I will modify `scripts/generate-task-index.js` to construct the sanitized public control tower data and write it to `control-tower-data.json` at the roots of both `mindmap-repo` and `mindmap-app`.
+I will run `scripts/generate-task-index.js` to ensure it successfully generates `control-tower-data.json` at the root of `mindmap-repo`.
+I will view the newly generated `control-tower-data.json` to verify its structure.
+I will view more of the rendering code in `dashboard.html` (lines 1251 to 1420) to see how the task list, project selectors, log views, and other details are rendered.
+I will search for `getStatusLabel` in `dashboard.html` to see what status label it returns and update it if needed.
+I will view the lines around `getStatusLabel` in `dashboard.html`.
+I will view `dashboard.html` from line 950 to 1150 to get a precise definition of the target content for our contiguous replacement.
+I will view lines 1150 to 1180 of `dashboard.html` to verify the closing block of the warnings computation.
+I will replace the status label formatting, loadData, renderErrorFallback, and the beginning of the render function in `dashboard.html` to fetch the new `control-tower-data.json` first with correct fallbacks and warnings.
+I will search for `cardRedFlags` in `dashboard.html` to locate the card rendering code so we can make sure the new `invalid_done` status renders properly inside the Done column and displays appropriate warning badges.
+I will view lines 1355 to 1420 of `dashboard.html` to see the card template and column grouping code.
+I will view lines 1421 to 1460 in `dashboard.html`.
+I will view lines 1461 to 1490 in `dashboard.html` to find the mapping of columns.
+I will update the card warning logic, checklists, and column mapping inside `dashboard.html` to fully support and render the `invalid_done` status.
+I will run the control tower verification integration tests to make sure all five tests still pass.
+I will check the status of the integration tests task.
+I will check the git status to see what files were created or modified.
+I will list the `.ai/running` directory to find our task file.
+I will view `.ai/state/task-20260603-fix-control-tower-public-data.md.json` to inspect its state content.
+I will view the beginning of `scripts/collect-evidence.js` to see how it runs and processes evidence and task movement.
+I will run git diff to review our changes before staging.
+I will stage our modified and newly generated public files.
+I will commit the staged changes.
+I will push the commit to the remote repository.
+I will create the state file `.ai/state/task-20260603-fix-control-tower-public-data.json` marking the status as `needs_chatgpt_audit` so it's recognized as ready for ChatGPT audit.
+I will move the task file from the `running/` directory to the `review/` directory.

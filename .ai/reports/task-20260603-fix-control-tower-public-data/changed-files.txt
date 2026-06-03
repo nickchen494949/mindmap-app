@@ -1,0 +1,5 @@
+.ai/task-index.json
+control-tower-data.json
+dashboard.html
+scripts/generate-task-index.js
+status.json

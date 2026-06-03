@@ -1,0 +1,17 @@
+{
+  "taskId": "task-20260603-fix-control-tower-public-data",
+  "target": "mindmap-app",
+  "status": "needs_chatgpt_audit",
+  "attempt": 1,
+  "maxAttempts": 3,
+  "startedAt": "2026-06-03T11:00:16Z",
+  "updatedAt": "2026-06-03T11:03:53.259Z",
+  "lastCommit": "3265e076a4e995b87bc00bfeb1785686a98149a9",
+  "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+  "evidencePacketPath": ".ai/reports/task-20260603-fix-control-tower-public-data/",
+  "chatgptAuditPath": null,
+  "chatgptVerdict": null,
+  "blockingErrors": [],
+  "notes": [],
+  "workDir": "/Users/happygolucky/mindmap-repo"
+}

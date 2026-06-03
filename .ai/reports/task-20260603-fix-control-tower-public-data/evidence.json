@@ -1,0 +1,34 @@
+{
+  "taskId": "task-20260603-fix-control-tower-public-data",
+  "target": "mindmap-app",
+  "status": "needs_chatgpt_audit",
+  "commitSha": "3265e076a4e995b87bc00bfeb1785686a98149a9",
+  "changedFiles": [
+    ".ai/task-index.json",
+    "control-tower-data.json",
+    "dashboard.html",
+    "scripts/generate-task-index.js",
+    "status.json"
+  ],
+  "logTailPath": ".ai/reports/task-20260603-fix-control-tower-public-data/log-tail.txt",
+  "knownRisks": [],
+  "questionsForChatGPT": [],
+  "generatedAt": "2026-06-03T11:03:53.259Z",
+  "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+  "pageTextPath": ".ai/reports/task-20260603-fix-control-tower-public-data/page-text.txt",
+  "screenshotPath": ".ai/reports/task-20260603-fix-control-tower-public-data/screenshot.png",
+  "consoleErrorsPath": ".ai/reports/task-20260603-fix-control-tower-public-data/console-errors.txt",
+  "networkErrorsPath": ".ai/reports/task-20260603-fix-control-tower-public-data/network-errors.txt",
+  "dataAuditPath": null,
+  "attempt": 1,
+  "mechanicalChecks": {
+    "buildPass": true,
+    "livePageLoads": true,
+    "consoleErrorCount": 0,
+    "networkErrorCount": 0,
+    "dataAuditPass": true
+  },
+  "screenshots": [
+    ".ai/reports/task-20260603-fix-control-tower-public-data/screenshot.png"
+  ]
+}
