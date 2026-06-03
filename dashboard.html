@@ -958,6 +958,7 @@ function getStatusLabel(status) {
     case 'done': return '✅ PASSED';
     case 'failed': return '❌ FAILED';
     case 'blocked': return '🚫 BLOCKED';
+    case 'invalid_done': return '⚠️ INVALID DONE';
     default: return status ? status.toUpperCase() : 'UNKNOWN';
   }
 }
@@ -969,91 +970,131 @@ async function loadData() {
   let heartbeat = null;
   let agyHeartbeat = null;
   let statusData = null;
-  let loadingError = false;
+  let publicData = null;
+  
+  let publicMirrorFailed = false;
+  let isStaleMirror = false;
+  let dataFetchFailed = false;
 
   document.getElementById('last-update').innerHTML = '🔄 Loading status...';
 
+  // 1. Try to fetch control-tower-data.json first
   try {
-    const r = await fetch(`.ai/task-index.json?t=${t}`);
+    const r = await fetch(`control-tower-data.json?t=${t}`);
     if (r.ok) {
-      taskIndex = await r.json();
+      publicData = await r.json();
+      taskIndex = publicData.tasks || [];
+      heartbeat = publicData.watcher || null;
+      
+      // Check if mirror is stale
+      if (publicData.generatedAt) {
+        const elapsed = Date.now() - new Date(publicData.generatedAt).getTime();
+        if (elapsed > 3 * 60 * 1000) { // 3 minutes
+          isStaleMirror = true;
+        }
+      }
     } else {
-      console.warn('task-index.json returned status: ' + r.status);
+      console.warn('control-tower-data.json returned status: ' + r.status);
+      publicMirrorFailed = true;
     }
   } catch (e) {
-    console.error('Failed to load task-index.json', e);
-    loadingError = true;
+    console.error('Failed to load control-tower-data.json', e);
+    publicMirrorFailed = true;
   }
 
-  try {
-    const r = await fetch(`.ai/heartbeat/watcher.json?t=${t}`);
-    if (r.ok) {
-      heartbeat = await r.json();
+  // 2. Fallback to status.json and/or .ai files ONLY if public mirror failed or returned empty
+  if (publicMirrorFailed || taskIndex.length === 0) {
+    // Legacy fallback to status.json
+    try {
+      const r = await fetch(`status.json?t=${t}`);
+      if (r.ok) {
+        statusData = await r.json();
+        if (statusData && statusData.taskDetails) {
+          taskIndex = Object.entries(statusData.taskDetails).map(([taskId, detail]) => {
+            let location = 'unknown';
+            if (detail.status === 'pending' || detail.status === 'inbox_unseen') location = 'inbox';
+            else if (detail.status === 'running') location = 'running';
+            else if (detail.status === 'needs_chatgpt_audit') location = 'review';
+            else if (detail.status === 'done') location = 'done';
+            else if (detail.status === 'failed' || detail.status === 'blocked') location = 'failed';
+            return {
+              taskId,
+              target: detail.target || 'mindmap-app',
+              location,
+              status: detail.status === 'pending' ? 'inbox_unseen' : detail.status,
+              statePath: `.ai/state/${taskId}.json`,
+              evidencePath: detail.evidencePacketPath ? `${detail.evidencePacketPath}evidence.json` : null,
+              chatgptAuditPath: detail.chatgptVerdict ? `.ai/reviews/${taskId}/chatgpt-audit.md` : null,
+              chatgptVerdict: detail.chatgptVerdict || null,
+              lastCommit: detail.lastCommit || null,
+              liveUrl: detail.liveUrl || null,
+              blockingIssues: detail.blockingErrors || [],
+              title: detail.title || taskId,
+              attempt: detail.attempt || 1,
+              maxAttempts: detail.maxAttempts || 3,
+              createdAt: detail.completedAt || new Date().toISOString(),
+              evidenceExists: !!detail.evidencePacketPath,
+              invalidDone: (detail.status === 'done' && detail.chatgptVerdict !== 'PASS'),
+              blockingErrors: detail.blockingErrors || [],
+              evidencePacketPath: detail.evidencePacketPath || `.ai/reports/${taskId}/`
+            };
+          });
+          
+          if (!heartbeat && statusData.heartbeat) {
+            heartbeat = statusData.heartbeat;
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load status.json fallback', e);
     }
-  } catch (e) {
-    console.error('Failed to load watcher.json', e);
-  }
 
-  try {
-    const r = await fetch(`.ai/heartbeat/agy.json?t=${t}`);
-    if (r.ok) {
-      agyHeartbeat = await r.json();
+    // Try fetching internal files as additional fallback (local execution environment)
+    if (taskIndex.length === 0) {
+      try {
+        const r = await fetch(`.ai/task-index.json?t=${t}`);
+        if (r.ok) {
+          taskIndex = await r.json();
+        }
+      } catch (e) {
+        console.error('Failed to load task-index.json fallback', e);
+      }
     }
-  } catch (e) {
-    console.error('Failed to load agy.json', e);
-  }
 
-  try {
-    const r = await fetch(`status.json?t=${t}`);
-    if (r.ok) {
-      statusData = await r.json();
+    if (!heartbeat) {
+      try {
+        const r = await fetch(`.ai/heartbeat/watcher.json?t=${t}`);
+        if (r.ok) {
+          heartbeat = await r.json();
+        }
+      } catch (e) {
+        console.error('Failed to load watcher.json fallback', e);
+      }
     }
-  } catch (e) {
-    console.error('Failed to load status.json', e);
+
+    try {
+      const r = await fetch(`.ai/heartbeat/agy.json?t=${t}`);
+      if (r.ok) {
+        agyHeartbeat = await r.json();
+      }
+    } catch (e) {
+      console.error('Failed to load agy.json fallback', e);
+    }
   }
 
-  if (taskIndex.length === 0 && statusData && statusData.taskDetails) {
-    taskIndex = Object.entries(statusData.taskDetails).map(([taskId, detail]) => {
-      let location = 'unknown';
-      if (detail.status === 'pending' || detail.status === 'inbox_unseen') location = 'inbox';
-      else if (detail.status === 'running') location = 'running';
-      else if (detail.status === 'needs_chatgpt_audit') location = 'review';
-      else if (detail.status === 'done') location = 'done';
-      else if (detail.status === 'failed' || detail.status === 'blocked') location = 'failed';
-      return {
-        taskId,
-        target: detail.target || 'mindmap-app',
-        location,
-        status: detail.status === 'pending' ? 'inbox_unseen' : detail.status,
-        statePath: `.ai/state/${taskId}.json`,
-        evidencePath: detail.evidencePacketPath ? `${detail.evidencePacketPath}evidence.json` : null,
-        chatgptAuditPath: detail.chatgptVerdict ? `.ai/reviews/${taskId}/chatgpt-audit.md` : null,
-        chatgptVerdict: detail.chatgptVerdict || null,
-        lastCommit: detail.lastCommit || null,
-        liveUrl: detail.liveUrl || null,
-        blockingIssues: detail.blockingErrors || [],
-        title: detail.title || taskId,
-        attempt: detail.attempt || 1,
-        maxAttempts: detail.maxAttempts || 3,
-        createdAt: detail.completedAt || new Date().toISOString(),
-        evidenceExists: !!detail.evidencePacketPath,
-        invalidDone: (detail.status === 'done' && detail.chatgptVerdict !== 'PASS'),
-        blockingErrors: detail.blockingErrors || [],
-        evidencePacketPath: detail.evidencePacketPath || `.ai/reports/${taskId}/`
-      };
-    });
-    console.log('Reconstructed taskIndex from status.json fallback');
-    loadingError = false;
+  // Determine if all load attempts failed
+  if (publicMirrorFailed && taskIndex.length === 0) {
+    dataFetchFailed = true;
   }
 
-  if (loadingError && taskIndex.length === 0) {
-    renderErrorFallback();
+  if (dataFetchFailed) {
+    renderErrorFallback(true);
   } else {
-    render(taskIndex, heartbeat, agyHeartbeat, statusData);
+    render(taskIndex, heartbeat, agyHeartbeat, statusData, publicMirrorFailed, isStaleMirror, publicData);
   }
 }
 
-function renderErrorFallback() {
+function renderErrorFallback(publicMirrorFailed) {
   const isFileProtocol = window.location.protocol === 'file:';
   let message = '';
   
@@ -1061,7 +1102,7 @@ function renderErrorFallback() {
     message = `
       <div class="error-fallback">
         <h2>⚠️ CORS Error / Browser Security Constraint</h2>
-        <p>You opened this dashboard directly via <code>file://</code>. Most modern browsers block client-side fetch requests to local files (like <code>task-index.json</code>) due to security policies.</p>
+        <p>You opened this dashboard directly via <code>file://</code>. Most modern browsers block client-side fetch requests to local files (like <code>control-tower-data.json</code>) due to security policies.</p>
         <p>To view this dashboard properly, please run a local web server in the project directory. For example:</p>
         <div style="background:#090d16; padding:12px; border-radius:8px; margin-bottom:16px; font-family:monospace;">
           npx http-server ./
@@ -1072,25 +1113,34 @@ function renderErrorFallback() {
   } else {
     message = `
       <div class="error-fallback">
-        <h2>⚠️ Unable to Load Pipeline Files</h2>
-        <p>Could not read <code>.ai/task-index.json</code> from the project root. Make sure the task runner or script has been executed at least once to generate it.</p>
+        <h2>⚠️ Data Fetch Failed</h2>
+        <p>Could not read the control tower public data mirror (<code>control-tower-data.json</code>) or legacy fallback files. Please ensure the pipeline watcher is running and has generated the public mirror.</p>
       </div>
     `;
   }
   document.getElementById('app-root').innerHTML = message;
 }
 
-function render(taskIndex, heartbeat, agyHeartbeat, statusData) {
+function render(taskIndex, heartbeat, agyHeartbeat, statusData, publicMirrorFailed, isStaleMirror, publicData) {
   const now = new Date();
   document.getElementById('last-update').innerHTML = '🕐 Last Checked: ' + now.toLocaleTimeString() + ' | ' + now.toLocaleDateString();
   
   // Set stats
-  const total = taskIndex.length;
-  const inbox = taskIndex.filter(t => t.status === 'inbox_unseen').length;
-  const running = taskIndex.filter(t => t.status === 'running').length;
-  const audit = taskIndex.filter(t => t.status === 'needs_chatgpt_audit').length;
-  const done = taskIndex.filter(t => t.status === 'done').length;
-  const failed = taskIndex.filter(t => t.status === 'failed' || t.status === 'blocked').length;
+  let total = taskIndex.length;
+  let inbox = taskIndex.filter(t => t.status === 'inbox_unseen').length;
+  let running = taskIndex.filter(t => t.status === 'running').length;
+  let audit = taskIndex.filter(t => t.status === 'needs_chatgpt_audit').length;
+  let done = taskIndex.filter(t => t.status === 'done').length;
+  let failed = taskIndex.filter(t => t.status === 'failed' || t.status === 'blocked').length;
+
+  if (publicData && publicData.stats) {
+    total = publicData.stats.total;
+    inbox = publicData.stats.pending;
+    running = publicData.stats.running;
+    audit = publicData.stats.needsChatGPTAudit;
+    done = publicData.stats.done;
+    failed = publicData.stats.failed;
+  }
   
   document.getElementById('stat-total').textContent = total;
   document.getElementById('stat-pending').textContent = inbox;
@@ -1102,6 +1152,20 @@ function render(taskIndex, heartbeat, agyHeartbeat, statusData) {
   // Warnings calculation
   const warnings = [];
   
+  if (publicMirrorFailed) {
+    warnings.push({
+      title: "公共数据镜像缺失 (Red Flag)",
+      desc: "未能成功加载 control-tower-data.json，当前使用的是 Legacy Fallback 数据。"
+    });
+  }
+
+  if (isStaleMirror && publicData && publicData.generatedAt) {
+    warnings.push({
+      title: "数据镜像未更新 (Warning)",
+      desc: `公共数据镜像 control-tower-data.json 的最后生成时间为 ${new Date(publicData.generatedAt).toLocaleString()}，已超过 3 分钟未更新。`
+    });
+  }
+
   // Red flag 1: task exists in inbox but no state file
   taskIndex.forEach(t => {
     if (t.location === 'inbox' && t.summary === 'No state file generated yet') {
@@ -1124,10 +1188,20 @@ function render(taskIndex, heartbeat, agyHeartbeat, statusData) {
 
   // Red flag 3: task in done but no ChatGPT PASS
   taskIndex.forEach(t => {
-    if (t.location === 'done' && t.chatgptVerdict !== 'PASS') {
+    if ((t.status === 'invalid_done' || (t.location === 'done' && t.chatgptVerdict !== 'PASS')) && t.taskId.startsWith('task-')) {
       warnings.push({
         title: `非法的完成状态 (Red Flag): ${t.taskId}`,
         desc: `任务被标记为 done 归档，但没有获得 ChatGPT 审查通过 (VERDICT: PASS)。`
+      });
+    }
+  });
+
+  // Tasks waiting for ChatGPT audit
+  taskIndex.forEach(t => {
+    if (t.status === 'needs_chatgpt_audit' && t.taskId.startsWith('task-')) {
+      warnings.push({
+        title: `等待 ChatGPT 审计: ${t.taskId}`,
+        desc: `该任务正在 review 中，等待 ChatGPT 运行审计并返回 PASS/FAIL 结果。`
       });
     }
   });
@@ -1160,15 +1234,25 @@ function render(taskIndex, heartbeat, agyHeartbeat, statusData) {
         title: "Agy 心跳异常 (Red Flag)",
         desc: `Executor (Agy) 的心跳已过期，最后活跃时间为 ${new Date(agyHeartbeat.lastSeen).toLocaleString()}。`
       });
-      agyHbStatusSpan.textContent = 'STALE';
-      agyHbStatusSpan.className = 'task-badge failed';
+      if (agyHbStatusSpan) {
+        agyHbStatusSpan.textContent = 'STALE';
+        agyHbStatusSpan.className = 'task-badge failed';
+      }
     } else {
-      agyHbStatusSpan.textContent = 'ALIVE';
-      agyHbStatusSpan.className = 'task-badge done';
+      if (agyHbStatusSpan) {
+        agyHbStatusSpan.textContent = 'ALIVE';
+        agyHbStatusSpan.className = 'task-badge done';
+      }
     }
-    document.getElementById('agy-hb-last-seen').textContent = new Date(agyHeartbeat.lastSeen).toLocaleTimeString();
+    const agyLastSeenEl = document.getElementById('agy-hb-last-seen');
+    if (agyLastSeenEl) {
+      agyLastSeenEl.textContent = new Date(agyHeartbeat.lastSeen).toLocaleTimeString();
+    }
   } else {
-    document.getElementById('agy-hb-last-seen').textContent = 'Never';
+    const agyLastSeenEl = document.getElementById('agy-hb-last-seen');
+    if (agyLastSeenEl) {
+      agyLastSeenEl.textContent = 'Never';
+    }
   }
 
   // Red flag 6 & 7: firewall blocked task & unknown target blocked
@@ -1283,7 +1367,7 @@ function render(taskIndex, heartbeat, agyHeartbeat, statusData) {
     if (t.location === 'review' && !t.evidenceExists) {
       cardRedFlags.push('⚠️ Missing evidence packet');
     }
-    if (t.location === 'done' && t.chatgptVerdict !== 'PASS') {
+    if (t.status === 'invalid_done' || (t.location === 'done' && t.chatgptVerdict !== 'PASS')) {
       cardRedFlags.push('⚠️ Lacks ChatGPT PASS');
     }
     if (t.status === 'blocked') {
@@ -1291,9 +1375,9 @@ function render(taskIndex, heartbeat, agyHeartbeat, statusData) {
       cardRedFlags.push(isUnknownTarget ? '🚫 Unknown Target Blocked' : '🚫 Firewall Blocked');
     }
 
-    const checkExists = t.fileExistsInInbox || t.status === 'done' || t.status === 'failed' || t.evidenceExists;
+    const checkExists = t.fileExistsInInbox || t.status === 'done' || t.status === 'failed' || t.status === 'invalid_done' || t.evidenceExists;
     const checkSeen = t.status !== 'inbox_unseen' && t.status !== 'pending';
-    const checkExecuted = ['running', 'needs_chatgpt_audit', 'done', 'failed'].includes(t.status);
+    const checkExecuted = ['running', 'needs_chatgpt_audit', 'done', 'failed', 'invalid_done'].includes(t.status);
     const checkEvidence = t.evidenceExists;
     const checkDone = t.status === 'done' && t.chatgptVerdict === 'PASS';
 
@@ -1393,6 +1477,7 @@ function render(taskIndex, heartbeat, agyHeartbeat, statusData) {
     // Map to columns
     let colGroup = t.status;
     if (colGroup === 'blocked') colGroup = 'failed';
+    if (colGroup === 'invalid_done') colGroup = 'done';
     if (taskHtmlMap[colGroup] !== undefined) {
       taskHtmlMap[colGroup].push(cardHtml);
     } else {

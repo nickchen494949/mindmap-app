@@ -636,17 +636,76 @@ const statusJson = {
   activityLog
 };
 
+// Build public control tower data mirror
+let watcherStatus = "missing";
+let lastSeen = null;
+if (heartbeat && heartbeat.lastSeen) {
+  lastSeen = heartbeat.lastSeen;
+  const hbElapsed = Date.now() - new Date(heartbeat.lastSeen).getTime();
+  if (hbElapsed > 3 * 60 * 1000) {
+    watcherStatus = "stale";
+  } else {
+    watcherStatus = "alive";
+  }
+}
+
+const sanitizedWatcher = {
+  status: watcherStatus,
+  lastSeen: lastSeen,
+  lastScannedCommit: heartbeat ? (heartbeat.lastScannedCommit || null) : null,
+  inboxCount: tasksList.filter(t => t.status === 'inbox_unseen').length,
+  doneCount: tasksList.filter(t => t.status === 'done' && t.chatgptVerdict === 'PASS').length,
+  failedCount: tasksList.filter(t => t.status === 'failed' || t.status === 'blocked').length
+};
+
+const sanitizedTasks = tasksList.map(t => {
+  let finalStatus = t.status;
+  if (t.location === 'done' && t.chatgptVerdict !== 'PASS') {
+    finalStatus = 'invalid_done';
+  }
+  return {
+    taskId: t.taskId,
+    target: t.target || 'mindmap-app',
+    status: finalStatus,
+    location: t.location,
+    evidenceExists: !!t.evidenceExists,
+    chatgptVerdict: t.chatgptVerdict || null,
+    lastCommit: t.lastCommit || null,
+    liveUrl: t.liveUrl || null,
+    blockingIssues: t.blockingIssues || []
+  };
+});
+
+const stats = {
+  total: sanitizedTasks.length,
+  pending: sanitizedTasks.filter(t => t.status === 'inbox_unseen' || t.status === 'pending').length,
+  running: sanitizedTasks.filter(t => t.status === 'running').length,
+  needsChatGPTAudit: sanitizedTasks.filter(t => t.status === 'needs_chatgpt_audit').length,
+  done: sanitizedTasks.filter(t => t.status === 'done').length,
+  failed: sanitizedTasks.filter(t => t.status === 'failed' || t.status === 'blocked').length,
+  invalidDone: sanitizedTasks.filter(t => t.status === 'invalid_done').length
+};
+
+const publicControlTowerData = {
+  generatedAt: new Date().toISOString(),
+  watcher: sanitizedWatcher,
+  stats: stats,
+  tasks: sanitizedTasks
+};
+
 // Write output to both local and mindmap-repo directories
 const writeTargets = [
   {
     index: path.join('/Users/happygolucky/mindmap-repo', '.ai', 'task-index.json'),
     status: path.join('/Users/happygolucky/mindmap-repo', 'status.json'),
+    ctd: path.join('/Users/happygolucky/mindmap-repo', 'control-tower-data.json'),
     hb: path.join('/Users/happygolucky/mindmap-repo', '.ai', 'heartbeat', 'watcher.json'),
     hbDir: path.join('/Users/happygolucky/mindmap-repo', '.ai', 'heartbeat')
   },
   {
     index: path.join('/Users/happygolucky/projects/mindmap-app', '.ai', 'task-index.json'),
     status: path.join('/Users/happygolucky/projects/mindmap-app', 'status.json'),
+    ctd: path.join('/Users/happygolucky/projects/mindmap-app', 'control-tower-data.json'),
     hb: path.join('/Users/happygolucky/projects/mindmap-app', '.ai', 'heartbeat', 'watcher.json'),
     hbDir: path.join('/Users/happygolucky/projects/mindmap-app', '.ai', 'heartbeat')
   }
@@ -667,6 +726,13 @@ writeTargets.forEach(target => {
     if (fs.existsSync(statDir)) {
       fs.writeFileSync(target.status, JSON.stringify(statusJson, null, 2), 'utf8');
       console.log(`Successfully wrote status.json to: ${target.status}`);
+    }
+
+    // Ensure control-tower-data.json root folder exists
+    const ctdDir = path.dirname(target.ctd);
+    if (fs.existsSync(ctdDir)) {
+      fs.writeFileSync(target.ctd, JSON.stringify(publicControlTowerData, null, 2), 'utf8');
+      console.log(`Successfully wrote control-tower-data.json to: ${target.ctd}`);
     }
     
     // Ensure heartbeat folder exists

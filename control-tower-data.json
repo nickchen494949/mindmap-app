@@ -1,0 +1,328 @@
+{
+  "generatedAt": "2026-06-03T11:03:07.975Z",
+  "watcher": {
+    "status": "stale",
+    "lastSeen": "2026-06-03T10:53:06Z",
+    "lastScannedCommit": "51865d5c127e53f96a104a9ce0cf552a0486a934",
+    "inboxCount": 3,
+    "doneCount": 1,
+    "failedCount": 2
+  },
+  "stats": {
+    "total": 25,
+    "pending": 3,
+    "running": 1,
+    "needsChatGPTAudit": 2,
+    "done": 1,
+    "failed": 2,
+    "invalidDone": 14
+  },
+  "tasks": [
+    {
+      "taskId": "task-20260603-fix-control-tower-public-data",
+      "target": "mindmap-app",
+      "status": "running",
+      "location": "running",
+      "evidenceExists": false,
+      "chatgptVerdict": null,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": []
+    },
+    {
+      "taskId": "task-test-review-gate",
+      "target": "mindmap-app",
+      "status": "needs_chatgpt_audit",
+      "location": "review",
+      "evidenceExists": true,
+      "chatgptVerdict": null,
+      "lastCommit": "33d255e9a362df06cffb962550e1ef195459a975",
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": []
+    },
+    {
+      "taskId": "task-20260603-control-tower-evidence-review-flow",
+      "target": "mindmap-app",
+      "status": "needs_chatgpt_audit",
+      "location": "review",
+      "evidenceExists": true,
+      "chatgptVerdict": null,
+      "lastCommit": "5311370d77ce2f70087e6cdc3733be3418d688f6",
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": []
+    },
+    {
+      "taskId": "task-task-test-fail-flow",
+      "target": "mindmap-app",
+      "status": "inbox_unseen",
+      "location": "inbox",
+      "evidenceExists": false,
+      "chatgptVerdict": null,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": []
+    },
+    {
+      "taskId": "task-test-inbox-visibility",
+      "target": "mindmap-app",
+      "status": "inbox_unseen",
+      "location": "inbox",
+      "evidenceExists": false,
+      "chatgptVerdict": null,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": []
+    },
+    {
+      "taskId": "task-task-test-audit",
+      "target": "mindmap-app",
+      "status": "inbox_unseen",
+      "location": "inbox",
+      "evidenceExists": false,
+      "chatgptVerdict": null,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": []
+    },
+    {
+      "taskId": "task-test-fail-flow",
+      "target": "mindmap-app",
+      "status": "failed",
+      "location": "fix",
+      "evidenceExists": false,
+      "chatgptVerdict": "FAIL",
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": [
+        "Problem A",
+        "Problem B"
+      ]
+    },
+    {
+      "taskId": "task-test-audit",
+      "target": "mindmap-app",
+      "status": "failed",
+      "location": "fix",
+      "evidenceExists": false,
+      "chatgptVerdict": null,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": []
+    },
+    {
+      "taskId": "task-test-invalid-done",
+      "target": "mindmap-app",
+      "status": "invalid_done",
+      "location": "done",
+      "evidenceExists": false,
+      "chatgptVerdict": null,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    {
+      "taskId": "task-test-pass-flow",
+      "target": "mindmap-app",
+      "status": "done",
+      "location": "done",
+      "evidenceExists": false,
+      "chatgptVerdict": "PASS",
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": []
+    },
+    {
+      "taskId": "task-20260603-no-api-chatgpt-audit-loop",
+      "target": "mindmap-app",
+      "status": "invalid_done",
+      "location": "done",
+      "evidenceExists": false,
+      "chatgptVerdict": null,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    {
+      "taskId": "task-20260603-control-tower-dashboard",
+      "target": "mindmap-app",
+      "status": "invalid_done",
+      "location": "done",
+      "evidenceExists": false,
+      "chatgptVerdict": null,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    {
+      "taskId": "task-20260603-add-qa-audit",
+      "target": "us-macro-dashboard",
+      "status": "invalid_done",
+      "location": "done",
+      "evidenceExists": false,
+      "chatgptVerdict": null,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/us-macro-dashboard/",
+      "blockingIssues": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    {
+      "taskId": "task-20260603-us-macro-dashboard-transmission-map",
+      "target": "us-macro-dashboard",
+      "status": "invalid_done",
+      "location": "done",
+      "evidenceExists": false,
+      "chatgptVerdict": null,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/us-macro-dashboard/",
+      "blockingIssues": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    {
+      "taskId": "task-20260603-deploy-us-macro-dashboard-pages",
+      "target": "mindmap-app",
+      "status": "invalid_done",
+      "location": "done",
+      "evidenceExists": false,
+      "chatgptVerdict": null,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    {
+      "taskId": "task-20260603-us-macro-dashboard",
+      "target": "us-macro-dashboard",
+      "status": "invalid_done",
+      "location": "done",
+      "evidenceExists": false,
+      "chatgptVerdict": null,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/us-macro-dashboard/",
+      "blockingIssues": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    {
+      "taskId": "task-006-pipeline-test",
+      "target": "chatgpt-pipeline-test",
+      "status": "invalid_done",
+      "location": "done",
+      "evidenceExists": false,
+      "chatgptVerdict": null,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/chatgpt-pipeline-test/",
+      "blockingIssues": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    {
+      "taskId": "task-005-canvas-title",
+      "target": "mindmap-app",
+      "status": "invalid_done",
+      "location": "done",
+      "evidenceExists": false,
+      "chatgptVerdict": null,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    {
+      "taskId": "task-004-world-economic-history-v3",
+      "target": "mindmap-app",
+      "status": "invalid_done",
+      "location": "done",
+      "evidenceExists": false,
+      "chatgptVerdict": null,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    {
+      "taskId": "task-003-world-economic-history-v2",
+      "target": "mindmap-app",
+      "status": "invalid_done",
+      "location": "done",
+      "evidenceExists": false,
+      "chatgptVerdict": null,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    {
+      "taskId": "task-002-world-economic-history",
+      "target": "mindmap-app",
+      "status": "invalid_done",
+      "location": "done",
+      "evidenceExists": false,
+      "chatgptVerdict": null,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    {
+      "taskId": "task-000-test",
+      "target": "mindmap-app",
+      "status": "invalid_done",
+      "location": "done",
+      "evidenceExists": false,
+      "chatgptVerdict": null,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    {
+      "taskId": "task-001-machine-learning",
+      "target": "mindmap-app",
+      "status": "invalid_done",
+      "location": "done",
+      "evidenceExists": false,
+      "chatgptVerdict": null,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    {
+      "taskId": "task-20260603-fix-control-tower-public-data.md",
+      "target": "mindmap-app",
+      "status": "unknown",
+      "location": "unknown",
+      "evidenceExists": false,
+      "chatgptVerdict": null,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": []
+    },
+    {
+      "taskId": "task-20260603-control-tower-evidence-review-flow.md",
+      "target": "mindmap-app",
+      "status": "unknown",
+      "location": "unknown",
+      "evidenceExists": false,
+      "chatgptVerdict": null,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": []
+    }
+  ]
+}

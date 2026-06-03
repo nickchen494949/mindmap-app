@@ -1,9 +1,9 @@
 {
-  "pendingTasks": 4,
-  "runningTasks": 0,
+  "pendingTasks": 3,
+  "runningTasks": 1,
   "reviewTasks": 2,
-  "failedTasks": 1,
-  "doneTasks": 16,
+  "failedTasks": 2,
+  "doneTasks": 15,
   "needsChatGPTAudit": [
     "task-test-review-gate",
     "task-20260603-control-tower-evidence-review-flow"
@@ -19,26 +19,27 @@
     "lastTask": "task-20260603-control-tower-evidence-review-flow.md",
     "failedCount": 0
   },
-  "lastUpdate": "2026-06-03 10:56:55",
-  "totalTasks": 24,
+  "lastUpdate": "2026-06-03 11:03:07",
+  "totalTasks": 25,
   "pending": [
     "task-task-test-fail-flow",
     "task-test-inbox-visibility",
-    "task-task-test-audit",
+    "task-task-test-audit"
+  ],
+  "running": [
     "task-20260603-fix-control-tower-public-data"
   ],
-  "running": [],
   "review": [
     "task-test-review-gate",
     "task-20260603-control-tower-evidence-review-flow"
   ],
   "failed": [
-    "task-test-fail-flow"
+    "task-test-fail-flow",
+    "task-test-audit"
   ],
   "done": [
     "task-test-invalid-done",
     "task-test-pass-flow",
-    "task-test-audit",
     "task-20260603-no-api-chatgpt-audit-loop",
     "task-20260603-control-tower-dashboard",
     "task-20260603-add-qa-audit",
@@ -59,6 +60,20 @@
     "us-macro-dashboard"
   ],
   "taskDetails": {
+    "task-20260603-fix-control-tower-public-data": {
+      "title": "Fix Task",
+      "target": "mindmap-app",
+      "status": "running",
+      "completedAt": "",
+      "summary": "Task index updated",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "evidencePacketPath": ".ai/reports/task-20260603-fix-control-tower-public-data/",
+      "chatgptVerdict": null,
+      "blockingErrors": []
+    },
     "task-test-review-gate": {
       "title": "Test 2 Title",
       "target": "mindmap-app",
@@ -67,7 +82,7 @@
       "summary": "Task index updated",
       "attempt": 1,
       "maxAttempts": 3,
-      "lastCommit": "d153763e09f716e9112e8c26ff5c9bbce02bf034",
+      "lastCommit": "33d255e9a362df06cffb962550e1ef195459a975",
       "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
       "evidencePacketPath": ".ai/reports/task-test-review-gate/",
       "chatgptVerdict": null,
@@ -129,20 +144,6 @@
       "chatgptVerdict": null,
       "blockingErrors": []
     },
-    "task-20260603-fix-control-tower-public-data": {
-      "title": "Fix Task",
-      "target": "mindmap-app",
-      "status": "pending",
-      "completedAt": "",
-      "summary": "Task index updated",
-      "attempt": 1,
-      "maxAttempts": 3,
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-20260603-fix-control-tower-public-data/",
-      "chatgptVerdict": null,
-      "blockingErrors": []
-    },
     "task-test-fail-flow": {
       "title": "Test 4 Title",
       "target": "mindmap-app",
@@ -160,11 +161,25 @@
         "Problem B"
       ]
     },
+    "task-test-audit": {
+      "title": "Fix Task for task-test-audit (Attempt 2)",
+      "target": "mindmap-app",
+      "status": "failed",
+      "completedAt": "",
+      "summary": "Task index updated",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "evidencePacketPath": ".ai/reports/task-test-audit/",
+      "chatgptVerdict": null,
+      "blockingErrors": []
+    },
     "task-test-invalid-done": {
       "title": "Test 5 Title",
       "target": "mindmap-app",
       "status": "done",
-      "completedAt": "2026-06-03T10:56:55.418Z",
+      "completedAt": "2026-06-03T11:03:07.892Z",
       "summary": "Task index updated",
       "lastCommit": null,
       "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
@@ -178,27 +193,13 @@
       "title": "Test 3 Title",
       "target": "mindmap-app",
       "status": "done",
-      "completedAt": "2026-06-03T10:56:55.239Z",
+      "completedAt": "2026-06-03T11:03:07.711Z",
       "summary": "Task index updated",
       "attempt": 1,
       "maxAttempts": 3,
       "lastCommit": null,
       "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
       "evidencePacketPath": ".ai/reports/task-test-pass-flow/",
-      "chatgptVerdict": "PASS",
-      "blockingErrors": []
-    },
-    "task-test-audit": {
-      "title": "Fix Task for task-test-audit (Attempt 2)",
-      "target": "mindmap-app",
-      "status": "done",
-      "completedAt": "2026-06-03T10:49:41.162Z",
-      "summary": "Task index updated",
-      "attempt": 2,
-      "maxAttempts": 3,
-      "lastCommit": "5311370d77ce2f70087e6cdc3733be3418d688f6",
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-test-audit/",
       "chatgptVerdict": "PASS",
       "blockingErrors": []
     },
@@ -410,6 +411,18 @@
         "Task is marked done but lacks ChatGPT PASS verdict"
       ]
     },
+    "task-20260603-fix-control-tower-public-data.md": {
+      "title": "20260603 fix control tower public data.md",
+      "target": "mindmap-app",
+      "status": "unknown",
+      "completedAt": "",
+      "summary": "Task index updated",
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "evidencePacketPath": ".ai/reports/task-20260603-fix-control-tower-public-data.md/",
+      "chatgptVerdict": null,
+      "blockingErrors": []
+    },
     "task-20260603-control-tower-evidence-review-flow.md": {
       "title": "20260603 control tower evidence review flow.md",
       "target": "mindmap-app",
@@ -425,32 +438,7 @@
   },
   "activityLog": [
     {
-      "time": "Wed Jun  3 18:53:08",
-      "sender": "watcher",
-      "action": "+08 2026 === Watcher run finished"
-    },
-    {
-      "time": "Wed Jun  3 18:55:08",
-      "sender": "watcher",
-      "action": "+08 2026 === Watcher run started"
-    },
-    {
-      "time": "Wed Jun  3 18:55:08",
-      "sender": "watcher",
-      "action": "+08 2026 Pulling latest..."
-    },
-    {
-      "time": "Wed Jun  3 18:55:09",
-      "sender": "watcher",
-      "action": "+08 2026 Found task: .ai/inbox/task-20260603-control-tower-evidence-review-flow.md"
-    },
-    {
-      "time": "Wed Jun  3 18:55:09",
-      "sender": "watcher",
-      "action": "+08 2026 Target: mindmap-app → /Users/happygolucky/mindmap-repo"
-    },
-    {
-      "time": "Wed Jun  3 18:55:09",
+      "time": "Wed Jun  3 19:00:16",
       "sender": "agy",
       "action": "+08 2026 Running agy..."
     }
