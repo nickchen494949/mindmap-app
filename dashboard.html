@@ -25,6 +25,22 @@
     --glow-danger: rgba(239, 68, 68, 0.35);
   }
 
+  /* Custom scrollbar styling for premium UI */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
   
   body {
@@ -417,6 +433,9 @@
   }
   
   .task-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     padding: 3px 8px;
     border-radius: 12px;
     font-size: 9px;
@@ -424,6 +443,36 @@
     text-transform: uppercase;
     letter-spacing: 0.3px;
     flex-shrink: 0;
+    line-height: 1;
+  }
+
+  /* Evidence files list and badge styling */
+  .evidence-files {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  
+  .evidence-file-badge {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .evidence-file-badge:hover {
+    background: rgba(99, 102, 241, 0.1);
+    border-color: rgba(99, 102, 241, 0.3);
+    color: #818cf8;
+    transform: translateY(-1px);
   }
   
   .task-badge.inbox_unseen, .task-badge.pending { background: rgba(100, 116, 139, 0.15); color: var(--text-secondary); border: 1px solid rgba(100, 116, 139, 0.3); }
@@ -611,7 +660,7 @@
     justify-content: space-between;
   }
   
-  .widget-title span {
+  .widget-title span:not(.task-badge) {
     font-size: 11px;
     background: rgba(255, 255, 255, 0.06);
     padding: 2px 8px;
@@ -1635,7 +1684,7 @@ function render(taskIndex, heartbeat, agyHeartbeat, statusData, publicMirrorFail
           <div class="blocking-item" style="border:1px solid rgba(239, 68, 68, 0.3); background:rgba(239, 68, 68, 0.05); border-radius:10px; padding:12px;">
             <div class="task-name" style="display:flex; justify-content:space-between; font-weight:600; font-size:13px; color:#fca5a5; margin-bottom:4px;">
               <span>${t.title}</span>
-              <span class="task-badge failed" style="font-size:10px;">${t.status.toUpperCase()}</span>
+              <span class="task-badge ${t.status}" style="font-size:10px; padding:2px 6px;">${getStatusLabel(t.status)}</span>
             </div>
             <div style="color:var(--text-muted); font-size:11px; margin-bottom:6px;">ID: ${t.taskId} | Target: ${t.target}</div>
             <ul style="margin-left: 16px; color:#fda4af; font-size:11px; display:flex; flex-direction:column; gap:2px;">

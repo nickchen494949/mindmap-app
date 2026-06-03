@@ -391,13 +391,22 @@ Object.keys(tasksMap).forEach(taskId => {
   const fileSearchOrder = [
     path.join(runningDir, `${taskId}.md`),
     path.join(runningDir, `${taskId}-fix.md`),
+    path.join(runningDir, `task-${taskId}.md`),
+    path.join(runningDir, `task-${taskId}-fix.md`),
     path.join(reviewDir, `${taskId}.md`),
+    path.join(reviewDir, `task-${taskId}.md`),
     path.join(inboxDir, `${taskId}.md`),
     path.join(inboxDir, `${taskId}-fix.md`),
+    path.join(inboxDir, `task-${taskId}.md`),
+    path.join(inboxDir, `task-${taskId}-fix.md`),
     path.join(doneDir, `${taskId}.md`),
+    path.join(doneDir, `task-${taskId}.md`),
     path.join(failedDir, `${taskId}.md`),
+    path.join(failedDir, `task-${taskId}.md`),
     path.join(fixDir, `${taskId}-attempt-1.md`),
-    path.join(fixDir, `${taskId}-attempt-2.md`)
+    path.join(fixDir, `${taskId}-attempt-2.md`),
+    path.join(fixDir, `task-${taskId}-attempt-1.md`),
+    path.join(fixDir, `task-${taskId}-attempt-2.md`)
   ];
 
   for (const filePath of fileSearchOrder) {

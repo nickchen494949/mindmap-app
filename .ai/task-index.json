@@ -42,7 +42,7 @@
       "Confidence: 0.95",
       "Reviewed by DeepSeek API."
     ],
-    "title": "Task",
+    "title": "Fix Task for task-20260603-control-tower-evidence-review-flow (Attempt 2)",
     "attempt": 2,
     "maxAttempts": 3,
     "createdAt": "2026-06-03T10:53:06.963Z",
@@ -118,7 +118,7 @@
     "title": "Fix Task for task-test-audit (Attempt 2)",
     "attempt": 2,
     "maxAttempts": 3,
-    "createdAt": "2026-06-03T11:24:05.658Z",
+    "createdAt": "2026-06-03T11:31:42.152Z",
     "evidenceExists": true,
     "invalidDone": false,
     "blockingErrors": [],
