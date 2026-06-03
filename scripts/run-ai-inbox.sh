@@ -26,6 +26,10 @@ git stash 2>/dev/null || true
 git pull --rebase 2>&1 || echo "$(date) git pull failed"
 git stash pop 2>/dev/null || true
 
+# ── Process ChatGPT reviews and update task index ──
+echo "$(date) Processing ChatGPT reviews and updating task index..."
+node "$REPO_DIR/scripts/generate-task-index.js" || echo "$(date) Failed to process reviews"
+
 # ── Find first unprocessed task ──
 TASK_FILE=""
 for f in $(find .ai/inbox -type f -name "task-*.md" 2>/dev/null | sort); do
@@ -68,8 +72,8 @@ if [ -n "$TARGET" ]; then
       if echo "$TARGET" | grep -qE '\.\.|/|[[:space:]]|;|\$|`'; then
         echo "$(date) ❌ BLOCKED: dangerous target name: $TARGET"
         cp "$TASK_FILE" ".ai/failed/$TASK_NAME"
-        cat > ".ai/state/$TASK_NAME.json" <<EOF
-{"taskId":"$TASK_NAME","status":"blocked","errors":"dangerous target name"}
+        cat > ".ai/state/${TASK_NAME%.md}.json" <<EOF
+{"taskId":"${TASK_NAME%.md}","status":"blocked","errors":"dangerous target name"}
 EOF
         git add -A 2>/dev/null || true
         git commit -m "🚫 BLOCKED $TASK_NAME — dangerous target" 2>&1 || true
@@ -82,8 +86,8 @@ EOF
       else
         echo "$(date) ❌ BLOCKED: unknown target '$TARGET' — add 'allow_new_project: true' to task"
         cp "$TASK_FILE" ".ai/failed/$TASK_NAME"
-        cat > ".ai/state/$TASK_NAME.json" <<EOF
-{"taskId":"$TASK_NAME","status":"blocked","errors":"unknown target without allow_new_project"}
+        cat > ".ai/state/${TASK_NAME%.md}.json" <<EOF
+{"taskId":"${TASK_NAME%.md}","status":"blocked","errors":"unknown target without allow_new_project"}
 EOF
         git add -A 2>/dev/null || true
         git commit -m "🚫 BLOCKED $TASK_NAME — unknown target" 2>&1 || true
@@ -99,8 +103,8 @@ fi
 
 # ── Mark as running ──
 cp "$TASK_FILE" ".ai/running/$TASK_NAME" 2>/dev/null || true
-cat > ".ai/state/$TASK_NAME.json" <<EOF
-{"taskId":"$TASK_NAME","status":"running","startedAt":"$(date -u +%Y-%m-%dT%H:%M:%SZ)","target":"${TARGET:-mindmap-repo}","workDir":"$WORK_DIR"}
+cat > ".ai/state/${TASK_NAME%.md}.json" <<EOF
+{"taskId":"${TASK_NAME%.md}","status":"running","startedAt":"$(date -u +%Y-%m-%dT%H:%M:%SZ)","target":"${TARGET:-mindmap-repo}","workDir":"$WORK_DIR"}
 EOF
 
 # ── Setup work directory ──
@@ -185,8 +189,8 @@ if [ "$FIREWALL_PASS" = false ]; then
   cd "$REPO_DIR"
   rm -f ".ai/running/$TASK_NAME"
   cp "$TASK_FILE" ".ai/failed/$TASK_NAME"
-  cat > ".ai/state/$TASK_NAME.json" <<EOF
-{"taskId":"$TASK_NAME","status":"blocked","blockedAt":"$(date -u +%Y-%m-%dT%H:%M:%SZ)","target":"${TARGET:-mindmap-repo}","errors":"$FIREWALL_ERRORS"}
+  cat > ".ai/state/${TASK_NAME%.md}.json" <<EOF
+{"taskId":"${TASK_NAME%.md}","status":"blocked","blockedAt":"$(date -u +%Y-%m-%dT%H:%M:%SZ)","target":"${TARGET:-mindmap-repo}","errors":"$FIREWALL_ERRORS"}
 EOF
   git add -A 2>/dev/null || true
   git commit -m "🚫 BLOCKED $TASK_NAME — $FIREWALL_ERRORS" 2>&1 || true
@@ -216,9 +220,15 @@ cd "$REPO_DIR"
 rm -f ".ai/running/$TASK_NAME"
 # Tasks go to .ai/review/ for ChatGPT audit, NOT directly to .ai/done/
 cp "$TASK_FILE" ".ai/review/$TASK_NAME"
-cat > ".ai/state/$TASK_NAME.json" <<EOF
-{"taskId":"$TASK_NAME","status":"needs_chatgpt_audit","completedAt":"$(date -u +%Y-%m-%dT%H:%M:%SZ)","target":"${TARGET:-mindmap-repo}","workDir":"$WORK_DIR"}
+cat > ".ai/state/${TASK_NAME%.md}.json" <<EOF
+{"taskId":"${TASK_NAME%.md}","status":"needs_chatgpt_audit","completedAt":"$(date -u +%Y-%m-%dT%H:%M:%SZ)","target":"${TARGET:-mindmap-repo}","workDir":"$WORK_DIR"}
 EOF
+
+# ── Generate Evidence Packet ──
+echo "$(date) Generating evidence packet..."
+cd "$WORK_DIR"
+node "$REPO_DIR/scripts/collect-evidence.js" --taskId "${TASK_NAME%.md}" --target "${TARGET:-mindmap-app}" 2>&1 || echo "$(date) Evidence collection failed"
+cd "$REPO_DIR"
 
 # ── Write heartbeat ──
 cat > .ai/heartbeat/watcher.json <<EOF

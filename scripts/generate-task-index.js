@@ -403,7 +403,25 @@ Object.keys(tasksMap).forEach(taskId => {
   if (!target) target = 'mindmap-app';
 
   // Check evidence
-  const hasEvidence = fs.existsSync(path.join(reportsDir, taskId, 'evidence.json'));
+  let hasEvidence = fs.existsSync(path.join(reportsDir, taskId, 'evidence.json'));
+  const taskAttempt = stateData ? stateData.attempt : 1;
+
+  if (location === 'review' && !hasEvidence && !process.env.IN_EVIDENCE_COLLECTION) {
+    console.log(`Task ${taskId} is in review but missing evidence packet. Generating...`);
+    try {
+      const collectorPath = path.join(__dirname, 'collect-evidence.js');
+      if (fs.existsSync(collectorPath)) {
+        // Run collect-evidence synchronously, setting a flag to prevent infinite recursion
+        execSync(`node "${collectorPath}" --taskId "${taskId}" --target "${target || 'mindmap-app'}" --attempt ${taskAttempt}`, { 
+          stdio: 'inherit',
+          env: { ...process.env, IN_ELECTION: 'true', IN_EVIDENCE_COLLECTION: 'true' }
+        });
+        hasEvidence = fs.existsSync(path.join(reportsDir, taskId, 'evidence.json'));
+      }
+    } catch (e) {
+      console.error(`Failed to automatically generate evidence for ${taskId}:`, e.message);
+    }
+  }
   const evidencePath = hasEvidence ? `.ai/reports/${taskId}/evidence.json` : null;
 
   // Check ChatGPT audit file

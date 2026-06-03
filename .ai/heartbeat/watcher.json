@@ -1,1 +1,10 @@
-{"name":"watcher","lastSeen":"2026-06-03T10:50:49Z","lastScannedCommit":"0eb0e4ae26313868f4681553cbfcde29b8f5a143","lastTask":"task-20260603-control-tower-evidence-review-flow.md","inboxCount":15,"doneCount":14,"failedCount":0,"status":"alive"}
+{
+  "name": "watcher",
+  "lastSeen": "2026-06-03T10:50:49Z",
+  "lastScannedCommit": "0eb0e4ae26313868f4681553cbfcde29b8f5a143",
+  "inboxCount": 15,
+  "doneCount": 14,
+  "status": "alive",
+  "lastTask": "task-20260603-control-tower-evidence-review-flow.md",
+  "failedCount": 0
+}

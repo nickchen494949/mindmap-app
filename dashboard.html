@@ -742,6 +742,9 @@
     to { transform: translateY(0); opacity: 1; }
   }
 
+  .clr-success { color: var(--clr-success); font-weight: 600; }
+  .clr-warning { color: var(--clr-warning); font-weight: 600; }
+
   @media (max-width: 1200px) {
     .dashboard-columns {
       grid-template-columns: 1fr;
@@ -1416,6 +1419,96 @@ function render(taskIndex, heartbeat, agyHeartbeat, statusData) {
         </div>
       `;
     }).join('');
+  }
+
+  // Populate Section 7: Evidence Status
+  const evidenceListDiv = document.getElementById('evidence-matrix-list');
+  if (evidenceListDiv) {
+    if (taskIndex.length > 0) {
+      evidenceListDiv.innerHTML = taskIndex.map(t => {
+        const statusText = t.evidenceExists ? '✅ Generated' : '⏳ Missing / Pending';
+        const statusClass = t.evidenceExists ? 'clr-success' : 'clr-warning';
+        const repoUrl = `https://github.com/nickchen494949/mindmap-app`;
+        
+        let filesHtml = '';
+        if (t.evidenceExists) {
+          filesHtml = `
+            <div class="evidence-files">
+              <a href="${repoUrl}/blob/main/${t.evidencePacketPath}evidence.json" target="_blank" class="evidence-file-badge">evidence.json</a>
+              <a href="${repoUrl}/blob/main/${t.evidencePacketPath}summary.md" target="_blank" class="evidence-file-badge">summary.md</a>
+              <a href="${repoUrl}/blob/main/${t.evidencePacketPath}changed-files.txt" target="_blank" class="evidence-file-badge">changed-files.txt</a>
+              <a href="${repoUrl}/blob/main/${t.evidencePacketPath}commit.txt" target="_blank" class="evidence-file-badge">commit.txt</a>
+              <a href="${repoUrl}/blob/main/${t.evidencePacketPath}log-tail.txt" target="_blank" class="evidence-file-badge">log-tail.txt</a>
+            </div>
+          `;
+        }
+        return `
+          <div class="evidence-item" style="background:rgba(0,0,0,0.2); border:1px solid var(--border-color); border-radius:10px; padding:12px;">
+            <div class="task-name" style="display:flex; justify-content:space-between; font-weight:600; font-size:13px; margin-bottom:6px;">
+              <span>${t.title}</span>
+              <span class="${statusClass}" style="font-size:11px;">${statusText}</span>
+            </div>
+            <div style="color:var(--text-muted); font-size:11px;">ID: ${t.taskId} | Target: ${t.target}</div>
+            ${filesHtml}
+          </div>
+        `;
+      }).join('');
+    } else {
+      evidenceListDiv.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding:20px; font-size:12px;">No evidence files found</div>';
+    }
+  }
+
+  // Populate Section 8: Latest Commit Tracker
+  const commitListDiv = document.getElementById('commit-tracker-list');
+  if (commitListDiv) {
+    if (taskIndex.length > 0) {
+      commitListDiv.innerHTML = taskIndex.map(t => {
+        const shaText = t.lastCommit ? t.lastCommit.substring(0, 7) : 'None';
+        const repoUrl = `https://github.com/nickchen494949/mindmap-app`;
+        const commitLink = t.lastCommit ? `<a href="${repoUrl}/commit/${t.lastCommit}" target="_blank" class="mono" style="color:#818cf8; text-decoration:none; font-family:'JetBrains Mono',monospace;">${shaText}</a>` : '<span class="mono">-</span>';
+        return `
+          <div class="commit-item" style="background:rgba(0,0,0,0.2); border:1px solid var(--border-color); border-radius:10px; padding:12px;">
+            <div class="task-name" style="display:flex; justify-content:space-between; font-weight:600; font-size:13px; margin-bottom:4px;">
+              <span>${t.title}</span>
+              ${commitLink}
+            </div>
+            <div style="color:var(--text-secondary); font-size:11px;">
+              Target: ${t.target} | Live: ${t.liveUrl ? `<a href="${t.liveUrl}" target="_blank" style="color:#0ea5e9; text-decoration:none;">Open App</a>` : 'N/A'}
+            </div>
+          </div>
+        `;
+      }).join('');
+    } else {
+      commitListDiv.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding:20px; font-size:12px;">No commits tracked</div>';
+    }
+  }
+
+  // Populate Section 9: Blocking Issues & Red Flags
+  const blockingListDiv = document.getElementById('blocking-issues-list');
+  if (blockingListDiv) {
+    const blockedTasks = taskIndex.filter(t => (t.blockingIssues && t.blockingIssues.length > 0) || t.status === 'blocked' || t.invalidDone);
+    if (blockedTasks.length > 0) {
+      blockingListDiv.innerHTML = blockedTasks.map(t => {
+        let issuesList = t.blockingIssues.map(issue => `<li>${issue}</li>`).join('');
+        if (t.invalidDone && !issuesList.includes('lacks ChatGPT PASS')) {
+          issuesList += `<li>Task is in done folder but lacks ChatGPT PASS verdict (Red Flag)</li>`;
+        }
+        return `
+          <div class="blocking-item" style="border:1px solid rgba(239, 68, 68, 0.3); background:rgba(239, 68, 68, 0.05); border-radius:10px; padding:12px;">
+            <div class="task-name" style="display:flex; justify-content:space-between; font-weight:600; font-size:13px; color:#fca5a5; margin-bottom:4px;">
+              <span>${t.title}</span>
+              <span class="task-badge failed" style="font-size:10px;">${t.status.toUpperCase()}</span>
+            </div>
+            <div style="color:var(--text-muted); font-size:11px; margin-bottom:6px;">ID: ${t.taskId} | Target: ${t.target}</div>
+            <ul style="margin-left: 16px; color:#fda4af; font-size:11px; display:flex; flex-direction:column; gap:2px;">
+              ${issuesList}
+            </ul>
+          </div>
+        `;
+      }).join('');
+    } else {
+      blockingListDiv.innerHTML = '<div style="color:var(--clr-success); text-align:center; padding:20px; font-size:12px;">✅ No blocking issues or warnings detected. All green!</div>';
+    }
   }
 }
 

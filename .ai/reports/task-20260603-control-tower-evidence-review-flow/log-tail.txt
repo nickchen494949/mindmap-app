@@ -1,0 +1,100 @@
+### What was done:
+1. **Target Project Syncing Improvements**:
+   - Modified `scripts/generate-task-index.js` to ensure that state updates, fix files, and done/failed transitions are synchronized from the `mindmap-repo` back to the target project directory (like `/Users/happygolucky/projects/mindmap-app`) if they differ.
+2. **Double-Task Prefix Match Support**:
+   - Adjusted `scripts/collect-evidence.js` to search for task files starting with `task-${taskId}-fix.md` and `task-${baseTaskId}-fix.md` to prevent file matching failures for tasks where the task identifier already has a `task-` prefix (such as `task-test-audit`).
+3. **Stale/Obsolete Review File Cleanup**:
+   - Added logic in both `scripts/collect-evidence.js` and `scripts/pipeline-helper.js` to delete obsolete `chatgpt-audit.md` files from reviews and review directories before launching new execution attempts. This ensures older `FAIL` verdicts do not trigger immediately and cause race conditions.
+4. **Validation and Testing**:
+   - Re-ran the state machine test suite `scripts/test-audit-loop.js`. All 5 required loop test cases (Test A, Test B, and Test C paths) now pass completely.
+5. **Report and Push**:
+   - Generated the final report and saved it to `.ai/reports/task-20260603-control-tower-evidence-review-flow/final-report.md`.
+   - Committed and pushed all modifications to the repository branch `main`.
+
+**Final Commit SHA**: `855a44a16d75a1ed38f5ef9318f1cca57a132c8e`
+ucky/mindmap-repo/.ai/task-index.json
+Successfully wrote status.json to: /Users/happygolucky/mindmap-repo/status.json
+Successfully wrote heartbeat to: /Users/happygolucky/mindmap-repo/.ai/heartbeat/watcher.json
+Successfully wrote task index to: /Users/happygolucky/projects/mindmap-app/.ai/task-index.json
+Successfully wrote status.json to: /Users/happygolucky/projects/mindmap-app/status.json
+Successfully wrote heartbeat to: /Users/happygolucky/projects/mindmap-app/.ai/heartbeat/watcher.json
+✅ TEST B PASSED: FAIL verdict successfully archived old attempt, updated state, and generated fix task in inbox.
+
+--- Test C: Simulating fix execution and ChatGPT PASS verdict ---
+Simulated watcher moving fix task to running.
+Executing evidence collection for fix task...
+=== Starting evidence collection for task: task-test-audit ===
+Target project: mindmap-app
+Live URL: https://nickchen494949.github.io/mindmap-app/
+Local test server running at http://localhost:8085
+Checking status of live URL: https://nickchen494949.github.io/mindmap-app/
+Live URL status code: 200
+Launching browser to audit local site...
+Screenshot saved to: /Users/happygolucky/projects/mindmap-app/.ai/reports/task-test-audit/screenshot.png
+Local test server stopped.
+Log tail saved to: /Users/happygolucky/projects/mindmap-app/.ai/reports/task-test-audit/log-tail.txt
+=== Evidence packet generated successfully in: /Users/happygolucky/projects/mindmap-app/.ai/reports/task-test-audit ===
+State JSON written to: /Users/happygolucky/projects/mindmap-app/.ai/state/task-test-audit.json
+Moved task file from /Users/happygolucky/projects/mindmap-app/.ai/running/task-task-test-audit-fix.md to /Users/happygolucky/projects/mindmap-app/.ai/review/task-test-audit.md
+Syncing evidence and state to mindmap-repo...
+Successfully synced files to mindmap-repo.
+Running task index generator...
+Scanning AI directory: /Users/happygolucky/mindmap-repo/.ai
+=== Checking for ChatGPT reviews/audits in state machine ===
+Audit file is stale for task-test-audit (modified: 2026-06-03T10:50:02.000Z, task updated: 2026-06-03T10:50:09.689Z). Skipping review processing.
+Successfully wrote task index to: /Users/happygolucky/mindmap-repo/.ai/task-index.json
+Successfully wrote status.json to: /Users/happygolucky/mindmap-repo/status.json
+Successfully wrote heartbeat to: /Users/happygolucky/mindmap-repo/.ai/heartbeat/watcher.json
+Successfully wrote task index to: /Users/happygolucky/projects/mindmap-app/.ai/task-index.json
+Successfully wrote status.json to: /Users/happygolucky/projects/mindmap-app/status.json
+Successfully wrote heartbeat to: /Users/happygolucky/projects/mindmap-app/.ai/heartbeat/watcher.json
+Simulated ChatGPT writing a PASS audit report.
+Running index generator to process audit reviews...
+Scanning AI directory: /Users/happygolucky/mindmap-repo/.ai
+=== Checking for ChatGPT reviews/audits in state machine ===
+Found review verdict file for task-test-audit: /Users/happygolucky/mindmap-repo/.ai/reviews/task-test-audit/chatgpt-audit.md
+Verdict for task-test-audit: PASS
+Successfully wrote task index to: /Users/happygolucky/mindmap-repo/.ai/task-index.json
+Successfully wrote status.json to: /Users/happygolucky/mindmap-repo/status.json
+Successfully wrote heartbeat to: /Users/happygolucky/mindmap-repo/.ai/heartbeat/watcher.json
+Successfully wrote task index to: /Users/happygolucky/projects/mindmap-app/.ai/task-index.json
+Successfully wrote status.json to: /Users/happygolucky/projects/mindmap-app/status.json
+Successfully wrote heartbeat to: /Users/happygolucky/projects/mindmap-app/.ai/heartbeat/watcher.json
+✅ TEST C PASSED: PASS verdict successfully moved task to done/ and updated status to done.
+
+=== ALL AUDIT LOOP STATE MACHINE TESTS PASSED ===
+
+
+Log: file:///Users/happygolucky/.gemini/antigravity-cli/brain/0f2dc3e5-7858-4b7d-b5c3-a22ade3a9921/.system_generated/tasks/task-66.log
+I will view `dashboard.html` around the end of the `<style>` section and the beginning of the body to see where the new styles can be safely injected.
+I will view lines 850 to 914 of `dashboard.html` to find the exact boundary for the bottom telemetry and heartbeat widget layout.
+I will view lines 1015 to 1175 in `dashboard.html` to find the start of the `render` function and how it manipulates the DOM for warnings, statuses, and logs.
+I will view lines 1176 to 1380 of `dashboard.html` to inspect the rest of the `render` function.
+I will update the HTML layout in `dashboard.html` to define explicit containers for Sections 6 (Heartbeat Status), 7 (Evidence Status), 8 (Latest Commit SHA), and 9 (Blocking Issues), while retaining the execution log and ecosystem widgets.
+I will check the lines around 1130 to 1180 in `dashboard.html` to see the heartbeat binding logic and see where to add the new bindings.
+I will view lines 1181 to 1215 in `dashboard.html` to find where the heartbeat fields are populated.
+I will view the end of the `render` function to see where we can insert the telemetry lists population logic.
+I will update the Agy heartbeat DOM binding in `dashboard.html` to reference the new ID `agy-heartbeat-status-badge`.
+I will view lines 1150 to 1195 in `dashboard.html` to find the Watcher heartbeat DOM update logic.
+I will modify the DOM updates for the Watcher heartbeat status to target `heartbeat-status-badge` and set the status summary.
+I will view the end of the `render` function around line 1390-1420 to locate the end brace and prepare the injection.
+I will add CSS rules for `.clr-success` and `.clr-warning` to `dashboard.html` to support the colored status badges in our evidence matrices.
+I will view lines 1410 to 1425 of `dashboard.html` to locate the exact lines for the closing brace of the `render` function.
+I will insert the telemetry list binding logic for Sections 7, 8, and 9 at the end of the `render` function in `dashboard.html`.
+I will view lines 20 to 50 in `scripts/run-ai-inbox.sh` to see where the watcher stashes/pulls and where we can run the task indexer to process ChatGPT review verdicts.
+I will modify `scripts/run-ai-inbox.sh` to run the review processor (`generate-task-index.js`) at startup, immediately after pulling latest updates. This ensures that any new PASS/FAIL reviews are handled first, potentially creating a fix task in the inbox before the watcher checks for tasks to execute.
+I will view lines 210 to 240 of `scripts/run-ai-inbox.sh` to locate where a task routes to review.
+I will list the contents of the `.ai/state/` directory to see if state files end with `.md.json` or `.json`.
+I will view lines 60 to 110 of `scripts/run-ai-inbox.sh` to find the exact occurrences of `$TASK_NAME.json` and `$TASK_NAME` in the state JSON writes.
+I will view lines 180 to 205 in `scripts/run-ai-inbox.sh` to check the firewall blocked state file write.
+I will view lines 220 to 235 in `scripts/run-ai-inbox.sh` to verify line numbers and content before editing.
+I will make all task name/ID representations in state files consistent (removing the `.md` suffix from the state filename and task ID content) across all paths (dangerous target, unknown target, running, firewall blocked, and review gates) within `scripts/run-ai-inbox.sh`, and hook up the evidence collection script.
+I will remove the old state JSON file that was incorrectly generated with the `.md.json` suffix. Then, I will run the task indexer to generate the updated task-index and status files.
+I will view lines 390 to 415 in `scripts/generate-task-index.js` to find where the evidence existence is checked.
+I will modify `scripts/generate-task-index.js` to automatically trigger evidence packet generation if a task is detected in the `review/` location but has no generated evidence packet yet. I will use an environment variable flag to prevent any infinite recursion.
+I will run `node scripts/test-audit-loop.js` once more to make sure that our new self-healing indexer works perfectly and all tests pass.
+I will pause tool execution for the tests to run. The system will automatically wake me up.
+I will view lines 455 to 480 of `generate-task-index.js` to inspect the duplicate declaration of `attempt`.
+I will view lines 481 to 500 in `generate-task-index.js`.
+I will view lines 400 to 430 in `generate-task-index.js` to see the code we added.
+I will replace `attempt` with `taskAttempt` in o

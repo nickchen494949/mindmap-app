@@ -1,5 +1,5 @@
 {
-  "taskId": "task-test-audit",
+  "taskId": "task-20260603-control-tower-evidence-review-flow",
   "target": "mindmap-app",
   "status": "needs_chatgpt_audit",
   "commitSha": "5311370d77ce2f70087e6cdc3733be3418d688f6",
@@ -13,20 +13,20 @@
     "scripts/generate-task-index.js",
     "scripts/test-audit-loop.js"
   ],
-  "logTailPath": ".ai/reports/task-test-audit/log-tail.txt",
+  "logTailPath": ".ai/reports/task-20260603-control-tower-evidence-review-flow/log-tail.txt",
   "knownRisks": [
     "Found 1 console errors.",
     "Found 1 network request failures."
   ],
   "questionsForChatGPT": [],
-  "generatedAt": "2026-06-03T10:52:20.546Z",
+  "generatedAt": "2026-06-03T10:52:16.282Z",
   "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-  "pageTextPath": ".ai/reports/task-test-audit/page-text.txt",
-  "screenshotPath": ".ai/reports/task-test-audit/screenshot.png",
-  "consoleErrorsPath": ".ai/reports/task-test-audit/console-errors.txt",
-  "networkErrorsPath": ".ai/reports/task-test-audit/network-errors.txt",
+  "pageTextPath": ".ai/reports/task-20260603-control-tower-evidence-review-flow/page-text.txt",
+  "screenshotPath": ".ai/reports/task-20260603-control-tower-evidence-review-flow/screenshot.png",
+  "consoleErrorsPath": ".ai/reports/task-20260603-control-tower-evidence-review-flow/console-errors.txt",
+  "networkErrorsPath": ".ai/reports/task-20260603-control-tower-evidence-review-flow/network-errors.txt",
   "dataAuditPath": null,
-  "attempt": 2,
+  "attempt": 1,
   "mechanicalChecks": {
     "buildPass": true,
     "livePageLoads": false,
@@ -35,6 +35,6 @@
     "dataAuditPass": true
   },
   "screenshots": [
-    ".ai/reports/task-test-audit/screenshot.png"
+    ".ai/reports/task-20260603-control-tower-evidence-review-flow/screenshot.png"
   ]
 }

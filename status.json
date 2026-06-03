@@ -1,21 +1,25 @@
 {
   "pendingTasks": 13,
-  "runningTasks": 3,
-  "reviewTasks": 0,
+  "runningTasks": 2,
+  "reviewTasks": 1,
   "failedTasks": 0,
   "doneTasks": 1,
-  "needsChatGPTAudit": [],
+  "needsChatGPTAudit": [
+    "task-20260603-control-tower-evidence-review-flow"
+  ],
   "blocked": [],
   "heartbeat": {
     "name": "watcher",
-    "lastSeen": "2026-06-03T10:49:52.373Z",
-    "lastScannedCommit": "5e8f3b9c19574957be714d0260ca1d4f322741e3",
-    "inboxCount": 17,
-    "doneCount": 0,
-    "status": "alive"
+    "lastSeen": "2026-06-03T10:50:49Z",
+    "lastScannedCommit": "0eb0e4ae26313868f4681553cbfcde29b8f5a143",
+    "inboxCount": 15,
+    "doneCount": 14,
+    "status": "alive",
+    "lastTask": "task-20260603-control-tower-evidence-review-flow.md",
+    "failedCount": 0
   },
-  "lastUpdate": "2026-06-03 10:50:08",
-  "totalTasks": 18,
+  "lastUpdate": "2026-06-03 10:52:20",
+  "totalTasks": 17,
   "pending": [
     "task-task-test-audit",
     "task-20260603-fix-control-tower-public-data",
@@ -32,11 +36,12 @@
     "task-002-world-economic-history"
   ],
   "running": [
-    "task-20260603-control-tower-evidence-review-flow",
     "task-000-test",
     "task-001-machine-learning"
   ],
-  "review": [],
+  "review": [
+    "task-20260603-control-tower-evidence-review-flow"
+  ],
   "failed": [],
   "done": [
     "task-test-audit"
@@ -47,20 +52,6 @@
     "us-macro-dashboard"
   ],
   "taskDetails": {
-    "task-20260603-control-tower-evidence-review-flow": {
-      "title": "Task",
-      "target": "mindmap-app",
-      "status": "running",
-      "completedAt": "",
-      "summary": "Task index updated",
-      "attempt": 1,
-      "maxAttempts": 3,
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-20260603-control-tower-evidence-review-flow/",
-      "chatgptVerdict": null,
-      "blockingErrors": []
-    },
     "task-000-test": {
       "title": "Task: Test",
       "target": "mindmap-app",
@@ -86,6 +77,20 @@
       "lastCommit": null,
       "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
       "evidencePacketPath": ".ai/reports/task-001-machine-learning/",
+      "chatgptVerdict": null,
+      "blockingErrors": []
+    },
+    "task-20260603-control-tower-evidence-review-flow": {
+      "title": "Task",
+      "target": "mindmap-app",
+      "status": "needs_chatgpt_audit",
+      "completedAt": "",
+      "summary": "Task index updated",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "lastCommit": "5311370d77ce2f70087e6cdc3733be3418d688f6",
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "evidencePacketPath": ".ai/reports/task-20260603-control-tower-evidence-review-flow/",
       "chatgptVerdict": null,
       "blockingErrors": []
     },
@@ -284,35 +289,7 @@
       "evidencePacketPath": ".ai/reports/task-test-audit/",
       "chatgptVerdict": "PASS",
       "blockingErrors": []
-    },
-    "task-20260603-control-tower-evidence-review-flow.md": {
-      "title": "20260603 control tower evidence review flow.md",
-      "target": "mindmap-app",
-      "status": "unknown",
-      "completedAt": "",
-      "summary": "Task index updated",
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-20260603-control-tower-evidence-review-flow.md/",
-      "chatgptVerdict": null,
-      "blockingErrors": []
     }
   },
-  "activityLog": [
-    {
-      "time": "Wed Jun  3 18:48:03",
-      "sender": "watcher",
-      "action": "+08 2026 Found task: .ai/inbox/task-20260603-control-tower-evidence-review-flow.md"
-    },
-    {
-      "time": "Wed Jun  3 18:48:03",
-      "sender": "watcher",
-      "action": "+08 2026 Target: mindmap-app → /Users/happygolucky/mindmap-repo"
-    },
-    {
-      "time": "Wed Jun  3 18:48:03",
-      "sender": "agy",
-      "action": "+08 2026 Running agy..."
-    }
-  ]
+  "activityLog": []
 }
