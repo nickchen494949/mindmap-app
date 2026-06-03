@@ -1,0 +1,93 @@
+^DI will read the task specification in `.ai/inbox/task-task-test-audit-fix.md` to understand what needs to be done.
+I will list the files in the workspace directory to get an overview of the project structure and locate the state file `task-test-audit.json`.
+I will list the contents of the `.ai` folder to find the task state files and other metadata.
+I will list the `.ai/state` directory to see if `task-test-audit.json` is present there.
+I will search the repository for mentions of `task-test-audit` to see where the state file might be or what context references it.
+I will view the audit verdict and feedback from the previous run to understand what was flagged as failing.
+I will list the `.ai/reviews` folder to check for any feedback or audit files.
+I will list the `scripts` directory to find execution scripts or tools.
+I will view the `scripts/test-audit-loop.js` script to see what test or audit it runs.
+I will view the `PROJECT_CONTEXT.md` file to understand the application we are working on.
+I will read `VISION.md` to understand the overall application vision.
+I will search for any mentions of "badge" or "badges" in the repository to locate where badge rendering is implemented.
+I will read the styles and structure for badges and cards in `dashboard.html` to see how the UI looks and what standard badges it has.
+I will search `dashboard.html` for the functions or sections that render the task cards.
+I will view the card rendering logic in `dashboard.html` to see what fields it uses, how status/red flags are determined, and what badges are displayed.
+I will search `index.html` for any occurrences of the word `badge`.
+I will search `style.css` for any occurrences of the word `badge`.
+I will search for `getStatusLabel` in `dashboard.html` to see what status labels are mapped and if there are standard badges that are missing or rendering incorrectly.
+I will view the `getStatusLabel` function definition in `dashboard.html` starting from line 950.
+I will read the `task-index.json` lines corresponding to `task-test-audit` to inspect the task details.
+I will view the content of `/Users/happygolucky/mindmap-repo/.ai/fix/task-test-audit-attempt-2.md` to see its description.
+I will list the `.ai/reports` directory to locate any folders or reports relating to `task-test-audit`.
+I will search the codebase and history files for "visual polish" or "polish" to see what context or history exists about UI polishing.
+I will check the current permission grants to see what commands or file actions are authorized.
+I will run the `test-audit-loop.js` script to see if the state machine test executes successfully and observe its output.
+I will check the status of the background task running the audit loop script.
+I will schedule a brief reminder to verify when the test script finishes execution.
+I will wait for the test task to complete.
+I will list the completed tasks in the `.ai/done` folder to see if there is a previous execution of `task-test-audit` or a similar task that contains relevant context.
+I will view the done file `/Users/happygolucky/mindmap-repo/.ai/done/task-test-audit.md` to see what the original task was and understand its history.
+I will list the `.ai/failed` directory to see if there are any previous failed tasks or logs.
+I will run `git status` to see if there are any modified or uncommitted files in the repository.
+I will check the recent git commits to see what changes were made in the repository before this run.
+I will show the changes in the commit where the public control tower and dashboard were modified to understand the context of dashboard updates.
+I will view the styles and header section of `dashboard.html` to review the visual aesthetics and identify areas that need visual polish.
+I will view the beginning of `index.html` to inspect its style sheet links, embedded CSS, or design details.
+I will view the content of `.ai/state/task-test-audit.json` to inspect the task state and see if it lists blocking errors or details.
+I will view the `status.json` file to understand the current task states and pipeline status.
+I will view lines 200 to 400 in `dashboard.html` to inspect style classes and rendering structure for potential visual polish improvements.
+I will search for `invalid_done` inside `dashboard.html` to find all occurrences and understand how it's handled.
+I will view lines 1170 to 1220 in `dashboard.html` to understand how `invalid_done` triggers alerts or other UI changes.
+I will view `scripts/generate-task-index.js` to see how task status metadata, badge names, and indicators are generated or assigned to tasks in the database files.
+I will view `scripts/pipeline-helper.js` to see if it manages pipeline metadata, status labels, or badges.
+I will view the rules in `.ai/RULES.md` to check if there are explicit requirements on styling, colors, or how badges are expected to render.
+I will search `dashboard.html` for `clr-success` to see where and how it is applied.
+I will view lines 830 to 940 in `dashboard.html` to inspect how standard badges and status summaries are structured in the DOM.
+I will view lines 935 to 975 in `dashboard.html` to see the rest of the widgets and JS setup.
+I will view the first 150 lines of `style.css` to check the styling structure of the mindmap application.
+I will view the log file of the current task execution to see if there is any logged information about what has been executed so far or any errors encountered.
+I will examine the git show details for the dashboard changes in the previous fix commit to see what badge rendering or styling was modified.
+I will view lines 730 to 765 in `dashboard.html` to see if there are other status badge CSS classes or elements defined there.
+I will search `dashboard.html` for `failed_review` to check if that status is handled or styled.
+I will search for `.status =` or other status-setting code in `scripts/generate-task-index.js` to find all possible task statuses in the system.
+I will view lines 660 to 700 in `scripts/generate-task-index.js` to understand how the task statuses are set or mapped.
+I will view lines 440 to 490 in `scripts/generate-task-index.js` to see how task statuses are calculated from files.
+I will search for `unknown` in `generate-task-index.js` to see where the `"unknown"` status is assigned.
+I will view lines 345 to 380 in `scripts/generate-task-index.js` to see how location and status of tasks are scanned and mapped.
+I will search for `locationPriority` in `generate-task-index.js` to see how priority is defined.
+I will view lines 290 to 305 in `scripts/generate-task-index.js` to see the definition of location priority.
+I will view lines 301 to 346 in `scripts/generate-task-index.js` to see how task files are registered and matched.
+I will search for `getBaseTaskId` in `scripts/generate-task-index.js` to see how task IDs are extracted.
+I will view lines 270 to 290 in `scripts/generate-task-index.js` to see the definition of `getBaseTaskId`.
+I will search for `status.json` writing or generating code in `generate-task-index.js`.
+I will view lines 580 to 625 in `scripts/generate-task-index.js` to see how tasks are mapped into the status JSON.
+I will view lines 380 to 440 in `scripts/generate-task-index.js` to see how items in `tasksList` are mapped.
+I will search for `.json` in the `scripts` folder to find where the json state files are written or generated.
+I will search for `state` inside `scripts/run-ai-inbox.sh` to see how it names the state file for tasks.
+I will view the contents of `/Users/happygolucky/mindmap-watcher.sh` (without modifying it) to see how the task manager loops and executes task scripts.
+I will view lines 480 to 730 in `dashboard.html` to inspect how checklists, cards, and other elements are styled so that I can apply high-quality visual polish to the UI.
+I will view lines 1220 to 1270 in `dashboard.html` to see how JS dynamically updates the class names and contents of these heartbeat and status badges.
+I will view lines 94 to 200 in `scripts/generate-task-index.js` to inspect the review processing code.
+I will view lines 201 to 281 in `scripts/generate-task-index.js` to see the FAIL pathway logic.
+I will view lines 80 to 110 in `scripts/generate-task-index.js` to see where `checkReviews` begins and determine where to place our helper functions.
+I will view lines 320 to 370 in `scripts/generate-task-index.js` to get the exact lines of code that need replacement.
+I will modify `scripts/generate-task-index.js` to canonicalize task IDs, resolve state JSON files correctly regardless of suffixes (like `.md.json`), and prevent duplicate task registrations.
+I will view lines 411 to 440 in `dashboard.html` to prepare the changes for standard badge styles.
+I will view lines 945 to 975 in `dashboard.html` to prepare the changes for the status label mapping function.
+I will view lines 1465 to 1495 in `dashboard.html` to prepare the changes for column grouping mapping.
+I will edit `dashboard.html` to add CSS classes for the new status badges (`invalid_done`, `failed_review`, and `unknown`), add visual color accents and hover styling to the columns, add backdrop filters and hover elevation to task cards, and map `failed_review` to the "Failed" column.
+I will run `node scripts/test-audit-loop.js` again to verify that the changes work correctly and the test suite passes.
+I will check the status of the background task running our test suite.
+I will schedule a brief reminder to verify when the test script finishes execution.
+I will search `status.json` for any tasks that are still classified as `"unknown"` status.
+I will search `status.json` for duplicate references to `task-task-test-audit` to confirm if they have been successfully canonicalized.
+I will view the `task-test-audit` entry in `status.json` to make sure it contains the correct status and attempt counts.
+I will view lines 50 to 70 in `status.json` to verify the generated task details.
+I will run `git diff` to review the modifications we have made to ensure they are clean and minimal.
+I will run `git diff -- .gitignore` to inspect what change occurred in the `.gitignore` file.
+I will clean up the temporary test task artifacts so that we only commit the code improvements.
+I will run `git status` to verify our working copy is clean of test artifacts.
+I will run the task index generator script once more to make sure that the status files are fully updated based on the cleaned-up filesystem.
+I will verify the final repository status before concluding.
+Error: timed out waiting for response

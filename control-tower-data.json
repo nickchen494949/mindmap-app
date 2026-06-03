@@ -1,20 +1,20 @@
 {
-  "generatedAt": "2026-06-03T11:03:53.375Z",
+  "generatedAt": "2026-06-03T11:11:25.829Z",
   "watcher": {
     "status": "stale",
     "lastSeen": "2026-06-03T10:53:06Z",
     "lastScannedCommit": "51865d5c127e53f96a104a9ce0cf552a0486a934",
     "inboxCount": 1,
     "doneCount": 0,
-    "failedCount": 1
+    "failedCount": 0
   },
   "stats": {
-    "total": 19,
+    "total": 16,
     "pending": 1,
     "running": 0,
     "needsChatGPTAudit": 2,
     "done": 0,
-    "failed": 1,
+    "failed": 0,
     "invalidDone": 13
   },
   "tasks": [
@@ -36,26 +36,15 @@
       "location": "review",
       "evidenceExists": true,
       "chatgptVerdict": null,
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "blockingIssues": []
-    },
-    {
-      "taskId": "task-task-test-audit",
-      "target": "mindmap-app",
-      "status": "inbox_unseen",
-      "location": "inbox",
-      "evidenceExists": false,
-      "chatgptVerdict": null,
-      "lastCommit": null,
+      "lastCommit": "3265e076a4e995b87bc00bfeb1785686a98149a9",
       "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
       "blockingIssues": []
     },
     {
       "taskId": "task-test-audit",
       "target": "mindmap-app",
-      "status": "failed",
-      "location": "fix",
+      "status": "inbox_unseen",
+      "location": "inbox",
       "evidenceExists": false,
       "chatgptVerdict": null,
       "lastCommit": null,
@@ -230,28 +219,6 @@
       "blockingIssues": [
         "Task is marked done but lacks ChatGPT PASS verdict"
       ]
-    },
-    {
-      "taskId": "task-20260603-fix-control-tower-public-data.md",
-      "target": "mindmap-app",
-      "status": "unknown",
-      "location": "unknown",
-      "evidenceExists": false,
-      "chatgptVerdict": null,
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "blockingIssues": []
-    },
-    {
-      "taskId": "task-20260603-control-tower-evidence-review-flow.md",
-      "target": "mindmap-app",
-      "status": "unknown",
-      "location": "unknown",
-      "evidenceExists": false,
-      "chatgptVerdict": null,
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "blockingIssues": []
     }
   ]
 }

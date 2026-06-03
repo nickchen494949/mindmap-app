@@ -2,7 +2,7 @@
   "pendingTasks": 1,
   "runningTasks": 0,
   "reviewTasks": 2,
-  "failedTasks": 1,
+  "failedTasks": 0,
   "doneTasks": 13,
   "needsChatGPTAudit": [
     "task-20260603-control-tower-evidence-review-flow",
@@ -19,19 +19,17 @@
     "lastTask": "task-20260603-control-tower-evidence-review-flow.md",
     "failedCount": 0
   },
-  "lastUpdate": "2026-06-03 11:03:53",
-  "totalTasks": 19,
+  "lastUpdate": "2026-06-03 11:11:25",
+  "totalTasks": 16,
   "pending": [
-    "task-task-test-audit"
+    "task-test-audit"
   ],
   "running": [],
   "review": [
     "task-20260603-control-tower-evidence-review-flow",
     "task-20260603-fix-control-tower-public-data"
   ],
-  "failed": [
-    "task-test-audit"
-  ],
+  "failed": [],
   "done": [
     "task-20260603-no-api-chatgpt-audit-loop",
     "task-20260603-control-tower-dashboard",
@@ -75,30 +73,16 @@
       "summary": "Task index updated",
       "attempt": 1,
       "maxAttempts": 3,
-      "lastCommit": null,
+      "lastCommit": "3265e076a4e995b87bc00bfeb1785686a98149a9",
       "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
       "evidencePacketPath": ".ai/reports/task-20260603-fix-control-tower-public-data/",
-      "chatgptVerdict": null,
-      "blockingErrors": []
-    },
-    "task-task-test-audit": {
-      "title": "Fix Task for task-test-audit (Attempt 2)",
-      "target": "mindmap-app",
-      "status": "pending",
-      "completedAt": "",
-      "summary": "Task index updated",
-      "attempt": 1,
-      "maxAttempts": 3,
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-task-test-audit/",
       "chatgptVerdict": null,
       "blockingErrors": []
     },
     "task-test-audit": {
       "title": "Fix Task for task-test-audit (Attempt 2)",
       "target": "mindmap-app",
-      "status": "failed",
+      "status": "pending",
       "completedAt": "",
       "summary": "Task index updated",
       "attempt": 1,
@@ -316,30 +300,6 @@
       "blockingErrors": [
         "Task is marked done but lacks ChatGPT PASS verdict"
       ]
-    },
-    "task-20260603-fix-control-tower-public-data.md": {
-      "title": "20260603 fix control tower public data.md",
-      "target": "mindmap-app",
-      "status": "unknown",
-      "completedAt": "",
-      "summary": "Task index updated",
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-20260603-fix-control-tower-public-data.md/",
-      "chatgptVerdict": null,
-      "blockingErrors": []
-    },
-    "task-20260603-control-tower-evidence-review-flow.md": {
-      "title": "20260603 control tower evidence review flow.md",
-      "target": "mindmap-app",
-      "status": "unknown",
-      "completedAt": "",
-      "summary": "Task index updated",
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-20260603-control-tower-evidence-review-flow.md/",
-      "chatgptVerdict": null,
-      "blockingErrors": []
     }
   },
   "activityLog": []

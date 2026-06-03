@@ -91,14 +91,38 @@ function parseAuditFile(filePath) {
   return { verdict, issues };
 }
 
+function getBaseTaskId(filename) {
+  let base = filename.replace(/\.md$/, '').replace(/\.json$/, '');
+  base = base.replace(/-fix$/, '');
+  base = base.replace(/-attempt-\d+$/, '');
+  if (base.startsWith('task-task-')) {
+    base = base.substring(5);
+  }
+  return base;
+}
+
+function findStateFile(taskId) {
+  const cleanPath = path.join(stateDir, `${taskId}.json`);
+  if (fs.existsSync(cleanPath)) return cleanPath;
+  
+  const files = safeReaddir(stateDir).filter(f => f.startsWith('task-') && f.endsWith('.json'));
+  for (const file of files) {
+    const fileTaskId = getBaseTaskId(file.replace('.json', ''));
+    if (fileTaskId === taskId) {
+      return path.join(stateDir, file);
+    }
+  }
+  return cleanPath;
+}
+
 // 2. Process ChatGPT Reviews first
 function checkReviews() {
   console.log('=== Checking for ChatGPT reviews/audits in state machine ===');
   const reviewFiles = safeReaddir(reviewDir).filter(f => f.endsWith('.md'));
   
   reviewFiles.forEach(file => {
-    const taskId = file.replace('.md', '');
-    const stateFile = path.join(stateDir, `${taskId}.json`);
+    const taskId = getBaseTaskId(file);
+    const stateFile = findStateFile(taskId);
     
     let state = null;
     if (fs.existsSync(stateFile)) {
@@ -282,13 +306,6 @@ checkReviews();
 // 3. Scan files to find all task files and build task index map
 const tasksMap = {};
 
-function getBaseTaskId(filename) {
-  let base = filename.replace(/\.md$/, '');
-  base = base.replace(/-fix$/, '');
-  base = base.replace(/-attempt-\d+$/, '');
-  return base;
-}
-
 const locationPriority = {
   'running': 1,
   'review': 2,
@@ -330,7 +347,7 @@ locations.forEach(loc => scanDir(loc));
 // Also check state directory for task JSONs that might not have active task files
 const stateFiles = safeReaddir(stateDir).filter(f => f.startsWith('task-') && f.endsWith('.json'));
 stateFiles.forEach(file => {
-  const taskId = file.replace('.json', '');
+  const taskId = getBaseTaskId(file.replace('.json', ''));
   if (!tasksMap[taskId]) {
     tasksMap[taskId] = {
       taskId,
@@ -357,7 +374,7 @@ Object.keys(tasksMap).forEach(taskId => {
   }
   
   // Load state JSON if it exists
-  const stateFile = path.join(stateDir, `${taskId}.json`);
+  const stateFile = findStateFile(taskId);
   let stateData = null;
   if (fs.existsSync(stateFile)) {
     try {

@@ -339,6 +339,12 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    transition: all 0.3s ease;
+  }
+  
+  .dashboard-column:hover {
+    background: rgba(15, 23, 42, 0.45);
+    border-color: rgba(255, 255, 255, 0.12);
   }
   
   .dashboard-column h3 {
@@ -374,12 +380,14 @@
     border-radius: 12px;
     padding: 16px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(8px);
   }
   
   .task-card:hover {
+    transform: translateY(-4px) scale(1.01);
     border-color: rgba(99, 102, 241, 0.3);
-    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.12);
+    box-shadow: 0 12px 24px rgba(99, 102, 241, 0.18), 0 0 15px rgba(99, 102, 241, 0.1);
   }
   
   .task-header {
@@ -425,6 +433,16 @@
   .task-badge.done { background: rgba(16, 185, 129, 0.15); color: var(--clr-success); border: 1px solid rgba(16, 185, 129, 0.3); }
   .task-badge.failed { background: rgba(239, 68, 68, 0.15); color: var(--clr-danger); border: 1px solid rgba(239, 68, 68, 0.3); }
   .task-badge.blocked { background: rgba(239, 68, 68, 0.25); color: #fda4af; border: 1px solid rgba(239, 68, 68, 0.4); }
+  .task-badge.invalid_done { background: rgba(239, 68, 68, 0.25); color: #fda4af; border: 1px solid rgba(239, 68, 68, 0.4); }
+  .task-badge.failed_review { background: rgba(239, 68, 68, 0.15); color: var(--clr-danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+  .task-badge.unknown { background: rgba(100, 116, 139, 0.15); color: var(--text-secondary); border: 1px solid rgba(100, 116, 139, 0.3); }
+
+  /* Column Accent Borders & Hover Polishing */
+  #col-inbox { border-top: 3px solid #64748b; }
+  #col-running { border-top: 3px solid var(--clr-warning); }
+  #col-audit { border-top: 3px solid var(--clr-audit); }
+  #col-failed { border-top: 3px solid var(--clr-danger); }
+  #col-done { border-top: 3px solid var(--clr-success); }
   
   .task-meta {
     display: flex;
@@ -957,6 +975,7 @@ function getStatusLabel(status) {
     case 'needs_chatgpt_audit': return '⏳ NEEDS AUDIT';
     case 'done': return '✅ PASSED';
     case 'failed': return '❌ FAILED';
+    case 'failed_review': return '❌ FAILED REVIEW';
     case 'blocked': return '🚫 BLOCKED';
     case 'invalid_done': return '⚠️ INVALID DONE';
     default: return status ? status.toUpperCase() : 'UNKNOWN';
@@ -1476,7 +1495,7 @@ function render(taskIndex, heartbeat, agyHeartbeat, statusData, publicMirrorFail
 
     // Map to columns
     let colGroup = t.status;
-    if (colGroup === 'blocked') colGroup = 'failed';
+    if (colGroup === 'blocked' || colGroup === 'failed_review') colGroup = 'failed';
     if (colGroup === 'invalid_done') colGroup = 'done';
     if (taskHtmlMap[colGroup] !== undefined) {
       taskHtmlMap[colGroup].push(cardHtml);
