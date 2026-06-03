@@ -844,7 +844,7 @@ function renderArrow(a) {
   const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
   g.dataset.id = a.id;
 
-  const curvePath = buildCurvePath(pts.x1, pts.y1, pts.x2, pts.y2, a.fromPort, a.toPort, a.isStraight);
+  const curvePath = buildCurvePath(pts.x1, pts.y1, pts.x2, pts.y2, a.fromPort, a.toPort, a.isStraight, a.from, a.to);
 
   // Invisible wide hit-area for easy clicking
   const hitArea = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -929,12 +929,39 @@ function renderArrow(a) {
   arrowLayer.appendChild(g);
 }
 
-function buildCurvePath(x1, y1, x2, y2, fp, tp, isStraight) {
+function buildCurvePath(x1, y1, x2, y2, fp, tp, isStraight, arrowFrom, arrowTo) {
   if (isStraight) {
     return `M${x1},${y1} L${x2},${y2}`;
   }
   const dist = Math.hypot(x2 - x1, y2 - y1);
-  const curve = Math.min(dist * 0.4, 80);
+  let curve = Math.min(dist * 0.4, 150);
+
+  // Check if the basic curve would pass through any node and increase offset if so
+  const padding = 20;
+  for (const n of state.nodes) {
+    if (n.id === arrowFrom || n.id === arrowTo) continue;
+    const el = nodeLayer.querySelector(`[data-id="${n.id}"]`);
+    if (!el) continue;
+    const nw = el.offsetWidth, nh = el.offsetHeight;
+    const nx1 = n.x - padding, ny1 = n.y - padding;
+    const nx2 = n.x + nw + padding, ny2 = n.y + nh + padding;
+    // Sample 10 points along the basic bezier and check collision
+    const offsets = { top: [0, -curve], bottom: [0, curve], left: [-curve, 0], right: [curve, 0] };
+    const cx1t = x1 + (offsets[fp]?.[0] || 0), cy1t = y1 + (offsets[fp]?.[1] || 0);
+    const cx2t = x2 + (offsets[tp]?.[0] || 0), cy2t = y2 + (offsets[tp]?.[1] || 0);
+    let hit = false;
+    for (let t = 0.1; t <= 0.9; t += 0.1) {
+      const it = 1 - t;
+      const px = it*it*it*x1 + 3*it*it*t*cx1t + 3*it*t*t*cx2t + t*t*t*x2;
+      const py = it*it*it*y1 + 3*it*it*t*cy1t + 3*it*t*t*cy2t + t*t*t*y2;
+      if (px > nx1 && px < nx2 && py > ny1 && py < ny2) { hit = true; break; }
+    }
+    if (hit) {
+      curve = Math.min(curve * 2.5, 300);
+      break;
+    }
+  }
+
   const offsets = { top: [0, -curve], bottom: [0, curve], left: [-curve, 0], right: [curve, 0] };
   const [cx1, cy1] = [x1 + (offsets[fp]?.[0] || 0), y1 + (offsets[fp]?.[1] || 0)];
   const [cx2, cy2] = [x2 + (offsets[tp]?.[0] || 0), y2 + (offsets[tp]?.[1] || 0)];
