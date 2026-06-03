@@ -17,22 +17,23 @@ echo "$(date) === Watcher run started ==="
 echo "$(date) Pulling latest..."
 git pull --rebase 2>&1 || echo "$(date) git pull failed, continuing with local state"
 
-# Step 1: Find the first unprocessed task
-TASK_FILE=$(find .ai/inbox -type f -name "task-*.md" 2>/dev/null | sort | head -n 1)
+# Step 1: Find the first unprocessed task (skip done ones)
+TASK_FILE=""
+for f in $(find .ai/inbox -type f -name "task-*.md" 2>/dev/null | sort); do
+  BASENAME=$(basename "$f")
+  if [ ! -f ".ai/done/$BASENAME" ]; then
+    TASK_FILE="$f"
+    break
+  fi
+done
 
 if [ -z "${TASK_FILE:-}" ]; then
-  echo "$(date) No task found. Sleeping."
+  echo "$(date) No new task found. Sleeping."
   exit 0
 fi
 
 TASK_NAME=$(basename "$TASK_FILE")
 DONE_FILE=".ai/done/$TASK_NAME"
-
-# Skip if already done
-if [ -f "$DONE_FILE" ]; then
-  echo "$(date) Already done: $TASK_NAME"
-  exit 0
-fi
 
 echo "$(date) Found task: $TASK_FILE"
 
