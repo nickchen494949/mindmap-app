@@ -1,0 +1,109 @@
+{
+  "lastUpdated": "2026-06-03T09:57:29.141Z",
+  "tasks": [
+    {
+      "taskId": "task-000-test",
+      "target": "unknown",
+      "fileExistsInInbox": false,
+      "markedDone": true,
+      "evidenceExists": false,
+      "status": "done"
+    },
+    {
+      "taskId": "task-001-machine-learning",
+      "target": "unknown",
+      "fileExistsInInbox": true,
+      "markedDone": true,
+      "evidenceExists": false,
+      "status": "done"
+    },
+    {
+      "taskId": "task-002-world-economic-history",
+      "target": "unknown",
+      "fileExistsInInbox": true,
+      "markedDone": true,
+      "evidenceExists": false,
+      "status": "done"
+    },
+    {
+      "taskId": "task-003-world-economic-history-v2",
+      "target": "unknown",
+      "fileExistsInInbox": true,
+      "markedDone": true,
+      "evidenceExists": false,
+      "status": "done"
+    },
+    {
+      "taskId": "task-004-world-economic-history-v3",
+      "target": "unknown",
+      "fileExistsInInbox": true,
+      "markedDone": true,
+      "evidenceExists": false,
+      "status": "done"
+    },
+    {
+      "taskId": "task-005-canvas-title",
+      "target": "unknown",
+      "fileExistsInInbox": true,
+      "markedDone": true,
+      "evidenceExists": false,
+      "status": "done"
+    },
+    {
+      "taskId": "task-006-pipeline-test",
+      "target": "chatgpt-pipeline-test",
+      "fileExistsInInbox": true,
+      "markedDone": true,
+      "evidenceExists": false,
+      "status": "done"
+    },
+    {
+      "taskId": "task-20260603-add-qa-audit",
+      "target": "us-macro-dashboard",
+      "fileExistsInInbox": true,
+      "markedDone": true,
+      "evidenceExists": false,
+      "status": "done"
+    },
+    {
+      "taskId": "task-20260603-control-tower-dashboard",
+      "target": "mindmap-app",
+      "fileExistsInInbox": true,
+      "markedDone": false,
+      "evidenceExists": false,
+      "status": "inbox_unseen"
+    },
+    {
+      "taskId": "task-20260603-deploy-us-macro-dashboard-pages",
+      "target": "unknown",
+      "fileExistsInInbox": true,
+      "markedDone": true,
+      "evidenceExists": false,
+      "status": "done"
+    },
+    {
+      "taskId": "task-20260603-no-api-chatgpt-audit-loop",
+      "target": "mindmap-app",
+      "fileExistsInInbox": true,
+      "markedDone": true,
+      "evidenceExists": false,
+      "status": "done"
+    },
+    {
+      "taskId": "task-20260603-us-macro-dashboard",
+      "target": "us-macro-dashboard",
+      "fileExistsInInbox": true,
+      "markedDone": true,
+      "evidenceExists": false,
+      "status": "done"
+    },
+    {
+      "taskId": "task-20260603-us-macro-dashboard-transmission-map",
+      "target": "us-macro-dashboard",
+      "fileExistsInInbox": true,
+      "markedDone": true,
+      "evidenceExists": false,
+      "status": "done"
+    }
+  ]
+}
