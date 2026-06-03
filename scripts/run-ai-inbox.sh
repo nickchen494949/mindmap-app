@@ -62,9 +62,34 @@ if [ -n "$TARGET" ]; then
       WORK_DIR="$PROJECTS_DIR/$TARGET"
       ;;
     *)
-      # New project — allowed, but only in $PROJECTS_DIR
-      WORK_DIR="$PROJECTS_DIR/$TARGET"
-      echo "$(date) New target: $TARGET → $WORK_DIR"
+      # Unknown target — only allow if task explicitly says allow_new_project: true
+      ALLOW_NEW=$(grep -i '^allow_new_project:' "$TASK_FILE" 2>/dev/null | head -1 | sed 's/^allow_new_project:[[:space:]]*//' | tr -d '\r')
+      # Block path traversal
+      if echo "$TARGET" | grep -qE '\.\.|/|[[:space:]]|;|\$|`'; then
+        echo "$(date) ❌ BLOCKED: dangerous target name: $TARGET"
+        cp "$TASK_FILE" ".ai/failed/$TASK_NAME"
+        cat > ".ai/state/$TASK_NAME.json" <<EOF
+{"taskId":"$TASK_NAME","status":"blocked","errors":"dangerous target name"}
+EOF
+        git add -A 2>/dev/null || true
+        git commit -m "🚫 BLOCKED $TASK_NAME — dangerous target" 2>&1 || true
+        git push 2>&1 || true
+        exit 1
+      fi
+      if [ "$ALLOW_NEW" = "true" ]; then
+        WORK_DIR="$PROJECTS_DIR/$TARGET"
+        echo "$(date) New project approved: $TARGET → $WORK_DIR"
+      else
+        echo "$(date) ❌ BLOCKED: unknown target '$TARGET' — add 'allow_new_project: true' to task"
+        cp "$TASK_FILE" ".ai/failed/$TASK_NAME"
+        cat > ".ai/state/$TASK_NAME.json" <<EOF
+{"taskId":"$TASK_NAME","status":"blocked","errors":"unknown target without allow_new_project"}
+EOF
+        git add -A 2>/dev/null || true
+        git commit -m "🚫 BLOCKED $TASK_NAME — unknown target" 2>&1 || true
+        git push 2>&1 || true
+        exit 1
+      fi
       ;;
   esac
   echo "$(date) Target: $TARGET → $WORK_DIR"
@@ -186,12 +211,13 @@ if ! git diff --cached --quiet 2>/dev/null; then
   fi
 fi
 
-# ── Mark done + update state in command center ──
+# ── Route to review (ChatGPT audit gate) ──
 cd "$REPO_DIR"
 rm -f ".ai/running/$TASK_NAME"
-cp "$TASK_FILE" ".ai/done/$TASK_NAME"
+# Tasks go to .ai/review/ for ChatGPT audit, NOT directly to .ai/done/
+cp "$TASK_FILE" ".ai/review/$TASK_NAME"
 cat > ".ai/state/$TASK_NAME.json" <<EOF
-{"taskId":"$TASK_NAME","status":"done","completedAt":"$(date -u +%Y-%m-%dT%H:%M:%SZ)","target":"${TARGET:-mindmap-repo}","workDir":"$WORK_DIR"}
+{"taskId":"$TASK_NAME","status":"needs_chatgpt_audit","completedAt":"$(date -u +%Y-%m-%dT%H:%M:%SZ)","target":"${TARGET:-mindmap-repo}","workDir":"$WORK_DIR"}
 EOF
 
 # ── Write heartbeat ──
