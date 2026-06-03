@@ -1,0 +1,16 @@
+{
+  "taskId": "task-task-20260603-control-tower-evidence-review-flow",
+  "target": "mindmap-app",
+  "status": "needs_chatgpt_audit",
+  "attempt": 1,
+  "maxAttempts": 3,
+  "startedAt": "2026-06-03T11:25:14.790Z",
+  "updatedAt": "2026-06-03T11:25:14.790Z",
+  "lastCommit": "903501d59bf6c8837ad3e9c159487d6ee614e41e",
+  "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+  "evidencePacketPath": ".ai/reports/task-task-20260603-control-tower-evidence-review-flow/",
+  "chatgptAuditPath": null,
+  "chatgptVerdict": null,
+  "blockingErrors": [],
+  "notes": []
+}

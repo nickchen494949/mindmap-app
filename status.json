@@ -1,10 +1,11 @@
 {
   "pendingTasks": 1,
-  "runningTasks": 1,
-  "reviewTasks": 1,
+  "runningTasks": 0,
+  "reviewTasks": 2,
   "failedTasks": 0,
   "doneTasks": 13,
   "needsChatGPTAudit": [
+    "task-20260603-control-tower-evidence-review-flow",
     "task-20260603-fix-control-tower-public-data"
   ],
   "blocked": [],
@@ -18,15 +19,14 @@
     "lastTask": "task-task-test-audit-fix.md",
     "failedCount": 0
   },
-  "lastUpdate": "2026-06-03 11:24:10",
+  "lastUpdate": "2026-06-03 11:25:14",
   "totalTasks": 16,
   "pending": [
     "task-test-audit"
   ],
-  "running": [
-    "task-20260603-control-tower-evidence-review-flow"
-  ],
+  "running": [],
   "review": [
+    "task-20260603-control-tower-evidence-review-flow",
     "task-20260603-fix-control-tower-public-data"
   ],
   "failed": [],
@@ -54,7 +54,7 @@
     "task-20260603-control-tower-evidence-review-flow": {
       "title": "Task",
       "target": "mindmap-app",
-      "status": "running",
+      "status": "needs_chatgpt_audit",
       "completedAt": "",
       "summary": "Task index updated",
       "attempt": 2,
@@ -335,44 +335,19 @@
   },
   "activityLog": [
     {
-      "time": "Wed Jun  3 19:18:50",
+      "time": "Wed Jun  3 19:25:09",
       "sender": "watcher",
-      "action": "+08 2026 Running DeepSeek API Auto-Review..."
+      "action": "+08 2026 === Commit firewall check"
     },
     {
-      "time": "Wed Jun  3 19:18:50",
+      "time": "Wed Jun  3 19:25:09",
       "sender": "watcher",
-      "action": "+08 2026 DeepSeek Review failed"
+      "action": "+08 2026 ✅ Firewall passed"
     },
     {
-      "time": "Wed Jun  3 19:18:53",
+      "time": "Wed Jun  3 19:25:09",
       "sender": "watcher",
-      "action": "+08 2026 === Watcher run finished"
-    },
-    {
-      "time": "Wed Jun  3 19:20:53",
-      "sender": "watcher",
-      "action": "+08 2026 === Watcher run started"
-    },
-    {
-      "time": "Wed Jun  3 19:20:53",
-      "sender": "watcher",
-      "action": "+08 2026 Pulling latest..."
-    },
-    {
-      "time": "Wed Jun  3 19:20:54",
-      "sender": "watcher",
-      "action": "+08 2026 Found task: .ai/inbox/task-task-20260603-control-tower-evidence-review-flow-fix.md"
-    },
-    {
-      "time": "Wed Jun  3 19:20:54",
-      "sender": "watcher",
-      "action": "+08 2026 Target: mindmap-app → /Users/happygolucky/mindmap-repo"
-    },
-    {
-      "time": "Wed Jun  3 19:20:54",
-      "sender": "agy",
-      "action": "+08 2026 Running agy..."
+      "action": "+08 2026 Generating evidence packet..."
     }
   ]
 }

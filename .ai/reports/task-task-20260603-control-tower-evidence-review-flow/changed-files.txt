@@ -1,0 +1,4 @@
+.ai/logs/task-task-20260603-control-tower-evidence-review-flow-fix.md.log
+.ai/running/task-task-20260603-control-tower-evidence-review-flow-fix.md
+.ai/state/task-task-20260603-control-tower-evidence-review-flow-fix.md.json
+.gitignore

@@ -2,8 +2,8 @@
   {
     "taskId": "task-20260603-control-tower-evidence-review-flow",
     "target": "mindmap-app",
-    "location": "running",
-    "status": "running",
+    "location": "review",
+    "status": "needs_chatgpt_audit",
     "statePath": ".ai/state/task-20260603-control-tower-evidence-review-flow.json",
     "evidencePath": ".ai/reports/task-20260603-control-tower-evidence-review-flow/evidence.json",
     "chatgptAuditPath": ".ai/review/task-20260603-control-tower-evidence-review-flow/chatgpt-audit.md",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-03T11:24:10.722Z",
+  "generatedAt": "2026-06-03T11:25:14.886Z",
   "watcher": {
     "status": "stale",
     "lastSeen": "2026-06-03T11:18:50Z",
@@ -11,8 +11,8 @@
   "stats": {
     "total": 16,
     "pending": 1,
-    "running": 1,
-    "needsChatGPTAudit": 1,
+    "running": 0,
+    "needsChatGPTAudit": 2,
     "done": 0,
     "failed": 0,
     "invalidDone": 13
@@ -21,8 +21,8 @@
     {
       "taskId": "task-20260603-control-tower-evidence-review-flow",
       "target": "mindmap-app",
-      "status": "running",
-      "location": "running",
+      "status": "needs_chatgpt_audit",
+      "location": "review",
       "evidenceExists": true,
       "chatgptVerdict": "FAIL",
       "lastCommit": "5311370d77ce2f70087e6cdc3733be3418d688f6",
