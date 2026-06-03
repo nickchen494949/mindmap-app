@@ -847,57 +847,88 @@
     </div>
   </div>
 
-  <!-- Bottom section grid: heartbeats and terminal logs -->
+  <!-- Advanced Control Tower Sections (6-9) -->
+  <div class="section-header" style="margin-top: 40px;">
+    <h2 class="section-title">📊 System Telemetry & Evidence Matrix</h2>
+  </div>
+
   <div class="sidebar-grid">
-    <div class="sidebar-widget">
+    <!-- 6. Heartbeat Status Section -->
+    <div class="sidebar-widget" id="sec-heartbeats">
       <div class="widget-title">
-        <span>Watcher Heartbeat</span>
-        <span id="heartbeat-status">STANDBY</span>
+        <span>💓 Heartbeat Status (Section 6)</span>
+        <span id="system-heartbeat-summary" class="task-badge done">OK</span>
       </div>
-      <div style="font-size: 13px; line-height: 1.6; display: flex; flex-direction: column; gap: 8px;">
-        <div style="display:flex; justify-content:space-between;">
-          <span style="color:var(--text-secondary);">Last Seen:</span>
-          <span id="hb-last-seen" style="font-family:'JetBrains Mono',monospace;">Never</span>
+      <div class="telemetry-box" style="display:flex; flex-direction:column; gap:12px;">
+        <div style="background:rgba(0,0,0,0.2); border:1px solid var(--border-color); border-radius:10px; padding:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; font-weight:600; font-size:13px;">
+            <span>Watcher Daemon</span>
+            <span id="heartbeat-status-badge" class="task-badge done">STANDBY</span>
+          </div>
+          <div style="font-size:12px; color:var(--text-secondary); display:flex; flex-direction:column; gap:4px;">
+            <div style="display:flex; justify-content:space-between;"><span>Last Seen:</span><span id="hb-last-seen" style="font-family:'JetBrains Mono',monospace;">Never</span></div>
+            <div style="display:flex; justify-content:space-between;"><span>Scanned Commit:</span><span id="hb-commit" style="font-family:'JetBrains Mono',monospace; color:#818cf8;">-</span></div>
+            <div style="display:flex; justify-content:space-between;"><span>Inbox Task Count:</span><span id="hb-inbox" style="font-weight:600; color:var(--text-primary);">0</span></div>
+            <div style="display:flex; justify-content:space-between;"><span>Done Task Count:</span><span id="hb-done" style="font-weight:600; color:var(--text-primary);">0</span></div>
+          </div>
         </div>
-        <div style="display:flex; justify-content:space-between;">
-          <span style="color:var(--text-secondary);">Scanned Commit:</span>
-          <span id="hb-commit" style="font-family:'JetBrains Mono',monospace; color:#818cf8;">-</span>
-        </div>
-        <div style="display:flex; justify-content:space-between;">
-          <span style="color:var(--text-secondary);">Inbox Count:</span>
-          <span id="hb-inbox" style="font-weight:600;">0</span>
-        </div>
-        <div style="display:flex; justify-content:space-between;">
-          <span style="color:var(--text-secondary);">Done Count:</span>
-          <span id="hb-done" style="font-weight:600;">0</span>
-        </div>
-      </div>
-      
-      <div class="widget-title" style="margin-top:20px;">
-        <span>Agy Heartbeat</span>
-        <span id="agy-heartbeat-status" style="font-size:11px; padding:2px 8px; border-radius:10px; background:rgba(255,255,255,0.06); color:var(--text-muted);">NOT ACTIVE</span>
-      </div>
-      <div style="font-size: 13px; line-height: 1.6; display: flex; flex-direction: column; gap: 8px;">
-        <div style="display:flex; justify-content:space-between;">
-          <span style="color:var(--text-secondary);">Last Seen:</span>
-          <span id="agy-hb-last-seen" style="font-family:'JetBrains Mono',monospace;">Never</span>
+        <div style="background:rgba(0,0,0,0.2); border:1px solid var(--border-color); border-radius:10px; padding:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; font-weight:600; font-size:13px;">
+            <span>Executor (Agy)</span>
+            <span id="agy-heartbeat-status-badge" class="task-badge pending">NOT ACTIVE</span>
+          </div>
+          <div style="font-size:12px; color:var(--text-secondary); display:flex; flex-direction:column; gap:4px;">
+            <div style="display:flex; justify-content:space-between;"><span>Last Seen:</span><span id="agy-hb-last-seen" style="font-family:'JetBrains Mono',monospace;">Never</span></div>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="sidebar-widget" id="exec-logs-widget">
+    <!-- 7. Evidence Status Section -->
+    <div class="sidebar-widget" id="sec-evidence">
       <div class="widget-title">
-        <span>Watcher Execution Logs</span>
-        <span>LIVE</span>
+        <span>📂 Evidence Status (Section 7)</span>
       </div>
-      <div class="terminal-box" id="exec-logs">
+      <div class="evidence-matrix-list" id="evidence-matrix-list" style="display:flex; flex-direction:column; gap:10px; max-height:350px; overflow-y:auto; padding-right:5px;">
+        <div style="color:var(--text-muted); font-size:12px; text-align:center; padding:20px;">No evidence files found</div>
+      </div>
+    </div>
+
+    <!-- 8. Latest Commit Tracker Section -->
+    <div class="sidebar-widget" id="sec-commits">
+      <div class="widget-title">
+        <span>📁 Latest Commit Tracker (Section 8)</span>
+      </div>
+      <div class="commit-tracker-list" id="commit-tracker-list" style="display:flex; flex-direction:column; gap:10px; max-height:350px; overflow-y:auto; padding-right:5px;">
+        <div style="color:var(--text-muted); font-size:12px; text-align:center; padding:20px;">No commits tracked</div>
+      </div>
+    </div>
+
+    <!-- 9. Blocking Issues Section -->
+    <div class="sidebar-widget" id="sec-blocking">
+      <div class="widget-title">
+        <span>⚠️ Blocking Issues & Red Flags (Section 9)</span>
+      </div>
+      <div class="blocking-issues-list" id="blocking-issues-list" style="display:flex; flex-direction:column; gap:10px; max-height:350px; overflow-y:auto; padding-right:5px;">
+        <div style="color:var(--clr-success); text-align:center; padding:20px; font-size:12px;">✅ No blocking issues or warnings detected. All green!</div>
+      </div>
+    </div>
+
+    <!-- Live Execution Logs Widget -->
+    <div class="sidebar-widget" id="exec-logs-widget" style="grid-column: 1 / -1;">
+      <div class="widget-title">
+        <span>📝 Watcher Execution Logs</span>
+        <span class="task-badge done">LIVE</span>
+      </div>
+      <div class="terminal-box" id="exec-logs" style="max-height:200px;">
         <div class="log-line" style="color:var(--text-muted)">No logs loaded from status.json</div>
       </div>
     </div>
 
-    <div class="sidebar-widget">
+    <!-- Ecosystem Projects Widget -->
+    <div class="sidebar-widget" id="ecosystem-widget" style="grid-column: 1 / -1;">
       <div class="widget-title">
-        <span>Ecosystem Projects</span>
+        <span>🌐 Ecosystem Projects</span>
       </div>
       <div class="project-list" id="project-list">
         <div class="project-item">
