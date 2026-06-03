@@ -363,20 +363,58 @@ async function audit(taskId, target) {
     fs.writeFileSync(path.join(repoReportsDir, 'data-source-status.md'), sourceStatusDetails || '# Source status unavailable\n', 'utf8');
   }
 
+  // Write log-tail.txt
+  let logTailContent = 'Execution log not available';
+  const baseTaskId = taskId.replace(/-fix$/, '');
+  const possibleLogPaths = [
+    path.join(REPO_DIR, '.ai', 'logs', `${taskId}.md.log`),
+    path.join(REPO_DIR, '.ai', 'logs', `${taskId}.log`),
+    path.join(REPO_DIR, '.ai', 'logs', `${baseTaskId}.md.log`),
+    path.join(REPO_DIR, '.ai', 'logs', `${baseTaskId}.log`),
+    path.join(workDir, '.ai', 'logs', `${taskId}.md.log`),
+    path.join(workDir, '.ai', 'logs', `${taskId}.log`)
+  ];
+
+  for (const logPath of possibleLogPaths) {
+    if (fs.existsSync(logPath)) {
+      try {
+        const fullLog = fs.readFileSync(logPath, 'utf8');
+        const lines = fullLog.split('\n');
+        logTailContent = lines.slice(-100).join('\n');
+        break;
+      } catch (e) {
+        console.warn(`Failed to read log file at ${logPath}:`, e.message);
+      }
+    }
+  }
+
+  const logTailFile = path.join(repoReportsDir, 'log-tail.txt');
+  fs.writeFileSync(logTailFile, logTailContent, 'utf8');
+
   // 5. Save Evidence JSON
   const evidence = {
     taskId,
     target,
     status: 'needs_chatgpt_audit',
-    attempt: state.attempt,
-    commitSha: state.lastCommit,
-    liveUrl,
+    commitSha: state.lastCommit || 'local',
     changedFiles,
-    mechanicalChecks,
+    logTailPath: `.ai/reports/${taskId}/log-tail.txt`,
     knownRisks,
-    questionsForChatGPT,
-    screenshots: screenshotPath ? [screenshotPath] : [],
-    pageTextPath: `.ai/reports/${taskId}/page-text.txt`
+    questionsForChatGPT: [],
+    generatedAt: new Date().toISOString(),
+
+    // Web/data optional fields
+    liveUrl: liveUrl || null,
+    pageTextPath: `.ai/reports/${taskId}/page-text.txt`,
+    screenshotPath: screenshotPath ? `.ai/reports/${taskId}/screenshot.png` : null,
+    consoleErrorsPath: fs.existsSync(path.join(repoReportsDir, 'console-errors.txt')) ? `.ai/reports/${taskId}/console-errors.txt` : null,
+    networkErrorsPath: fs.existsSync(path.join(repoReportsDir, 'network-errors.txt')) ? `.ai/reports/${taskId}/network-errors.txt` : null,
+    dataAuditPath: fs.existsSync(path.join(repoReportsDir, 'data-audit.json')) ? `.ai/reports/${taskId}/data-audit.json` : null,
+
+    // Extra fields for compatibility
+    attempt: state.attempt,
+    mechanicalChecks,
+    screenshots: screenshotPath ? [screenshotPath] : []
   };
   fs.writeFileSync(path.join(repoReportsDir, 'evidence.json'), JSON.stringify(evidence, null, 2), 'utf8');
 
