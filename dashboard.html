@@ -1117,19 +1117,17 @@ function render(taskIndex, heartbeat, agyHeartbeat, statusData) {
   // Red flag 5: agy heartbeat missing/stale if available
   if (agyHeartbeat && agyHeartbeat.lastSeen) {
     const agyHbElapsed = Date.now() - new Date(agyHeartbeat.lastSeen).getTime();
-    const agyHbStatusSpan = document.getElementById('agy-heartbeat-status');
+    const agyHbStatusSpan = document.getElementById('agy-heartbeat-status-badge');
     if (agyHbElapsed > 3 * 60 * 1000) {
       warnings.push({
         title: "Agy 心跳异常 (Red Flag)",
         desc: `Executor (Agy) 的心跳已过期，最后活跃时间为 ${new Date(agyHeartbeat.lastSeen).toLocaleString()}。`
       });
       agyHbStatusSpan.textContent = 'STALE';
-      agyHbStatusSpan.style.background = 'rgba(239, 68, 68, 0.2)';
-      agyHbStatusSpan.style.color = 'var(--clr-danger)';
+      agyHbStatusSpan.className = 'task-badge failed';
     } else {
       agyHbStatusSpan.textContent = 'ALIVE';
-      agyHbStatusSpan.style.background = 'rgba(16, 185, 129, 0.2)';
-      agyHbStatusSpan.style.color = 'var(--clr-success)';
+      agyHbStatusSpan.className = 'task-badge done';
     }
     document.getElementById('agy-hb-last-seen').textContent = new Date(agyHeartbeat.lastSeen).toLocaleTimeString();
   } else {
@@ -1166,24 +1164,36 @@ function render(taskIndex, heartbeat, agyHeartbeat, statusData) {
   
   // Watcher badge & status update
   const badgeContainer = document.getElementById('watcher-badge-container');
-  const hbStatusSpan = document.getElementById('heartbeat-status');
+  const hbStatusSpan = document.getElementById('heartbeat-status-badge');
+  const systemHbSummary = document.getElementById('system-heartbeat-summary');
   if (watcherStale) {
     badgeContainer.innerHTML = `<div class="watcher-badge stale">⚠️ Watcher Stale</div>`;
-    hbStatusSpan.textContent = 'STALE';
-    hbStatusSpan.style.background = 'rgba(239, 68, 68, 0.2)';
-    hbStatusSpan.style.color = 'var(--clr-danger)';
+    if (hbStatusSpan) {
+      hbStatusSpan.textContent = 'STALE';
+      hbStatusSpan.className = 'task-badge failed';
+    }
+    if (systemHbSummary) {
+      systemHbSummary.textContent = 'ERROR';
+      systemHbSummary.className = 'task-badge failed';
+    }
   } else {
     const isBusy = taskIndex.some(t => t.status === 'running');
+    if (systemHbSummary) {
+      systemHbSummary.textContent = 'OK';
+      systemHbSummary.className = 'task-badge done';
+    }
     if (isBusy) {
       badgeContainer.innerHTML = `<div class="watcher-badge alive" style="background:rgba(245,158,11,0.1); color:var(--clr-warning); border-color:rgba(245,158,11,0.2);">⚙️ Watcher Processing</div>`;
-      hbStatusSpan.textContent = 'RUNNING';
-      hbStatusSpan.style.background = 'rgba(245, 158, 11, 0.2)';
-      hbStatusSpan.style.color = 'var(--clr-warning)';
+      if (hbStatusSpan) {
+        hbStatusSpan.textContent = 'RUNNING';
+        hbStatusSpan.className = 'task-badge running';
+      }
     } else {
       badgeContainer.innerHTML = `<div class="watcher-badge alive">⚡ Watcher Alive</div>`;
-      hbStatusSpan.textContent = 'ALIVE';
-      hbStatusSpan.style.background = 'rgba(16, 185, 129, 0.2)';
-      hbStatusSpan.style.color = 'var(--clr-success)';
+      if (hbStatusSpan) {
+        hbStatusSpan.textContent = 'ALIVE';
+        hbStatusSpan.className = 'task-badge done';
+      }
     }
   }
   
