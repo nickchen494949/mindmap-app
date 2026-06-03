@@ -10,58 +10,31 @@ console.log('=== STARTING AUDIT LOOP STATE MACHINE TEST ===\n');
 // Clean up helper
 function cleanup() {
   console.log('Cleaning up previous test artifacts...');
-  const paths = [
-    path.join(aiDir, 'inbox', `${taskId}.md`),
-    path.join(aiDir, 'inbox', `${taskId}-fix.md`),
-    path.join(aiDir, 'running', `${taskId}.md`),
-    path.join(aiDir, 'running', `${taskId}-fix.md`),
-    path.join(aiDir, 'review', `${taskId}.md`),
-    path.join(aiDir, 'reviews', taskId),
-    path.join(aiDir, 'review', taskId),
-    path.join(aiDir, 'done', `${taskId}.md`),
-    path.join(aiDir, 'failed', `${taskId}.md`),
-    path.join(aiDir, 'state', `${taskId}.json`),
-    path.join(aiDir, 'reports', taskId),
-    path.join(aiDir, 'fix', `${taskId}-attempt-1.md`)
-  ];
-
-  paths.forEach(p => {
-    if (fs.existsSync(p)) {
-      if (fs.statSync(p).isDirectory()) {
-        fs.rmSync(p, { recursive: true, force: true });
-      } else {
-        fs.unlinkSync(p);
-      }
-    }
-  });
+  const dirsToClean = ['inbox', 'running', 'review', 'done', 'failed', 'state', 'reports', 'reviews', 'fix'];
   
-  // Clean up in repo dir too
-  const repoAiDir = '/Users/happygolucky/mindmap-repo/.ai';
-  if (fs.existsSync(repoAiDir)) {
-    const repoPaths = [
-      path.join(repoAiDir, 'inbox', `${taskId}.md`),
-      path.join(repoAiDir, 'inbox', `${taskId}-fix.md`),
-      path.join(repoAiDir, 'running', `${taskId}.md`),
-      path.join(repoAiDir, 'running', `${taskId}-fix.md`),
-      path.join(repoAiDir, 'review', `${taskId}.md`),
-      path.join(repoAiDir, 'reviews', taskId),
-      path.join(repoAiDir, 'review', taskId),
-      path.join(repoAiDir, 'done', `${taskId}.md`),
-      path.join(repoAiDir, 'failed', `${taskId}.md`),
-      path.join(repoAiDir, 'state', `${taskId}.json`),
-      path.join(repoAiDir, 'reports', taskId),
-      path.join(repoAiDir, 'fix', `${taskId}-attempt-1.md`)
-    ];
-    repoPaths.forEach(p => {
-      if (fs.existsSync(p)) {
-        if (fs.statSync(p).isDirectory()) {
-          fs.rmSync(p, { recursive: true, force: true });
-        } else {
-          fs.unlinkSync(p);
+  const cleanDirectory = (targetAiDir) => {
+    if (!fs.existsSync(targetAiDir)) return;
+    dirsToClean.forEach(dirName => {
+      const dirPath = path.join(targetAiDir, dirName);
+      if (!fs.existsSync(dirPath)) return;
+      const items = fs.readdirSync(dirPath);
+      items.forEach(item => {
+        if (item.includes(taskId)) {
+          const fullPath = path.join(dirPath, item);
+          try {
+            if (fs.statSync(fullPath).isDirectory()) {
+              fs.rmSync(fullPath, { recursive: true, force: true });
+            } else {
+              fs.unlinkSync(fullPath);
+            }
+          } catch (e) {}
         }
-      }
+      });
     });
-  }
+  };
+
+  cleanDirectory(aiDir);
+  cleanDirectory('/Users/happygolucky/mindmap-repo/.ai');
   console.log('Cleanup finished.\n');
 }
 

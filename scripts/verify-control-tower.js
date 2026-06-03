@@ -166,8 +166,8 @@ try {
   let task4 = taskIndex.find(t => t.taskId === task4Id);
 
   if (!task4) throw new Error('Test 4 failed: Task was not found in task-index.json');
-  if (task4.location !== 'fix') throw new Error(`Test 4 failed: Expected location 'fix', got '${task4.location}'`);
-  if (task4.status !== 'failed') throw new Error(`Test 4 failed: Expected status 'failed' (from location fix), got '${task4.status}'`);
+  if (task4.location !== 'inbox') throw new Error(`Test 4 failed: Expected location 'inbox', got '${task4.location}'`);
+  if (task4.status !== 'inbox_unseen') throw new Error(`Test 4 failed: Expected status 'inbox_unseen', got '${task4.status}'`);
   if (task4.chatgptVerdict !== 'FAIL') throw new Error(`Test 4 failed: Expected verdict 'FAIL', got '${task4.chatgptVerdict}'`);
 
   const fixTaskFile = path.join(aiDir, 'inbox', `task-${task4Id}-fix.md`);

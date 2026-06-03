@@ -1,0 +1,8 @@
+.ai/PROJECT_CONTEXT.md
+.ai/heartbeat/watcher.json
+.ai/logs/task-20260603-no-api-chatgpt-audit-loop.md.log
+.ai/task-index.json
+dashboard.html
+scripts/collect-evidence.js
+scripts/generate-task-index.js
+scripts/test-audit-loop.js
