@@ -109,12 +109,6 @@ function loadWorkspaceState(ws) {
   refreshArrows();
   transformGroup.style.transform = `scale(${state.zoom}) translate(${state.panX}px, ${state.panY}px)`;
   zoomInfo.textContent = Math.round(state.zoom * 100) + '%';
-  
-  const canvasTitle = document.getElementById('canvas-title');
-  if (canvasTitle) {
-    canvasTitle.textContent = ws.name;
-  }
-  
   saveToLocalStorage();
 }
 
@@ -135,10 +129,6 @@ function renderTabs() {
       if (newName && newName.trim() !== '') {
         ws.name = newName.trim();
         renderTabs();
-        const canvasTitle = document.getElementById('canvas-title');
-        if (canvasTitle && ws.id === activeWorkspaceId) {
-          canvasTitle.textContent = ws.name;
-        }
         saveToLocalStorage();
       }
     };
@@ -1797,3 +1787,302 @@ if (!loadFromLocalStorage()) {
   loadDemo();
 }
 document.getElementById('btn-drag-mode').classList.add('active');
+
+/* ── Presentation / Slideshow Mode ── */
+let presMode = false;
+let presOrder = [];   // ordered list of node IDs to present
+let presIndex = -1;
+let presSrtData = []; // for SRT export
+let presAutoTimer = null; // auto-play timer
+let presAutoPlaying = true; // auto-play state
+
+function buildPresOrder() {
+  const childSet = new Set(state.arrows.map(a => a.to));
+  const parentSet = new Set(state.arrows.map(a => a.from));
+
+  // Root = nodes that are parents but not children, or if none, the topmost node
+  let roots = state.nodes.filter(n => parentSet.has(n.id) && !childSet.has(n.id));
+  if (roots.length === 0 && state.nodes.length > 0) {
+    roots = [state.nodes.reduce((a, b) => a.y < b.y ? a : b)];
+  }
+
+  const order = [];
+  const visited = new Set();
+
+  function dfs(nodeId) {
+    if (visited.has(nodeId)) return;
+    visited.add(nodeId);
+    order.push(nodeId);
+    // Find children (nodes this connects TO)
+    const children = state.arrows.filter(a => a.from === nodeId).map(a => a.to);
+    // Sort children left to right by x position
+    const childNodes = children
+      .map(id => state.nodes.find(n => n.id === id))
+      .filter(Boolean);
+    childNodes.sort((a, b) => a.x - b.x);
+    childNodes.forEach(cn => dfs(cn.id));
+  }
+
+  // Sort roots left to right
+  roots.sort((a, b) => a.x - b.x);
+  roots.forEach(r => dfs(r.id));
+
+  // Add any unvisited nodes
+  state.nodes.forEach(n => {
+    if (!visited.has(n.id)) order.push(n.id);
+  });
+
+  return order;
+}
+
+function startPresentation() {
+  if (state.nodes.length === 0) {
+    statusText.textContent = '⚠️ 画布为空，无法演示';
+    return;
+  }
+
+  presMode = true;
+  presOrder = buildPresOrder();
+  presIndex = -1;
+  presSrtData = [];
+
+  // Add overlay
+  const overlay = document.createElement('div');
+  overlay.id = 'pres-overlay';
+  overlay.className = 'pres-overlay';
+  document.body.appendChild(overlay);
+
+  // Add subtitle bar
+  const subtitle = document.createElement('div');
+  subtitle.id = 'pres-subtitle';
+  subtitle.className = 'pres-subtitle';
+  subtitle.textContent = '';
+  document.body.appendChild(subtitle);
+
+  // Add slide counter
+  const counter = document.createElement('div');
+  counter.id = 'pres-counter';
+  counter.className = 'pres-counter';
+  counter.textContent = '0 / ' + presOrder.length;
+  document.body.appendChild(counter);
+
+  // Add controls
+  const controls = document.createElement('div');
+  controls.id = 'pres-controls';
+  controls.className = 'pres-controls';
+  controls.innerHTML =
+    '<button id="pres-btn-prev" title="上一步 (←)">⬅ 上一步</button>' +
+    '<button id="pres-btn-pause" title="暂停/继续">⏸ 暂停</button>' +
+    '<button id="pres-btn-next" title="下一步 (→/空格)">下一步 ➡</button>' +
+    '<button id="pres-btn-stop" title="退出 (Esc)">✕ 退出</button>' +
+    '<button id="pres-btn-srt" title="导出字幕文件">📄 导出SRT</button>';
+  document.body.appendChild(controls);
+
+  // Wire control buttons
+  document.getElementById('pres-btn-prev').addEventListener('click', function() { presStopAuto(); presGo(-1); });
+  document.getElementById('pres-btn-next').addEventListener('click', function() { presStopAuto(); presGo(1); });
+  document.getElementById('pres-btn-pause').addEventListener('click', function() { presToggleAuto(); });
+  document.getElementById('pres-btn-stop').addEventListener('click', function() { stopPresentation(); });
+  document.getElementById('pres-btn-srt').addEventListener('click', function() { exportSRT(); });
+
+  // Add canvas transition class
+  transformGroup.classList.add('pres-mode');
+
+  // Hide toolbar and tabs
+  document.getElementById('toolbar').style.display = 'none';
+  document.getElementById('tabs-bar').style.display = 'none';
+  document.getElementById('zoom-controls').style.display = 'none';
+  document.getElementById('status-bar').style.display = 'none';
+
+  // Hide editor if open
+  editorPanel.classList.add('hidden');
+
+  // Dim all nodes
+  nodeLayer.querySelectorAll('.node').forEach(function(el) {
+    el.classList.add('pres-dimmed');
+  });
+
+  // Start auto-play
+  presAutoPlaying = true;
+  presGo(1);
+  presStartAuto();
+}
+
+function presStartAuto() {
+  if (presAutoTimer) clearInterval(presAutoTimer);
+  presAutoPlaying = true;
+  var pauseBtn = document.getElementById('pres-btn-pause');
+  if (pauseBtn) pauseBtn.textContent = '⏸ 暂停';
+  presAutoTimer = setInterval(function() {
+    if (presIndex >= presOrder.length - 1) {
+      presStopAuto();
+      return;
+    }
+    presGo(1);
+  }, 4000);
+}
+
+function presStopAuto() {
+  if (presAutoTimer) { clearInterval(presAutoTimer); presAutoTimer = null; }
+  presAutoPlaying = false;
+  var pauseBtn = document.getElementById('pres-btn-pause');
+  if (pauseBtn) pauseBtn.textContent = '▶ 继续';
+}
+
+function presToggleAuto() {
+  if (presAutoPlaying) { presStopAuto(); } else { presStartAuto(); }
+}
+
+function presGo(direction) {
+  if (!presMode) return;
+
+  var newIndex = presIndex + direction;
+  if (newIndex < 0 || newIndex >= presOrder.length) return;
+
+  // Un-highlight previous
+  if (presIndex >= 0) {
+    var prevId = presOrder[presIndex];
+    var prevEl = nodeLayer.querySelector('[data-id="' + prevId + '"]');
+    if (prevEl) prevEl.classList.remove('pres-highlight');
+  }
+
+  presIndex = newIndex;
+  var nodeId = presOrder[presIndex];
+  var node = state.nodes.find(function(n) { return n.id === nodeId; });
+  if (!node) return;
+
+  var el = nodeLayer.querySelector('[data-id="' + nodeId + '"]');
+  if (!el) return;
+
+  // Highlight current node
+  el.classList.add('pres-highlight');
+  el.classList.remove('pres-dimmed');
+
+  // Also un-dim all previously visited nodes
+  for (var i = 0; i <= presIndex; i++) {
+    var visitedEl = nodeLayer.querySelector('[data-id="' + presOrder[i] + '"]');
+    if (visitedEl) visitedEl.classList.remove('pres-dimmed');
+  }
+
+  // Re-dim nodes after current index when going backwards
+  for (var j = presIndex + 1; j < presOrder.length; j++) {
+    var futureEl = nodeLayer.querySelector('[data-id="' + presOrder[j] + '"]');
+    if (futureEl) {
+      futureEl.classList.add('pres-dimmed');
+      futureEl.classList.remove('pres-highlight');
+    }
+  }
+
+  // Zoom to this node — center it on screen
+  var container = canvas; // canvas-container
+  var cw = container.clientWidth;
+  var ch = container.clientHeight;
+  var nw = el.offsetWidth;
+  var nh = el.offsetHeight;
+  var targetZoom = 1.5;
+  var targetPanX = cw / 2 - (node.x + nw / 2) * targetZoom;
+  var targetPanY = ch / 2 - (node.y + nh / 2) * targetZoom;
+
+  state.zoom = targetZoom;
+  state.panX = targetPanX;
+  state.panY = targetPanY;
+  transformGroup.style.transform = 'translate(' + state.panX + 'px, ' + state.panY + 'px) scale(' + state.zoom + ')';
+
+  // Update counter
+  var counterEl = document.getElementById('pres-counter');
+  if (counterEl) counterEl.textContent = (presIndex + 1) + ' / ' + presOrder.length;
+
+  // Show subtitle
+  var subtitleEl = document.getElementById('pres-subtitle');
+  var title = node.label || '';
+  var desc = node.desc || '';
+  if (subtitleEl) {
+    subtitleEl.innerHTML = '<strong>' + title + '</strong>' + (desc ? '<br>' + desc : '');
+  }
+
+  // Record SRT data
+  var startTime = presIndex * 4; // 4 seconds per node
+  var endTime = startTime + 4;
+  presSrtData.push({
+    index: presIndex + 1,
+    start: formatSRTTime(startTime),
+    end: formatSRTTime(endTime),
+    text: title + (desc ? '\n' + desc : '')
+  });
+}
+
+function stopPresentation() {
+  presMode = false;
+
+  // Stop auto-play timer
+  if (presAutoTimer) { clearInterval(presAutoTimer); presAutoTimer = null; }
+
+  // Remove overlay, subtitle, controls, counter
+  var overlay = document.getElementById('pres-overlay');
+  if (overlay) overlay.remove();
+  var subtitle = document.getElementById('pres-subtitle');
+  if (subtitle) subtitle.remove();
+  var controls = document.getElementById('pres-controls');
+  if (controls) controls.remove();
+  var counter = document.getElementById('pres-counter');
+  if (counter) counter.remove();
+
+  // Remove canvas transition
+  transformGroup.classList.remove('pres-mode');
+
+  // Show toolbar, tabs, zoom controls, status bar
+  document.getElementById('toolbar').style.display = '';
+  document.getElementById('tabs-bar').style.display = '';
+  document.getElementById('zoom-controls').style.display = '';
+  document.getElementById('status-bar').style.display = '';
+
+  // Un-dim and un-highlight all nodes
+  nodeLayer.querySelectorAll('.node').forEach(function(el) {
+    el.classList.remove('pres-dimmed');
+    el.classList.remove('pres-highlight');
+  });
+
+  // Reset zoom
+  state.zoom = 1;
+  state.panX = 0;
+  state.panY = 0;
+  applyTransform();
+  refreshArrows();
+
+  statusText.textContent = '演示结束';
+}
+
+function formatSRTTime(seconds) {
+  var h = Math.floor(seconds / 3600).toString().padStart(2, '0');
+  var m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+  var s = Math.floor(seconds % 60).toString().padStart(2, '0');
+  return h + ':' + m + ':' + s + ',000';
+}
+
+function exportSRT() {
+  if (presSrtData.length === 0) {
+    alert('请先播放演示再导出字幕');
+    return;
+  }
+  var srt = '';
+  presSrtData.forEach(function(item) {
+    srt += item.index + '\n' + item.start + ' --> ' + item.end + '\n' + item.text + '\n\n';
+  });
+  var blob = new Blob([srt], { type: 'text/plain' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'mindmap-subtitles.srt';
+  a.click();
+}
+
+// Keyboard shortcuts for presentation (capture phase to intercept before other handlers)
+document.addEventListener('keydown', function(e) {
+  if (!presMode) return;
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); e.stopImmediatePropagation(); presStopAuto(); presGo(1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); e.stopImmediatePropagation(); presStopAuto(); presGo(-1); }
+  if (e.key === 'Escape') { e.preventDefault(); e.stopImmediatePropagation(); stopPresentation(); }
+}, true);
+
+
+// Wire up the present button
+document.getElementById('btn-present').addEventListener('click', startPresentation);

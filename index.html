@@ -57,6 +57,10 @@
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 014 4c0 1.1-.9 2-2 2h-4a2 2 0 01-2-2 4 4 0 014-4z"/><path d="M8 8v8a4 4 0 004 4 4 4 0 004-4V8"/><line x1="6" y1="14" x2="8" y2="14"/><line x1="16" y1="14" x2="18" y2="14"/></svg>
       <span>AI导入</span>
     </button>
+    <button id="btn-present" class="tool-btn" title="演示模式" style="background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.4);color:#6ee7b7;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16" fill="currentColor" stroke="none"/></svg>
+      <span>演示</span>
+    </button>
   </div>
   <div class="toolbar-group">
     <button id="btn-tidy-children" class="tool-btn" title="选中节点后，整理其子节点为等距水平排列">
@@ -86,7 +90,6 @@
 </div>
 
 <div id="canvas-container">
-  <div id="canvas-title"></div>
   <div id="transform-group">
     <div id="node-layer"></div>
     <svg id="arrow-layer"></svg>

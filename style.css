@@ -846,16 +846,95 @@ body.arrow-mode .node .rh {
   background: rgba(0,0,0,0.15);
 }
 
-#canvas-title {
-  position: absolute;
-  top: 60px;
-  left: 16px;
-  font-size: 14px;
-  color: #94a3b8;
-  font-weight: 500;
-  z-index: 100;
+/* ── Presentation Mode ── */
+.pres-overlay {
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  z-index: 9000;
   pointer-events: none;
+}
+
+.pres-subtitle {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 80%;
+  padding: 16px 32px;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-size: 24px;
+  line-height: 1.6;
+  text-align: center;
+  border-radius: 14px;
+  z-index: 10000;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.4);
+}
+.pres-subtitle strong {
+  font-weight: 700;
   letter-spacing: 0.5px;
 }
 
+.pres-controls {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 8px;
+  z-index: 10001;
+}
+.pres-controls button {
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.pres-controls button:hover {
+  background: rgba(255,255,255,0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+.pres-counter {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  padding: 6px 14px;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(8px);
+  border-radius: 8px;
+  color: rgba(255,255,255,0.7);
+  font-size: 13px;
+  z-index: 10001;
+  pointer-events: none;
+}
+
+.node.pres-highlight {
+  animation: pres-glow 1.5s ease-in-out infinite;
+  border-color: #6ee7b7 !important;
+  z-index: 50;
+}
+@keyframes pres-glow {
+  0%, 100% { box-shadow: 0 0 12px rgba(110,231,183,0.4), 0 0 0 3px rgba(110,231,183,0.2); }
+  50% { box-shadow: 0 0 28px rgba(110,231,183,0.7), 0 0 0 6px rgba(110,231,183,0.35); }
+}
+
+.node.pres-dimmed {
+  opacity: 1 !important;
+  transition: opacity 0.5s ease;
+}
+
+#transform-group.pres-mode {
+  transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
