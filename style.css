@@ -846,3 +846,16 @@ body.arrow-mode .node .rh {
   background: rgba(0,0,0,0.15);
 }
 
+#canvas-title {
+  position: absolute;
+  top: 60px;
+  left: 16px;
+  font-size: 14px;
+  color: #94a3b8;
+  font-weight: 500;
+  z-index: 100;
+  pointer-events: none;
+  letter-spacing: 0.5px;
+}
+
+

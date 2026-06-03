@@ -109,6 +109,12 @@ function loadWorkspaceState(ws) {
   refreshArrows();
   transformGroup.style.transform = `scale(${state.zoom}) translate(${state.panX}px, ${state.panY}px)`;
   zoomInfo.textContent = Math.round(state.zoom * 100) + '%';
+  
+  const canvasTitle = document.getElementById('canvas-title');
+  if (canvasTitle) {
+    canvasTitle.textContent = ws.name;
+  }
+  
   saveToLocalStorage();
 }
 
@@ -129,6 +135,10 @@ function renderTabs() {
       if (newName && newName.trim() !== '') {
         ws.name = newName.trim();
         renderTabs();
+        const canvasTitle = document.getElementById('canvas-title');
+        if (canvasTitle && ws.id === activeWorkspaceId) {
+          canvasTitle.textContent = ws.name;
+        }
         saveToLocalStorage();
       }
     };
