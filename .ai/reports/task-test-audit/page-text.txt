@@ -1,1 +1,487 @@
-404 Not Found
+🧠 AI Communication Control Tower
+Supervises task lifecycle across ChatGPT task creation and Watcher/Antigravity execution loops. Runs fully client-side.
+🕐 Last Checked: 7:24:06 PM | 6/3/2026
+⚠️ Watcher Stale
+⚠️
+Watcher 可能死了
+Watcher 的最后心跳时间为 6/3/2026, 7:18:50 PM (距今已过去 5 分钟)。
+⚠️
+缺少验收报告: task-20260603-no-api-chatgpt-audit-loop
+该任务已标记为完成，但系统未在其 reports 文件夹下找到有效的验收报告。
+⚠️
+缺少验收报告: task-20260603-control-tower-dashboard
+该任务已标记为完成，但系统未在其 reports 文件夹下找到有效的验收报告。
+⚠️
+缺少验收报告: task-20260603-add-qa-audit
+该任务已标记为完成，但系统未在其 reports 文件夹下找到有效的验收报告。
+⚠️
+缺少验收报告: task-20260603-us-macro-dashboard-transmission-map
+该任务已标记为完成，但系统未在其 reports 文件夹下找到有效的验收报告。
+⚠️
+缺少验收报告: task-20260603-deploy-us-macro-dashboard-pages
+该任务已标记为完成，但系统未在其 reports 文件夹下找到有效的验收报告。
+⚠️
+缺少验收报告: task-20260603-us-macro-dashboard
+该任务已标记为完成，但系统未在其 reports 文件夹下找到有效的验收报告。
+⚠️
+缺少验收报告: task-006-pipeline-test
+该任务已标记为完成，但系统未在其 reports 文件夹下找到有效的验收报告。
+⚠️
+缺少验收报告: task-005-canvas-title
+该任务已标记为完成，但系统未在其 reports 文件夹下找到有效的验收报告。
+⚠️
+缺少验收报告: task-004-world-economic-history-v3
+该任务已标记为完成，但系统未在其 reports 文件夹下找到有效的验收报告。
+⚠️
+缺少验收报告: task-003-world-economic-history-v2
+该任务已标记为完成，但系统未在其 reports 文件夹下找到有效的验收报告。
+⚠️
+缺少验收报告: task-002-world-economic-history
+该任务已标记为完成，但系统未在其 reports 文件夹下找到有效的验收报告。
+⚠️
+缺少验收报告: task-000-test
+该任务已标记为完成，但系统未在其 reports 文件夹下找到有效的验收报告。
+⚠️
+缺少验收报告: task-001-machine-learning
+该任务已标记为完成，但系统未在其 reports 文件夹下找到有效的验收报告。
+COMMUNICATION FLOW (CURRENT TASK)
+✍️
+ChatGPT 写任务
+📬
+GitHub 收到
+🔍
+Watcher 扫到
+⚙️
+Agy 执行
+📊
+验收报告
+✅
+完成
+16
+TOTAL TASKS
+1
+PENDING
+1
+RUNNING
+1
+NEEDS CHATGPT AUDIT
+13
+DONE
+0
+FAILED
+📋 Task Lifecycle & Logs
+Task
+ID: task-20260603-control-tower-evidence-review-flow
+⚙️ RUNNING
+📁 mindmap-app
+Attempt: 2/3
+SHA: 5311370
+Created: 6:53:06 PM
+✓
+Exists in GitHub
+✓
+Watcher Saw It
+✓
+Agy Executed It
+✓
+Evidence Created
+✗
+Marked Done
+⚠️ Blocking Issues:
+Dashboard loads with 404 error: local page load failed, console and network errors present.
+Evidence packet generation might be complete, but the core deliverables (dashboard, task index, review flow) could not be verified due to deployment failure.
+Local server test failed to serve dashboard, making it impossible to confirm many of the acceptance criteria (e.g., red flags, columns, etc.).
+No explicit test results provided for Test 1-5 (inbox visibility, review gate, PASS/FAIL flows, invalid done red flag).
+Notes:
+Commit SHA 5311370d77ce2f70087e6cdc3733be3418d688f6 exists, showing code changes.
+Evidence JSON metadata is well-structured and includes necessary fields.
+The .ai/task-index.json and scripts/generate-task-index.js are present, indicating work on Required Work A.
+Files like dashboard.html, scripts/collect-evidence.js, scripts/test-audit-loop.js show progress on B, C, D.
+However, the execution summary reports local page load FAILED and the page text shows '404 Not Found', indicating the deployment/build is broken.
+# Suggested Fix Task
+```markdown
+target: mindmap-app
+# Fix Task
+Fix the dashboard and evidence/review system deployment so it works locally and passes all acceptance criteria.
+## Issues to Fix
+**Dashboard local page load failure**: The dashboard returns 404 when served locally. Ensure the HTML file is properly served and the server is configured correctly.
+**Console and network errors**: There is a 404 error for the page itself; verify the URL and file paths.
+**Red flags not verifiable**: Since the dashboard is not loading, red flags for stale heartbeat, missing evidence, etc., cannot be checked. Fix the deployment so these red flags are visible.
+**Test results missing**: Run the test script `scripts/test-audit-loop.js` and ensure all five test cases pass. Document results.
+**Final report incomplete**: The final report must include all required sections (files changed, Gatekeeper v3 preserved, task index path, dashboard URL, evidence packet example, PASS/FAIL test results, commit SHA, known limitations).
+## Acceptance Criteria
+Dashboard loads without errors (no 404, no console/network errors).
+All red flags are displayed correctly.
+Test 1-5 pass.
+Final report written to `.ai/reports/task-20260603-control-tower-evidence-review-flow/final-report.md` with all required fields.
+All Gatekeeper v3 protections remain intact.
+```
+Confidence: 0.95
+Reviewed by DeepSeek API.
+📝 Execution Log
+📊 Evidence Packet
+🔗 View Live Site
+✍️ ChatGPT Audit Verdict
+Fix Task
+ID: task-20260603-fix-control-tower-public-data
+⏳ NEEDS AUDIT
+📁 mindmap-app
+Attempt: 1/3
+SHA: 3265e07
+Created: 6:47:17 PM
+✓
+Exists in GitHub
+✓
+Watcher Saw It
+✓
+Agy Executed It
+✓
+Evidence Created
+✗
+Marked Done
+📝 Execution Log
+📊 Evidence Packet
+🔗 View Live Site
+Test Task: Verify Audit Loop
+ID: task-test-audit
+⏳ INBOX UNSEEN
+📁 mindmap-app
+Attempt: 2/3
+SHA: 5311370
+Created: 7:24:05 PM
+✓
+Exists in GitHub
+✗
+Watcher Saw It
+✗
+Agy Executed It
+✓
+Evidence Created
+✗
+Marked Done
+⚠️ Blocking Issues:
+Blocking issue 1: Page loading is fine but UI lacks visual polish.
+Blocking issue 2: Check standard badges rendering.
+Task
+ID: task-20260603-no-api-chatgpt-audit-loop
+✅ PASSED
+📁 mindmap-app
+Attempt: 1/3
+Created: 6:08:46 PM
+✓
+Exists in GitHub
+✓
+Watcher Saw It
+✓
+Agy Executed It
+✗
+Evidence Created
+✓
+Marked Done
+⚠️ Blocking Issues:
+Task is marked done but lacks ChatGPT PASS verdict
+📝 Execution Log
+🔗 View Live Site
+Task: Upgrade dashboard to Communication Control Tower
+ID: task-20260603-control-tower-dashboard
+✅ PASSED
+📁 mindmap-app
+Attempt: 1/3
+Created: 5:57:47 PM
+✓
+Exists in GitHub
+✓
+Watcher Saw It
+✓
+Agy Executed It
+✗
+Evidence Created
+✓
+Marked Done
+⚠️ Blocking Issues:
+Task is marked done but lacks ChatGPT PASS verdict
+📝 Execution Log
+🔗 View Live Site
+Task: Add automated live-page QA
+ID: task-20260603-add-qa-audit
+✅ PASSED
+📁 us-macro-dashboard
+Attempt: 1/3
+Created: 5:39:15 PM
+✓
+Exists in GitHub
+✓
+Watcher Saw It
+✓
+Agy Executed It
+✗
+Evidence Created
+✓
+Marked Done
+⚠️ Blocking Issues:
+Task is marked done but lacks ChatGPT PASS verdict
+📝 Execution Log
+🔗 View Live Site
+Task
+ID: task-20260603-us-macro-dashboard-transmission-map
+✅ PASSED
+📁 us-macro-dashboard
+Attempt: 1/3
+Created: 2:06:04 PM
+✓
+Exists in GitHub
+✓
+Watcher Saw It
+✓
+Agy Executed It
+✗
+Evidence Created
+✓
+Marked Done
+⚠️ Blocking Issues:
+Task is marked done but lacks ChatGPT PASS verdict
+📝 Execution Log
+🔗 View Live Site
+Task: Deploy US Macro Dashboard to GitHub Pages
+ID: task-20260603-deploy-us-macro-dashboard-pages
+✅ PASSED
+📁 mindmap-app
+Attempt: 1/3
+Created: 1:44:52 PM
+✓
+Exists in GitHub
+✓
+Watcher Saw It
+✓
+Agy Executed It
+✗
+Evidence Created
+✓
+Marked Done
+⚠️ Blocking Issues:
+Task is marked done but lacks ChatGPT PASS verdict
+📝 Execution Log
+🔗 View Live Site
+Task: Create new US Macro Dashboard
+ID: task-20260603-us-macro-dashboard
+✅ PASSED
+📁 us-macro-dashboard
+Attempt: 1/3
+Created: 1:32:59 PM
+✓
+Exists in GitHub
+✓
+Watcher Saw It
+✓
+Agy Executed It
+✗
+Evidence Created
+✓
+Marked Done
+⚠️ Blocking Issues:
+Task is marked done but lacks ChatGPT PASS verdict
+📝 Execution Log
+🔗 View Live Site
+Task: Test new project creation
+ID: task-006-pipeline-test
+✅ PASSED
+📁 chatgpt-pipeline-test
+Attempt: 1/3
+Created: 1:14:02 PM
+✓
+Exists in GitHub
+✓
+Watcher Saw It
+✓
+Agy Executed It
+✗
+Evidence Created
+✓
+Marked Done
+⚠️ Blocking Issues:
+Task is marked done but lacks ChatGPT PASS verdict
+📝 Execution Log
+🔗 View Live Site
+Task 005: Add page title display
+ID: task-005-canvas-title
+✅ PASSED
+📁 mindmap-app
+Attempt: 1/3
+Created: 12:31:38 PM
+✓
+Exists in GitHub
+✓
+Watcher Saw It
+✓
+Agy Executed It
+✗
+Evidence Created
+✓
+Marked Done
+⚠️ Blocking Issues:
+Task is marked done but lacks ChatGPT PASS verdict
+📝 Execution Log
+🔗 View Live Site
+Task 004: Regenerate World Economic History Mindmap (v3)
+ID: task-004-world-economic-history-v3
+✅ PASSED
+📁 mindmap-app
+Attempt: 1/3
+Created: 11:39:01 AM
+✓
+Exists in GitHub
+✓
+Watcher Saw It
+✓
+Agy Executed It
+✗
+Evidence Created
+✓
+Marked Done
+⚠️ Blocking Issues:
+Task is marked done but lacks ChatGPT PASS verdict
+📝 Execution Log
+🔗 View Live Site
+Task 003: World Economic History Mindmap V2
+ID: task-003-world-economic-history-v2
+✅ PASSED
+📁 mindmap-app
+Attempt: 1/3
+Created: 11:17:03 AM
+✓
+Exists in GitHub
+✓
+Watcher Saw It
+✓
+Agy Executed It
+✗
+Evidence Created
+✓
+Marked Done
+⚠️ Blocking Issues:
+Task is marked done but lacks ChatGPT PASS verdict
+📝 Execution Log
+🔗 View Live Site
+Task 002: Generate World Economic History Mindmap
+ID: task-002-world-economic-history
+✅ PASSED
+📁 mindmap-app
+Attempt: 1/3
+Created: 10:09:03 AM
+✓
+Exists in GitHub
+✓
+Watcher Saw It
+✓
+Agy Executed It
+✗
+Evidence Created
+✓
+Marked Done
+⚠️ Blocking Issues:
+Task is marked done but lacks ChatGPT PASS verdict
+📝 Execution Log
+🔗 View Live Site
+Task: Test
+ID: task-000-test
+✅ PASSED
+📁 mindmap-app
+Attempt: 1/3
+Created: 9:59:04 AM
+✓
+Exists in GitHub
+✓
+Watcher Saw It
+✓
+Agy Executed It
+✗
+Evidence Created
+✓
+Marked Done
+⚠️ Blocking Issues:
+Task is marked done but lacks ChatGPT PASS verdict
+📝 Execution Log
+🔗 View Live Site
+Task 001: Generate Machine Learning Mindmap
+ID: task-001-machine-learning
+✅ PASSED
+📁 mindmap-app
+Attempt: 1/3
+Created: 9:59:04 AM
+✓
+Exists in GitHub
+✓
+Watcher Saw It
+✓
+Agy Executed It
+✗
+Evidence Created
+✓
+Marked Done
+⚠️ Blocking Issues:
+Task is marked done but lacks ChatGPT PASS verdict
+📝 Execution Log
+🔗 View Live Site
+Watcher Heartbeat
+STALE
+Last Seen:
+7:18:50 PM
+Scanned Commit:
+4b1bf4a
+Inbox Count:
+2
+Done Count:
+15
+Watcher Execution Logs
+LIVE
+
+          [Wed Jun  3 19:20:54]
+          EXEC
+          +08 2026 Running agy...
+        
+
+          [Wed Jun  3 19:20:54]
+          WATCHER
+          +08 2026 Target: mindmap-app → /Users/happygolucky/mindmap-repo
+        
+
+          [Wed Jun  3 19:20:54]
+          WATCHER
+          +08 2026 Found task: .ai/inbox/task-task-20260603-control-tower-evidence-review-flow-fix.md
+        
+
+          [Wed Jun  3 19:20:53]
+          WATCHER
+          +08 2026 Pulling latest...
+        
+
+          [Wed Jun  3 19:20:53]
+          WATCHER
+          +08 2026 === Watcher run started
+        
+
+          [Wed Jun  3 19:18:53]
+          WATCHER
+          +08 2026 === Watcher run finished
+        
+
+          [Wed Jun  3 19:18:50]
+          WATCHER
+          +08 2026 DeepSeek Review failed
+        
+
+          [Wed Jun  3 19:18:50]
+          WATCHER
+          +08 2026 Running DeepSeek API Auto-Review...
+        
+Ecosystem Projects
+📁 chatgpt-pipeline-test
+~/projects/chatgpt-pipeline-test
+Open Live
+📁 mindmap-app
+~/projects/mindmap-app
+Open Live
+📁 us-macro-dashboard
+~/projects/us-macro-dashboard
+Open Live
+🔄

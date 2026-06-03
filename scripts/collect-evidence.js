@@ -24,7 +24,10 @@ function parseArgs() {
 }
 
 const args = parseArgs();
-const taskId = args.taskId || 'task-unknown';
+let taskId = args.taskId || 'task-unknown';
+if (taskId.endsWith('.md')) {
+  taskId = taskId.slice(0, -3);
+}
 const target = args.target || 'mindmap-app';
 const liveUrl = args.liveUrl || `https://nickchen494949.github.io/${target}/`;
 
@@ -100,7 +103,15 @@ function startLocalServer() {
     localServer = http.createServer((req, res) => {
       let filePath = path.join(process.cwd(), req.url.split('?')[0]);
       if (filePath === process.cwd() || filePath.endsWith('/')) {
-        filePath = path.join(filePath, 'index.html');
+        const indexHtml = path.join(filePath, 'index.html');
+        const dashboardHtml = path.join(filePath, 'dashboard.html');
+        if (fs.existsSync(indexHtml)) {
+          filePath = indexHtml;
+        } else if (fs.existsSync(dashboardHtml)) {
+          filePath = dashboardHtml;
+        } else {
+          filePath = indexHtml;
+        }
       }
 
       const ext = path.extname(filePath);
@@ -182,7 +193,14 @@ function checkLiveUrl() {
   let componentCount = 0;
 
   try {
-    const response = await page.goto(`http://localhost:${port}/`, { waitUntil: 'networkidle', timeout: 15000 });
+    let targetUrl = `http://localhost:${port}/`;
+    if (taskId.includes('control-tower') || taskId.includes('dashboard') || !fs.existsSync(path.join(process.cwd(), 'index.html'))) {
+      if (fs.existsSync(path.join(process.cwd(), 'dashboard.html'))) {
+        targetUrl = `http://localhost:${port}/dashboard.html`;
+      }
+    }
+    console.log(`Navigating page to: ${targetUrl}`);
+    const response = await page.goto(targetUrl, { waitUntil: 'networkidle', timeout: 15000 });
     await page.waitForTimeout(3000);
 
     if (response) {
@@ -215,8 +233,13 @@ function checkLiveUrl() {
     if (target === 'us-macro-dashboard') {
       componentCount = await page.locator('.macro-card').count();
     } else if (target === 'mindmap-app') {
-      // Look for svg or nodes
-      componentCount = await page.locator('.mindmap-node, rect, circle').count();
+      // Look for svg or nodes or dashboard columns
+      const isDashboard = await page.locator('.dashboard-column').count() > 0;
+      if (isDashboard) {
+        componentCount = await page.locator('.dashboard-column, .stat-card, .pipeline-node').count();
+      } else {
+        componentCount = await page.locator('.mindmap-node, rect, circle').count();
+      }
     }
 
   } catch (error) {

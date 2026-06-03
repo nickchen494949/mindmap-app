@@ -1,1 +1,10 @@
-{"name":"watcher","lastSeen":"2026-06-03T11:18:50Z","lastScannedCommit":"4b1bf4a5c8b09449561ee969a4686f77060a6b9f","lastTask":"task-task-test-audit-fix.md","inboxCount":2,"doneCount":15,"failedCount":0,"status":"alive"}
+{
+  "name": "watcher",
+  "lastSeen": "2026-06-03T11:18:50Z",
+  "lastScannedCommit": "4b1bf4a5c8b09449561ee969a4686f77060a6b9f",
+  "inboxCount": 2,
+  "doneCount": 15,
+  "status": "alive",
+  "lastTask": "task-task-test-audit-fix.md",
+  "failedCount": 0
+}

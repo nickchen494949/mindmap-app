@@ -1,12 +1,12 @@
 {
   "url": "https://nickchen494949.github.io/mindmap-app/",
-  "timestamp": "2026-06-03T11:18:41.971Z",
+  "timestamp": "2026-06-03T11:24:10.517Z",
   "liveUrlStatus": 200,
-  "title": "",
-  "is404": true,
-  "isBlank": true,
+  "title": "Communication Control Tower - Dashboard",
+  "is404": false,
+  "isBlank": false,
   "isStuckLoading": false,
   "componentCount": 0,
-  "consoleErrorCount": 1,
-  "networkErrorCount": 1
+  "consoleErrorCount": 0,
+  "networkErrorCount": 0
 }

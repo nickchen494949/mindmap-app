@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-06-03T11:18:50.842Z",
+  "generatedAt": "2026-06-03T11:24:10.722Z",
   "watcher": {
     "status": "stale",
-    "lastSeen": "2026-06-03T11:11:34Z",
-    "lastScannedCommit": "e4b8659c378777c5610a79926b3c4f91be11a5eb",
-    "inboxCount": 2,
+    "lastSeen": "2026-06-03T11:18:50Z",
+    "lastScannedCommit": "4b1bf4a5c8b09449561ee969a4686f77060a6b9f",
+    "inboxCount": 1,
     "doneCount": 0,
     "failedCount": 0
   },
   "stats": {
     "total": 16,
-    "pending": 2,
-    "running": 0,
+    "pending": 1,
+    "running": 1,
     "needsChatGPTAudit": 1,
     "done": 0,
     "failed": 0,
@@ -19,32 +19,10 @@
   },
   "tasks": [
     {
-      "taskId": "task-20260603-fix-control-tower-public-data",
-      "target": "mindmap-app",
-      "status": "needs_chatgpt_audit",
-      "location": "review",
-      "evidenceExists": true,
-      "chatgptVerdict": null,
-      "lastCommit": "3265e076a4e995b87bc00bfeb1785686a98149a9",
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "blockingIssues": []
-    },
-    {
-      "taskId": "task-test-audit",
-      "target": "mindmap-app",
-      "status": "inbox_unseen",
-      "location": "inbox",
-      "evidenceExists": true,
-      "chatgptVerdict": "PASS",
-      "lastCommit": "5311370d77ce2f70087e6cdc3733be3418d688f6",
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "blockingIssues": []
-    },
-    {
       "taskId": "task-20260603-control-tower-evidence-review-flow",
       "target": "mindmap-app",
-      "status": "inbox_unseen",
-      "location": "inbox",
+      "status": "running",
+      "location": "running",
       "evidenceExists": true,
       "chatgptVerdict": "FAIL",
       "lastCommit": "5311370d77ce2f70087e6cdc3733be3418d688f6",
@@ -81,6 +59,28 @@
         "Confidence: 0.95",
         "Reviewed by DeepSeek API."
       ]
+    },
+    {
+      "taskId": "task-20260603-fix-control-tower-public-data",
+      "target": "mindmap-app",
+      "status": "needs_chatgpt_audit",
+      "location": "review",
+      "evidenceExists": true,
+      "chatgptVerdict": null,
+      "lastCommit": "3265e076a4e995b87bc00bfeb1785686a98149a9",
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": []
+    },
+    {
+      "taskId": "task-test-audit",
+      "target": "mindmap-app",
+      "status": "inbox_unseen",
+      "location": "inbox",
+      "evidenceExists": true,
+      "chatgptVerdict": "PASS",
+      "lastCommit": "5311370d77ce2f70087e6cdc3733be3418d688f6",
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": []
     },
     {
       "taskId": "task-20260603-no-api-chatgpt-audit-loop",

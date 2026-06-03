@@ -60,6 +60,9 @@ function saveTaskState(taskId, state) {
 
 // Main Commands
 async function audit(taskId, target) {
+  if (taskId.endsWith('.md')) {
+    taskId = taskId.slice(0, -3);
+  }
   console.log(`=== Running QA Audit for Task: ${taskId} [Target: ${target}] ===`);
   const workDir = target ? path.join(PROJECTS_DIR, target) : REPO_DIR;
   

@@ -40,6 +40,9 @@ function truncateString(str, maxLength) {
 }
 
 async function runReview(taskId) {
+  if (taskId.endsWith('.md')) {
+    taskId = taskId.slice(0, -3);
+  }
   console.log(`[DeepSeek Reviewer] Starting review for task: ${taskId}`);
 
   if (!DEEPSEEK_API_KEY) {
