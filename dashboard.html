@@ -1012,6 +1012,40 @@ async function loadData() {
     console.error('Failed to load status.json', e);
   }
 
+  if (taskIndex.length === 0 && statusData && statusData.taskDetails) {
+    taskIndex = Object.entries(statusData.taskDetails).map(([taskId, detail]) => {
+      let location = 'unknown';
+      if (detail.status === 'pending' || detail.status === 'inbox_unseen') location = 'inbox';
+      else if (detail.status === 'running') location = 'running';
+      else if (detail.status === 'needs_chatgpt_audit') location = 'review';
+      else if (detail.status === 'done') location = 'done';
+      else if (detail.status === 'failed' || detail.status === 'blocked') location = 'failed';
+      return {
+        taskId,
+        target: detail.target || 'mindmap-app',
+        location,
+        status: detail.status === 'pending' ? 'inbox_unseen' : detail.status,
+        statePath: `.ai/state/${taskId}.json`,
+        evidencePath: detail.evidencePacketPath ? `${detail.evidencePacketPath}evidence.json` : null,
+        chatgptAuditPath: detail.chatgptVerdict ? `.ai/reviews/${taskId}/chatgpt-audit.md` : null,
+        chatgptVerdict: detail.chatgptVerdict || null,
+        lastCommit: detail.lastCommit || null,
+        liveUrl: detail.liveUrl || null,
+        blockingIssues: detail.blockingErrors || [],
+        title: detail.title || taskId,
+        attempt: detail.attempt || 1,
+        maxAttempts: detail.maxAttempts || 3,
+        createdAt: detail.completedAt || new Date().toISOString(),
+        evidenceExists: !!detail.evidencePacketPath,
+        invalidDone: (detail.status === 'done' && detail.chatgptVerdict !== 'PASS'),
+        blockingErrors: detail.blockingErrors || [],
+        evidencePacketPath: detail.evidencePacketPath || `.ai/reports/${taskId}/`
+      };
+    });
+    console.log('Reconstructed taskIndex from status.json fallback');
+    loadingError = false;
+  }
+
   if (loadingError && taskIndex.length === 0) {
     renderErrorFallback();
   } else {
@@ -1506,6 +1540,8 @@ function render(taskIndex, heartbeat, agyHeartbeat, statusData) {
           </div>
         `;
       }).join('');
+    } else if (inbox + running > 0) {
+      blockingListDiv.innerHTML = `<div style="color:var(--clr-warning); text-align:center; padding:20px; font-size:12px;">⚠️ No blocking errors, but there are ${inbox + running} pending tasks in the backlog.</div>`;
     } else {
       blockingListDiv.innerHTML = '<div style="color:var(--clr-success); text-align:center; padding:20px; font-size:12px;">✅ No blocking issues or warnings detected. All green!</div>';
     }
