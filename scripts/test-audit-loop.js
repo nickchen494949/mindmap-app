@@ -68,6 +68,13 @@ function cleanup() {
 try {
   cleanup();
 
+  // Make sure directories exist
+  const dirs = ['inbox', 'running', 'review', 'reviews', 'done', 'failed', 'state', 'reports', 'fix'];
+  dirs.forEach(d => {
+    const p = path.join(aiDir, d);
+    if (!fs.existsSync(p)) fs.mkdirSync(p, { recursive: true });
+  });
+
   // ==========================================
   // TEST A: Needs ChatGPT Audit
   // ==========================================
