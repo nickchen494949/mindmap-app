@@ -18,3 +18,60 @@ I will view a done task file to check for any metadata tags indicating the creat
 I will view `.ai/task-index.json` to inspect the structure of the task entries generated.
 I will search `scripts/pipeline-helper.js` for references to `log-tail` or `logTailPath` to see if it is missing the required evidence files.
 I will search the repository for any references to `pipeline-helper.js` to see how it is used.
+I will run the existing test script to see the baseline status and make sure it passes.
+I will read the log of the run of `test-audit-loop.js`.
+I will view the rest of the log of the `test-audit-loop` command to see if it finished successfully.
+I will view the rest of the log of the `test-audit-loop` command.
+I will view lines 360 to 420 of `scripts/pipeline-helper.js` to locate the exact content we need to replace to add `log-tail.txt` and align `evidence.json`.
+I will edit `scripts/pipeline-helper.js` to ensure the `log-tail.txt` is correctly generated and all requested keys are included in `evidence.json`.
+I will view lines 960 to 1025 of `dashboard.html` to get the exact lines to target for editing.
+I will modify `dashboard.html` to add a robust fallback that reconstructs `taskIndex` from `status.json` if `.ai/task-index.json` fails to load. This ensures the dashboard prefers `task-index.json` but doesn't break if only `status.json` is present.
+I will create a comprehensive, automated test script `scripts/verify-control-tower.js` that tests all five required test cases (inbox visibility, review gate, PASS flow, FAIL flow, and invalid done red flags) and verifies their behavior against `.ai/task-index.json`.
+I will run the new verification script `scripts/verify-control-tower.js` to verify all five integration test cases.
+I will view the log of the verification command execution.
+I will check the git status to see which files were modified and need to be staged.
+I will view `.gitignore` to ensure it is configured to ignore `node_modules/`.
+I will run a git diff on `dashboard.html` to confirm that the changes were correctly applied.
+I will view the loadData function in `dashboard.html` to see if the changes were saved correctly.
+I will run `git diff` to see what modifications Git has registered across the codebase.
+I will run a command to see if `dashboard.html` is tracked by git and check its diff.
+I will run `git diff --cached dashboard.html` to see if the changes to `dashboard.html` were already staged.
+I will run `git diff HEAD dashboard.html` to compare the working directory version of `dashboard.html` with the HEAD commit.
+I will check if `dashboard.html` is tracked by git.
+I will check if there are differences between our local version of `dashboard.html` and the remote version.
+I will clean up the temporary test files created during our test runs to keep the repository clean.
+I will check `git status` again to see what is left to commit.
+I will stage the changes for our implementation and test files.
+I will commit the changes with a descriptive commit message.
+I will get the full commit SHA.
+I will create the final report file with all the requested details.
+I will stage and commit the final report file.
+I will push the commits to the remote repository.
+I will retrieve the final commit SHA to ensure it matches the state pushed.
+I will update the commit SHA in the final report to match the final pushed commit SHA.
+I will stage, commit, and push the updated final report.
+I will check the final commit SHA after amending and pushing.
+I will update the report with the SHA `d5be505530299a1917192ef544dcc2a7b42c1602` and commit it.
+I will commit the finalized report and push it.
+I have successfully completed the tasks exactly as described in the task specification:
+
+1. **Standard Evidence Packet Compliance:**
+   - Modified [scripts/pipeline-helper.js](file:///Users/happygolucky/mindmap-repo/scripts/pipeline-helper.js) to write `log-tail.txt` under `.ai/reports/<task-id>/` and populated all required/optional keys (`logTailPath`, `generatedAt`, `liveUrl`, `pageTextPath`, `screenshotPath`, `consoleErrorsPath`, `dataAuditPath`) inside `evidence.json`.
+
+2. **Communication Control Tower UI & Data Fallback:**
+   - Checked and confirmed [dashboard.html](file:///Users/happygolucky/mindmap-repo/dashboard.html) already has layout columns for Inbox, Running, Needs Audit, Failed, and Done, along with Telemetry, Commit Tracker, and Warnings sections.
+   - Refined the client-side fetch mechanism in `dashboard.html` to first attempt loading `.ai/task-index.json` (preferring task-index over status) and fallback gracefully by reconstructing the tasks array from `status.json` if necessary.
+
+3. **Automated Integration Tests:**
+   - Created [scripts/verify-control-tower.js](file:///Users/happygolucky/mindmap-repo/scripts/verify-control-tower.js), an automated test suite verifying all 5 required test cases:
+     * **Test 1 — inbox visibility:** Task in inbox shows up in task-index before processing.
+     * **Test 2 — review gate:** Task in review shows up with `needs_chatgpt_audit` status and remains blocked from being marked done.
+     * **Test 3 — PASS flow:** Fake `chatgpt-audit.md` with `VERDICT: PASS` moves the task from review to done.
+     * **Test 4 — FAIL flow:** Fake `chatgpt-audit.md` with `VERDICT: FAIL` archives the attempt to `fix/` and generates a fix task in the inbox starting with `target: <target>` and including the blocking issues.
+     * **Test 5 — invalid done red flag:** Task in done without a ChatGPT PASS verdict is flagged as `invalidDone` and triggers warnings.
+   - Executed the integration test suite successfully (all 5 tests passed).
+
+4. **Preserved Safety & Gatekeeper Rules:**
+   - Kept all Gatekeeper v3 protections untouched in `scripts/run-ai-inbox.sh`.
+   - Never modified `mindmap-watcher.sh` nor files outside the target repository.
+   - Committed the changes and wrote the final report to `.ai/reports/task-20260603-control-tower-evidence-review-flow/final-report.md`. Pushed commits to remote.

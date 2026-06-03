@@ -1,30 +1,46 @@
 {
-  "pendingTasks": 13,
-  "runningTasks": 2,
-  "reviewTasks": 1,
-  "failedTasks": 0,
-  "doneTasks": 1,
+  "pendingTasks": 4,
+  "runningTasks": 0,
+  "reviewTasks": 2,
+  "failedTasks": 1,
+  "doneTasks": 16,
   "needsChatGPTAudit": [
+    "task-test-review-gate",
     "task-20260603-control-tower-evidence-review-flow"
   ],
   "blocked": [],
   "heartbeat": {
     "name": "watcher",
-    "lastSeen": "2026-06-03T10:50:49Z",
-    "lastScannedCommit": "0eb0e4ae26313868f4681553cbfcde29b8f5a143",
+    "lastSeen": "2026-06-03T10:53:06Z",
+    "lastScannedCommit": "51865d5c127e53f96a104a9ce0cf552a0486a934",
     "inboxCount": 15,
     "doneCount": 14,
     "status": "alive",
     "lastTask": "task-20260603-control-tower-evidence-review-flow.md",
     "failedCount": 0
   },
-  "lastUpdate": "2026-06-03 10:52:20",
-  "totalTasks": 17,
+  "lastUpdate": "2026-06-03 10:56:55",
+  "totalTasks": 24,
   "pending": [
+    "task-task-test-fail-flow",
+    "task-test-inbox-visibility",
     "task-task-test-audit",
-    "task-20260603-fix-control-tower-public-data",
-    "task-20260603-control-tower-dashboard",
+    "task-20260603-fix-control-tower-public-data"
+  ],
+  "running": [],
+  "review": [
+    "task-test-review-gate",
+    "task-20260603-control-tower-evidence-review-flow"
+  ],
+  "failed": [
+    "task-test-fail-flow"
+  ],
+  "done": [
+    "task-test-invalid-done",
+    "task-test-pass-flow",
+    "task-test-audit",
     "task-20260603-no-api-chatgpt-audit-loop",
+    "task-20260603-control-tower-dashboard",
     "task-20260603-add-qa-audit",
     "task-20260603-us-macro-dashboard-transmission-map",
     "task-20260603-deploy-us-macro-dashboard-pages",
@@ -33,18 +49,9 @@
     "task-005-canvas-title",
     "task-004-world-economic-history-v3",
     "task-003-world-economic-history-v2",
-    "task-002-world-economic-history"
-  ],
-  "running": [
+    "task-002-world-economic-history",
     "task-000-test",
     "task-001-machine-learning"
-  ],
-  "review": [
-    "task-20260603-control-tower-evidence-review-flow"
-  ],
-  "failed": [],
-  "done": [
-    "task-test-audit"
   ],
   "projects": [
     "chatgpt-pipeline-test",
@@ -52,31 +59,17 @@
     "us-macro-dashboard"
   ],
   "taskDetails": {
-    "task-000-test": {
-      "title": "Task: Test",
+    "task-test-review-gate": {
+      "title": "Test 2 Title",
       "target": "mindmap-app",
-      "status": "running",
+      "status": "needs_chatgpt_audit",
       "completedAt": "",
       "summary": "Task index updated",
       "attempt": 1,
       "maxAttempts": 3,
-      "lastCommit": null,
+      "lastCommit": "d153763e09f716e9112e8c26ff5c9bbce02bf034",
       "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-000-test/",
-      "chatgptVerdict": null,
-      "blockingErrors": []
-    },
-    "task-001-machine-learning": {
-      "title": "Task 001: Generate Machine Learning Mindmap",
-      "target": "mindmap-app",
-      "status": "running",
-      "completedAt": "",
-      "summary": "Task index updated",
-      "attempt": 1,
-      "maxAttempts": 3,
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-001-machine-learning/",
+      "evidencePacketPath": ".ai/reports/task-test-review-gate/",
       "chatgptVerdict": null,
       "blockingErrors": []
     },
@@ -91,6 +84,34 @@
       "lastCommit": "5311370d77ce2f70087e6cdc3733be3418d688f6",
       "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
       "evidencePacketPath": ".ai/reports/task-20260603-control-tower-evidence-review-flow/",
+      "chatgptVerdict": null,
+      "blockingErrors": []
+    },
+    "task-task-test-fail-flow": {
+      "title": "Fix Task for task-test-fail-flow (Attempt 2)",
+      "target": "mindmap-app",
+      "status": "pending",
+      "completedAt": "",
+      "summary": "Task index updated",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "evidencePacketPath": ".ai/reports/task-task-test-fail-flow/",
+      "chatgptVerdict": null,
+      "blockingErrors": []
+    },
+    "task-test-inbox-visibility": {
+      "title": "Test 1 Title",
+      "target": "mindmap-app",
+      "status": "pending",
+      "completedAt": "",
+      "summary": "Task index updated",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "evidencePacketPath": ".ai/reports/task-test-inbox-visibility/",
       "chatgptVerdict": null,
       "blockingErrors": []
     },
@@ -122,158 +143,49 @@
       "chatgptVerdict": null,
       "blockingErrors": []
     },
-    "task-20260603-control-tower-dashboard": {
-      "title": "Task: Upgrade dashboard to Communication Control Tower",
+    "task-test-fail-flow": {
+      "title": "Test 4 Title",
       "target": "mindmap-app",
-      "status": "pending",
+      "status": "failed",
       "completedAt": "",
+      "summary": "Task index updated",
+      "attempt": 2,
+      "maxAttempts": 3,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "evidencePacketPath": ".ai/reports/task-test-fail-flow/",
+      "chatgptVerdict": "FAIL",
+      "blockingErrors": [
+        "Problem A",
+        "Problem B"
+      ]
+    },
+    "task-test-invalid-done": {
+      "title": "Test 5 Title",
+      "target": "mindmap-app",
+      "status": "done",
+      "completedAt": "2026-06-03T10:56:55.418Z",
+      "summary": "Task index updated",
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "evidencePacketPath": ".ai/reports/task-test-invalid-done/",
+      "chatgptVerdict": null,
+      "blockingErrors": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    "task-test-pass-flow": {
+      "title": "Test 3 Title",
+      "target": "mindmap-app",
+      "status": "done",
+      "completedAt": "2026-06-03T10:56:55.239Z",
       "summary": "Task index updated",
       "attempt": 1,
       "maxAttempts": 3,
       "lastCommit": null,
       "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-20260603-control-tower-dashboard/",
-      "chatgptVerdict": null,
-      "blockingErrors": []
-    },
-    "task-20260603-no-api-chatgpt-audit-loop": {
-      "title": "Task",
-      "target": "mindmap-app",
-      "status": "pending",
-      "completedAt": "",
-      "summary": "Task index updated",
-      "attempt": 1,
-      "maxAttempts": 3,
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-20260603-no-api-chatgpt-audit-loop/",
-      "chatgptVerdict": null,
-      "blockingErrors": []
-    },
-    "task-20260603-add-qa-audit": {
-      "title": "Task: Add automated live-page QA",
-      "target": "us-macro-dashboard",
-      "status": "pending",
-      "completedAt": "",
-      "summary": "Task index updated",
-      "attempt": 1,
-      "maxAttempts": 3,
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/us-macro-dashboard/",
-      "evidencePacketPath": ".ai/reports/task-20260603-add-qa-audit/",
-      "chatgptVerdict": null,
-      "blockingErrors": []
-    },
-    "task-20260603-us-macro-dashboard-transmission-map": {
-      "title": "Task",
-      "target": "us-macro-dashboard",
-      "status": "pending",
-      "completedAt": "",
-      "summary": "Task index updated",
-      "attempt": 1,
-      "maxAttempts": 3,
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/us-macro-dashboard/",
-      "evidencePacketPath": ".ai/reports/task-20260603-us-macro-dashboard-transmission-map/",
-      "chatgptVerdict": null,
-      "blockingErrors": []
-    },
-    "task-20260603-deploy-us-macro-dashboard-pages": {
-      "title": "Task: Deploy US Macro Dashboard to GitHub Pages",
-      "target": "mindmap-app",
-      "status": "pending",
-      "completedAt": "",
-      "summary": "Task index updated",
-      "attempt": 1,
-      "maxAttempts": 3,
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-20260603-deploy-us-macro-dashboard-pages/",
-      "chatgptVerdict": null,
-      "blockingErrors": []
-    },
-    "task-20260603-us-macro-dashboard": {
-      "title": "Task: Create new US Macro Dashboard",
-      "target": "us-macro-dashboard",
-      "status": "pending",
-      "completedAt": "",
-      "summary": "Task index updated",
-      "attempt": 1,
-      "maxAttempts": 3,
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/us-macro-dashboard/",
-      "evidencePacketPath": ".ai/reports/task-20260603-us-macro-dashboard/",
-      "chatgptVerdict": null,
-      "blockingErrors": []
-    },
-    "task-006-pipeline-test": {
-      "title": "Task: Test new project creation",
-      "target": "chatgpt-pipeline-test",
-      "status": "pending",
-      "completedAt": "",
-      "summary": "Task index updated",
-      "attempt": 1,
-      "maxAttempts": 3,
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/chatgpt-pipeline-test/",
-      "evidencePacketPath": ".ai/reports/task-006-pipeline-test/",
-      "chatgptVerdict": null,
-      "blockingErrors": []
-    },
-    "task-005-canvas-title": {
-      "title": "Task 005: Add page title display",
-      "target": "mindmap-app",
-      "status": "pending",
-      "completedAt": "",
-      "summary": "Task index updated",
-      "attempt": 1,
-      "maxAttempts": 3,
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-005-canvas-title/",
-      "chatgptVerdict": null,
-      "blockingErrors": []
-    },
-    "task-004-world-economic-history-v3": {
-      "title": "Task 004: Regenerate World Economic History Mindmap (v3)",
-      "target": "mindmap-app",
-      "status": "pending",
-      "completedAt": "",
-      "summary": "Task index updated",
-      "attempt": 1,
-      "maxAttempts": 3,
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-004-world-economic-history-v3/",
-      "chatgptVerdict": null,
-      "blockingErrors": []
-    },
-    "task-003-world-economic-history-v2": {
-      "title": "Task 003: World Economic History Mindmap V2",
-      "target": "mindmap-app",
-      "status": "pending",
-      "completedAt": "",
-      "summary": "Task index updated",
-      "attempt": 1,
-      "maxAttempts": 3,
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-003-world-economic-history-v2/",
-      "chatgptVerdict": null,
-      "blockingErrors": []
-    },
-    "task-002-world-economic-history": {
-      "title": "Task 002: Generate World Economic History Mindmap",
-      "target": "mindmap-app",
-      "status": "pending",
-      "completedAt": "",
-      "summary": "Task index updated",
-      "attempt": 1,
-      "maxAttempts": 3,
-      "lastCommit": null,
-      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-002-world-economic-history/",
-      "chatgptVerdict": null,
+      "evidencePacketPath": ".ai/reports/task-test-pass-flow/",
+      "chatgptVerdict": "PASS",
       "blockingErrors": []
     },
     "task-test-audit": {
@@ -289,7 +201,258 @@
       "evidencePacketPath": ".ai/reports/task-test-audit/",
       "chatgptVerdict": "PASS",
       "blockingErrors": []
+    },
+    "task-20260603-no-api-chatgpt-audit-loop": {
+      "title": "Task",
+      "target": "mindmap-app",
+      "status": "done",
+      "completedAt": "2026-06-03T10:08:46.642Z",
+      "summary": "Task index updated",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "evidencePacketPath": ".ai/reports/task-20260603-no-api-chatgpt-audit-loop/",
+      "chatgptVerdict": null,
+      "blockingErrors": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    "task-20260603-control-tower-dashboard": {
+      "title": "Task: Upgrade dashboard to Communication Control Tower",
+      "target": "mindmap-app",
+      "status": "done",
+      "completedAt": "2026-06-03T09:57:47.050Z",
+      "summary": "Task index updated",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "evidencePacketPath": ".ai/reports/task-20260603-control-tower-dashboard/",
+      "chatgptVerdict": null,
+      "blockingErrors": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    "task-20260603-add-qa-audit": {
+      "title": "Task: Add automated live-page QA",
+      "target": "us-macro-dashboard",
+      "status": "done",
+      "completedAt": "2026-06-03T09:39:15.722Z",
+      "summary": "Task index updated",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/us-macro-dashboard/",
+      "evidencePacketPath": ".ai/reports/task-20260603-add-qa-audit/",
+      "chatgptVerdict": null,
+      "blockingErrors": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    "task-20260603-us-macro-dashboard-transmission-map": {
+      "title": "Task",
+      "target": "us-macro-dashboard",
+      "status": "done",
+      "completedAt": "2026-06-03T06:06:04.190Z",
+      "summary": "Task index updated",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/us-macro-dashboard/",
+      "evidencePacketPath": ".ai/reports/task-20260603-us-macro-dashboard-transmission-map/",
+      "chatgptVerdict": null,
+      "blockingErrors": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    "task-20260603-deploy-us-macro-dashboard-pages": {
+      "title": "Task: Deploy US Macro Dashboard to GitHub Pages",
+      "target": "mindmap-app",
+      "status": "done",
+      "completedAt": "2026-06-03T05:44:52.555Z",
+      "summary": "Task index updated",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "evidencePacketPath": ".ai/reports/task-20260603-deploy-us-macro-dashboard-pages/",
+      "chatgptVerdict": null,
+      "blockingErrors": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    "task-20260603-us-macro-dashboard": {
+      "title": "Task: Create new US Macro Dashboard",
+      "target": "us-macro-dashboard",
+      "status": "done",
+      "completedAt": "2026-06-03T05:32:59.736Z",
+      "summary": "Task index updated",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/us-macro-dashboard/",
+      "evidencePacketPath": ".ai/reports/task-20260603-us-macro-dashboard/",
+      "chatgptVerdict": null,
+      "blockingErrors": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    "task-006-pipeline-test": {
+      "title": "Task: Test new project creation",
+      "target": "chatgpt-pipeline-test",
+      "status": "done",
+      "completedAt": "2026-06-03T05:14:02.949Z",
+      "summary": "Task index updated",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/chatgpt-pipeline-test/",
+      "evidencePacketPath": ".ai/reports/task-006-pipeline-test/",
+      "chatgptVerdict": null,
+      "blockingErrors": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    "task-005-canvas-title": {
+      "title": "Task 005: Add page title display",
+      "target": "mindmap-app",
+      "status": "done",
+      "completedAt": "2026-06-03T04:31:38.657Z",
+      "summary": "Task index updated",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "evidencePacketPath": ".ai/reports/task-005-canvas-title/",
+      "chatgptVerdict": null,
+      "blockingErrors": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    "task-004-world-economic-history-v3": {
+      "title": "Task 004: Regenerate World Economic History Mindmap (v3)",
+      "target": "mindmap-app",
+      "status": "done",
+      "completedAt": "2026-06-03T03:39:01.411Z",
+      "summary": "Task index updated",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "evidencePacketPath": ".ai/reports/task-004-world-economic-history-v3/",
+      "chatgptVerdict": null,
+      "blockingErrors": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    "task-003-world-economic-history-v2": {
+      "title": "Task 003: World Economic History Mindmap V2",
+      "target": "mindmap-app",
+      "status": "done",
+      "completedAt": "2026-06-03T03:17:03.155Z",
+      "summary": "Task index updated",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "evidencePacketPath": ".ai/reports/task-003-world-economic-history-v2/",
+      "chatgptVerdict": null,
+      "blockingErrors": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    "task-002-world-economic-history": {
+      "title": "Task 002: Generate World Economic History Mindmap",
+      "target": "mindmap-app",
+      "status": "done",
+      "completedAt": "2026-06-03T02:09:03.016Z",
+      "summary": "Task index updated",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "evidencePacketPath": ".ai/reports/task-002-world-economic-history/",
+      "chatgptVerdict": null,
+      "blockingErrors": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    "task-000-test": {
+      "title": "Task: Test",
+      "target": "mindmap-app",
+      "status": "done",
+      "completedAt": "2026-06-03T01:59:04.340Z",
+      "summary": "Task index updated",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "evidencePacketPath": ".ai/reports/task-000-test/",
+      "chatgptVerdict": null,
+      "blockingErrors": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    "task-001-machine-learning": {
+      "title": "Task 001: Generate Machine Learning Mindmap",
+      "target": "mindmap-app",
+      "status": "done",
+      "completedAt": "2026-06-03T01:59:04.339Z",
+      "summary": "Task index updated",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "evidencePacketPath": ".ai/reports/task-001-machine-learning/",
+      "chatgptVerdict": null,
+      "blockingErrors": [
+        "Task is marked done but lacks ChatGPT PASS verdict"
+      ]
+    },
+    "task-20260603-control-tower-evidence-review-flow.md": {
+      "title": "20260603 control tower evidence review flow.md",
+      "target": "mindmap-app",
+      "status": "unknown",
+      "completedAt": "",
+      "summary": "Task index updated",
+      "lastCommit": null,
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "evidencePacketPath": ".ai/reports/task-20260603-control-tower-evidence-review-flow.md/",
+      "chatgptVerdict": null,
+      "blockingErrors": []
     }
   },
-  "activityLog": []
+  "activityLog": [
+    {
+      "time": "Wed Jun  3 18:53:08",
+      "sender": "watcher",
+      "action": "+08 2026 === Watcher run finished"
+    },
+    {
+      "time": "Wed Jun  3 18:55:08",
+      "sender": "watcher",
+      "action": "+08 2026 === Watcher run started"
+    },
+    {
+      "time": "Wed Jun  3 18:55:08",
+      "sender": "watcher",
+      "action": "+08 2026 Pulling latest..."
+    },
+    {
+      "time": "Wed Jun  3 18:55:09",
+      "sender": "watcher",
+      "action": "+08 2026 Found task: .ai/inbox/task-20260603-control-tower-evidence-review-flow.md"
+    },
+    {
+      "time": "Wed Jun  3 18:55:09",
+      "sender": "watcher",
+      "action": "+08 2026 Target: mindmap-app → /Users/happygolucky/mindmap-repo"
+    },
+    {
+      "time": "Wed Jun  3 18:55:09",
+      "sender": "agy",
+      "action": "+08 2026 Running agy..."
+    }
+  ]
 }
