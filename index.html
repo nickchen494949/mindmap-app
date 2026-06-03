@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>动力图系统 - System Dynamics Diagram</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="toolbar">
+  <div class="toolbar-group">
+    <button id="btn-add-node" class="tool-btn active" title="添加节点">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      <span>添加节点</span>
+    </button>
+    <button id="btn-add-arrow" class="tool-btn" title="添加箭头">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="14 7 19 12 14 17"/></svg>
+      <span>连线</span>
+    </button>
+    <button id="btn-select" class="tool-btn" title="选择/移动">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l7 17 2.5-6.5L20 12z"/></svg>
+      <span>选择</span>
+    </button>
+    <button id="btn-drag-mode" class="tool-btn" title="切换: 整支移动 / 单节点移动">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="4" r="2.5"/><circle cx="5" cy="18" r="2.5"/><circle cx="19" cy="18" r="2.5"/><line x1="12" y1="6.5" x2="5" y2="15.5"/><line x1="12" y1="6.5" x2="19" y2="15.5"/></svg>
+      <span>整支移动</span>
+    </button>
+    <button id="btn-add-group" class="tool-btn" title="添加分组">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="3" stroke-dasharray="4 2"/><rect x="6" y="6" width="5" height="5" rx="1"/><rect x="13" y="13" width="5" height="5" rx="1"/></svg>
+      <span>分组</span>
+    </button>
+  </div>
+  <div class="toolbar-group">
+    <button id="btn-delete" class="tool-btn danger" title="删除选中">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+      <span>删除</span>
+    </button>
+    <button id="btn-clear" class="tool-btn danger" title="清空画布">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="8" y1="8" x2="16" y2="16"/><line x1="16" y1="8" x2="8" y2="16"/></svg>
+      <span>清空</span>
+    </button>
+  </div>
+  <div class="toolbar-group">
+    <button id="btn-export" class="tool-btn" title="导出PNG图片">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span>导出图片</span>
+    </button>
+    <button id="btn-save" class="tool-btn" title="保存为可编辑文件(.json)">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+      <span>保存工程</span>
+    </button>
+    <button id="btn-load" class="tool-btn" title="加载工程文件(.json)">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+      <span>加载工程</span>
+    </button>
+    <button id="btn-ai-import" class="tool-btn" title="AI生成导入" style="background:rgba(99,102,241,0.15);border-color:rgba(99,102,241,0.4);color:#a5b4fc;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 014 4c0 1.1-.9 2-2 2h-4a2 2 0 01-2-2 4 4 0 014-4z"/><path d="M8 8v8a4 4 0 004 4 4 4 0 004-4V8"/><line x1="6" y1="14" x2="8" y2="14"/><line x1="16" y1="14" x2="18" y2="14"/></svg>
+      <span>AI导入</span>
+    </button>
+  </div>
+  <div class="toolbar-group">
+    <button id="btn-tidy-children" class="tool-btn" title="选中节点后，整理其子节点为等距水平排列">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14h16M8 10V6m4 4V4m4 4V6"/><circle cx="8" cy="14" r="2"/><circle cx="12" cy="14" r="2"/><circle cx="16" cy="14" r="2"/></svg>
+      <span>整理子节点</span>
+    </button>
+  </div>
+  <div class="toolbar-group color-group">
+    <label>节点颜色:</label>
+    <input type="color" id="node-color" value="#ffffff">
+    <label>边框:</label>
+    <input type="color" id="border-color" value="#6366f1">
+    <label>箭头:</label>
+    <input type="color" id="arrow-color" value="#6366f1">
+    <button id="btn-toggle-line" class="tool-btn" title="切换线型: 曲线/直线" style="padding: 4px 8px; font-size: 12px; margin-left: 8px; border-radius: 4px; border: 1px solid #e5e7eb; background: #fff;">曲线连线</button>
+    <button id="btn-toggle-dir" class="tool-btn" title="切换箭头方向: 单向/双向" style="padding: 4px 8px; font-size: 12px; margin-left: 4px; border-radius: 4px; border: 1px solid #e5e7eb; background: #fff;">→ 单向</button>
+  </div>
+</div>
+
+<div id="tabs-bar">
+  <div id="tabs-container">
+    <!-- Tabs will be generated here -->
+  </div>
+  <button id="btn-add-tab" title="新建画布">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+  </button>
+</div>
+
+<div id="canvas-container">
+  <div id="transform-group">
+    <div id="node-layer"></div>
+    <svg id="arrow-layer"></svg>
+  </div>
+  <div id="zoom-controls">
+    <button id="btn-zoom-in" class="zoom-btn" title="放大 (+)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+    <span id="zoom-info" title="点击重置视图" style="cursor:pointer">100%</span>
+    <button id="btn-zoom-out" class="zoom-btn" title="缩小 (-)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+  </div>
+  <div id="status-bar">
+    <span id="status-text">就绪 | 点击画布添加节点</span>
+    <span id="pan-hint">按住空格+拖动 或 鼠标中键拖动 平移画布</span>
+  </div>
+</div>
+
+<div id="node-editor" class="panel hidden">
+  <div id="editor-header">
+    <span>编辑节点</span>
+    <button id="editor-close" title="关闭">&times;</button>
+  </div>
+  <div id="editor-body">
+    <label>名称:</label>
+    <input type="text" id="edit-label" placeholder="输入名称...">
+    <label style="display:flex;align-items:center;gap:6px;">描述: <input type="checkbox" id="edit-show-desc" title="勾选则显示描述"> <span style="font-size:11px;color:#888;">显示</span></label>
+    <textarea id="edit-desc" placeholder="输入描述..." rows="4"></textarea>
+    <div id="edit-color-row">
+      <label>背景:</label>
+      <div class="color-swatches" id="bg-swatches">
+        <button type="button" class="swatch" data-color="#ffffff" style="background:#ffffff"></button>
+        <button type="button" class="swatch" data-color="#dbeafe" style="background:#dbeafe"></button>
+        <button type="button" class="swatch" data-color="#dcfce7" style="background:#dcfce7"></button>
+        <button type="button" class="swatch" data-color="#fef3c7" style="background:#fef3c7"></button>
+        <button type="button" class="swatch" data-color="#ede9fe" style="background:#ede9fe"></button>
+      </div>
+      <label>边框:</label>
+      <div class="color-swatches" id="border-swatches">
+        <button type="button" class="swatch" data-color="#6366f1" style="background:#6366f1"></button>
+        <button type="button" class="swatch" data-color="#3b82f6" style="background:#3b82f6"></button>
+        <button type="button" class="swatch" data-color="#10b981" style="background:#10b981"></button>
+        <button type="button" class="swatch" data-color="#f59e0b" style="background:#f59e0b"></button>
+        <button type="button" class="swatch" data-color="#ef4444" style="background:#ef4444"></button>
+      </div>
+      <input type="hidden" id="edit-bg" value="#ffffff">
+      <input type="hidden" id="edit-border" value="#6366f1">
+    </div>
+    <div class="editor-row" id="edit-size-row">
+      <label>宽:</label>
+      <input type="number" id="edit-width" min="60" step="10" style="width:60px;padding:4px 6px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;font-size:12px;color:#111827;outline:none;">
+      <label>高:</label>
+      <input type="number" id="edit-height" min="30" step="10" style="width:60px;padding:4px 6px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;font-size:12px;color:#111827;outline:none;">
+      <button id="edit-reset-size" class="tool-btn" style="padding:3px 8px;font-size:11px;" title="重置为自动大小">自动</button>
+    </div>
+    <div id="edit-submap-row" class="editor-row" style="margin-top:6px;">
+      <button id="edit-drill" class="tool-btn" style="width:100%;background:rgba(99,102,241,0.1);border-color:#6366f1;color:#6366f1;font-weight:500;padding:6px 0;justify-content:center;">
+        🔗 创建子图
+      </button>
+    </div>
+    <button id="edit-apply" class="tool-btn">应用</button>
+  </div>
+</div>
+
+<!-- AI Chat Panel -->
+<div id="ai-chat-panel" class="chat-collapsed">
+  <div id="ai-chat-toggle" title="AI 助手">🤖</div>
+  <div id="ai-chat-body">
+    <div id="ai-chat-header">
+      <span>🤖 AI 助手</span>
+      <div style="display:flex;gap:6px;align-items:center;">
+        <button id="ai-chat-settings-btn" title="设置 API Key" style="background:none;border:none;color:#a5b4fc;cursor:pointer;font-size:16px;">⚙️</button>
+        <button id="ai-chat-close" style="background:none;border:none;color:#888;cursor:pointer;font-size:18px;">&times;</button>
+      </div>
+    </div>
+    <div id="ai-chat-settings" style="display:none;">
+      <label style="font-size:11px;color:#888;">DeepSeek API Key:</label>
+      <div style="display:flex;gap:6px;">
+        <input type="password" id="ai-api-key" placeholder="sk-..." style="flex:1;padding:6px 8px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#e0e0e0;font-size:12px;font-family:monospace;outline:none;">
+        <button id="ai-save-key" style="padding:6px 12px;background:rgba(99,102,241,0.3);border:1px solid #6366f1;border-radius:6px;color:#a5b4fc;cursor:pointer;font-size:12px;">保存</button>
+      </div>
+      <div id="ai-key-status" style="font-size:10px;color:#666;margin-top:4px;"></div>
+      <label style="font-size:11px;color:#888;margin-top:8px;display:block;">模型:</label>
+      <select id="ai-model-select" style="width:100%;padding:6px 8px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#e0e0e0;font-size:12px;outline:none;margin-top:4px;">
+        <option value="deepseek-v4-flash">⚡ V4 Flash (省钱 + thinking)</option>
+        <option value="deepseek-v4-pro" selected>🧠 V4 Pro (最强 + thinking)</option>
+      </select>
+    </div>
+    <div id="ai-chat-messages"></div>
+    <div id="ai-chat-input-area">
+      <div id="ai-quick-btns">
+        <button class="ai-quick" data-prompt="分析这个系统图的因果逻辑是否完整，有没有遗漏">🔍 分析逻辑</button>
+        <button class="ai-quick" data-prompt="帮我补充这个系统图中可能遗漏的节点和关系，返回完整JSON">➕ 补充节点</button>
+        <button class="ai-quick" data-prompt="帮我重新整理这个系统图的结构，让逻辑更清晰，返回完整JSON">🔄 重新整理</button>
+      </div>
+      <div style="display:flex;gap:6px;">
+        <textarea id="ai-chat-input" placeholder="问 AI 关于这个图的问题..." rows="2"></textarea>
+        <button id="ai-chat-send" title="发送">➤</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+
+<!-- AI Chat Logic -->
+<script>
+(function() {
+  const panel = document.getElementById('ai-chat-panel');
+  const toggle = document.getElementById('ai-chat-toggle');
+  const closeBtn = document.getElementById('ai-chat-close');
+  const settingsBtn = document.getElementById('ai-chat-settings-btn');
+  const settingsDiv = document.getElementById('ai-chat-settings');
+  const apiKeyInput = document.getElementById('ai-api-key');
+  const saveKeyBtn = document.getElementById('ai-save-key');
+  const keyStatus = document.getElementById('ai-key-status');
+  const messagesDiv = document.getElementById('ai-chat-messages');
+  const chatInput = document.getElementById('ai-chat-input');
+  const sendBtn = document.getElementById('ai-chat-send');
+
+  // Load saved API key
+  const savedKey = localStorage.getItem('deepseek_api_key');
+  if (savedKey) {
+    apiKeyInput.value = savedKey;
+    keyStatus.textContent = '✅ 已保存';
+    keyStatus.style.color = '#4ade80';
+  }
+
+  // Toggle panel (drag-aware: click=open, drag=move)
+  let _aiDrag = false, _aiDidDrag = false, _aiSX, _aiSY, _aiSL, _aiST;
+  toggle.addEventListener('mousedown', (e) => {
+    _aiDrag = true; _aiDidDrag = false;
+    const r = toggle.getBoundingClientRect();
+    _aiSX = e.clientX; _aiSY = e.clientY; _aiSL = r.left; _aiST = r.top;
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', (e) => {
+    if (!_aiDrag) return;
+    const dx = e.clientX - _aiSX, dy = e.clientY - _aiSY;
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) _aiDidDrag = true;
+    if (_aiDidDrag) {
+      toggle.style.left = (_aiSL + dx) + 'px';
+      toggle.style.top = (_aiST + dy) + 'px';
+      toggle.style.right = 'auto';
+      toggle.style.bottom = 'auto';
+    }
+  });
+  document.addEventListener('mouseup', () => { _aiDrag = false; });
+  toggle.addEventListener('click', () => {
+    if (_aiDidDrag) { _aiDidDrag = false; return; }
+    panel.classList.remove('chat-collapsed'); panel.classList.add('chat-open');
+  });
+  closeBtn.onclick = () => { panel.classList.remove('chat-open'); panel.classList.add('chat-collapsed'); };
+
+  // Settings
+  settingsBtn.onclick = () => { settingsDiv.style.display = settingsDiv.style.display === 'none' ? 'block' : 'none'; };
+  saveKeyBtn.onclick = () => {
+    const key = apiKeyInput.value.trim();
+    if (key) {
+      localStorage.setItem('deepseek_api_key', key);
+      keyStatus.textContent = '✅ 已保存';
+      keyStatus.style.color = '#4ade80';
+      settingsDiv.style.display = 'none';
+    }
+  };
+
+  // Serialize diagram as compact JSON (with labels for AI reference)
+  function getDiagramContext() {
+    const nodes = state.nodes.map(n => ({ id: n.id, label: n.label, ...(n.desc ? { desc: n.desc } : {}) }));
+    const edges = state.arrows.map(a => {
+      const fromN = state.nodes.find(n => n.id === a.from);
+      const toN = state.nodes.find(n => n.id === a.to);
+      return { from: fromN?.label || a.from, to: toN?.label || a.to, ...(a.label ? { label: a.label } : {}) };
+    });
+    return JSON.stringify({ nodes, edges });
+  }
+
+  // Add message to chat
+  function addMessage(role, text) {
+    const div = document.createElement('div');
+    div.className = 'chat-msg ' + role;
+    div.innerHTML = text.replace(/\n/g, '<br>');
+    messagesDiv.appendChild(div);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    return div;
+  }
+
+  // Execute AI-generated JavaScript code on the diagram
+  function tryExecuteCode(text) {
+    // Extract ```js or ```javascript code blocks
+    const jsMatch = text.match(/```(?:js|javascript)\s*([\s\S]*?)```/);
+    if (!jsMatch) return false;
+
+    const code = jsMatch[1].trim();
+    if (!code) return false;
+
+    try {
+      const result = new Function(code)();
+      const summary = document.createElement('div');
+      summary.className = 'chat-msg system';
+      summary.innerHTML = '✅ AI 已操作图表' + (result ? ': ' + result : '');
+      messagesDiv.appendChild(summary);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      statusText.textContent = '✨ AI 自动操作完成';
+      return true;
+    } catch(e) {
+      const errDiv = document.createElement('div');
+      errDiv.className = 'chat-msg system';
+      errDiv.innerHTML = '⚠️ 执行出错: ' + e.message;
+      messagesDiv.appendChild(errDiv);
+      return false;
+    }
+  }
+
+  // Send message to DeepSeek
+  async function sendMessage(userText) {
+    const apiKey = localStorage.getItem('deepseek_api_key');
+    if (!apiKey) {
+      addMessage('system', '⚠️ 请先点 ⚙️ 设置 DeepSeek API Key');
+      settingsDiv.style.display = 'block';
+      return;
+    }
+
+    addMessage('user', userText);
+    chatInput.value = '';
+
+    const diagram = getDiagramContext();
+    const tokenCount = Math.round(diagram.length / 3);
+
+    const systemPrompt = `你是思维导图AI助手。你可以直接控制用户的图！用中文回答。
+
+重要：你的回复中必须包含 \`\`\`js 代码块来操作图。代码会自动执行。
+
+API：
+mapAPI.getNodes() → [{label, desc, x, y}]
+mapAPI.getEdges() → [{from, to, label}] (都是label名)
+mapAPI.addNode(label, desc, nearLabel, color)
+mapAPI.addEdge(fromLabel, toLabel, edgeLabel)
+mapAPI.editNode(label, {label, desc, color, border})
+mapAPI.deleteNode(label)
+mapAPI.deleteEdge(fromLabel, toLabel)
+mapAPI.highlight(["标签1","标签2"]) ← 只高亮这些节点
+mapAPI.highlightBranch("标签") ← 高亮整条路径（从根到叶+连线）★推荐
+mapAPI.unhighlight() ← 取消所有高亮
+mapAPI.locate("标签") ← 画面飞到该节点
+mapAPI.clear() / mapAPI.resetView()
+
+必须遵守：
+1. 用户提到任何节点时 → 用highlightBranch高亮整条路径
+2. 用户要加/删/改节点 → 写代码执行
+3. 用户要分析 → 先高亮相关节点，再文字分析
+4. 每次回复都要有 \`\`\`js 代码块
+5. 用节点的label引用，不用id`;
+
+    const aiMsg = addMessage('ai', '<span class="typing">思考中...</span>');
+
+    try {
+      const resp = await fetch('https://api.deepseek.com/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: document.getElementById('ai-model-select')?.value || 'deepseek-v4-flash',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: `当前系统图(~${tokenCount} tokens):\n${diagram}\n\n${userText}` }
+          ],
+          stream: true,
+          max_tokens: 4000,
+          thinking: { type: 'enabled' },
+          reasoning_effort: document.getElementById('ai-model-select')?.value === 'deepseek-v4-pro' ? 'max' : 'high'
+        })
+      });
+
+      if (!resp.ok) {
+        const err = await resp.text();
+        aiMsg.innerHTML = `❌ API 错误 ${resp.status}: ${err.slice(0, 200)}`;
+        return;
+      }
+
+      // Stream response
+      const reader = resp.body.getReader();
+      const decoder = new TextDecoder();
+      let fullText = '';
+      let thinkingText = '';
+      let isThinking = true;
+      aiMsg.innerHTML = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value);
+        const lines = chunk.split('\n').filter(l => l.startsWith('data: '));
+        for (const line of lines) {
+          const data = line.slice(6);
+          if (data === '[DONE]') continue;
+          try {
+            const json = JSON.parse(data);
+            const delta = json.choices?.[0]?.delta;
+            const isAtBottom = messagesDiv.scrollHeight - messagesDiv.scrollTop - messagesDiv.clientHeight < 50;
+            if (delta?.reasoning_content) {
+              thinkingText += delta.reasoning_content;
+              aiMsg.innerHTML = '<details class="ai-thinking" open><summary>💭 思考中...</summary><div class="thinking-content">' + thinkingText.replace(/\n/g, '<br>') + '</div></details>';
+              if (isAtBottom) messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }
+            if (delta?.content) {
+              fullText += delta.content;
+              let html = '';
+              if (thinkingText) {
+                html += '<details class="ai-thinking"><summary>💭 思考过程 (' + thinkingText.length + '字)</summary><div class="thinking-content">' + thinkingText.replace(/\n/g, '<br>') + '</div></details>';
+              }
+              html += fullText.replace(/\n/g, '<br>');
+              aiMsg.innerHTML = html;
+              if (isAtBottom) messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }
+          } catch(e) {}
+        }
+      }
+
+      // If only thinking was received with no content
+      if (!fullText && thinkingText) {
+        aiMsg.innerHTML = '<details class="ai-thinking" open><summary>💭 思考结果</summary><div class="thinking-content">' + thinkingText.replace(/\n/g, '<br>') + '</div></details>';
+      }
+
+      // Try to execute JS code from AI response
+      tryExecuteCode(fullText || thinkingText);
+
+    } catch(e) {
+      aiMsg.innerHTML = `❌ 连接失败: ${e.message}`;
+    }
+  }
+
+  // Send button
+  sendBtn.onclick = () => {
+    const text = chatInput.value.trim();
+    if (text) sendMessage(text);
+  };
+  chatInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendBtn.click(); }
+  });
+
+  // Quick buttons
+  document.querySelectorAll('.ai-quick').forEach(btn => {
+    btn.onclick = () => sendMessage(btn.dataset.prompt);
+  });
+})();
+</script>
+
+<!-- AI Import Modal -->
+<div id="ai-modal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;">
+  <div style="background:linear-gradient(145deg,#16213e,#1a1a2e);border:1px solid rgba(99,102,241,0.3);border-radius:16px;padding:28px;width:720px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.8);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <h3 style="color:#a5b4fc;font-size:17px;letter-spacing:1px;">🤖 AI 导入</h3>
+      <button id="ai-modal-close" style="background:none;border:none;color:#666;font-size:22px;cursor:pointer;">&times;</button>
+    </div>
+    <div style="display:flex;gap:16px;margin-bottom:14px;">
+      <button class="ai-tab active" data-tab="paste" style="flex:1;padding:8px;background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.4);border-radius:8px;color:#a5b4fc;cursor:pointer;font-family:inherit;">粘贴JSON</button>
+      <button class="ai-tab" data-tab="prompt" style="flex:1;padding:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#888;cursor:pointer;font-family:inherit;">提示词模板</button>
+    </div>
+    <div id="ai-tab-paste">
+      <p style="color:#888;font-size:12px;margin-bottom:8px;">把 AI 生成的 JSON 粘贴到下面，点击"生成"即可自动布局：</p>
+      <textarea id="ai-json-input" placeholder='粘贴AI生成的JSON...
+
+示例格式:
+{
+  "title": "主题",
+  "nodes": [
+    {"id": "1", "label": "中心主题"},
+    {"id": "2", "label": "分支1", "desc": "描述"},
+    {"id": "3", "label": "分支2"}
+  ],
+  "edges": [
+    {"from": "1", "to": "2", "label": "关系"},
+    {"from": "1", "to": "3"}
+  ]
+}' style="width:100%;height:280px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#e0e0e0;font-family:'Fira Code',monospace;font-size:12px;padding:12px;resize:vertical;outline:none;"></textarea>
+      <div style="display:flex;gap:10px;margin-top:12px;">
+        <button id="ai-generate" style="flex:1;padding:10px;background:rgba(99,102,241,0.3);border:1px solid #6366f1;border-radius:8px;color:#fff;font-size:14px;cursor:pointer;font-family:inherit;font-weight:500;">✨ 生成思维导图</button>
+        <button id="ai-example" style="padding:10px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:#888;cursor:pointer;font-family:inherit;">示例</button>
+      </div>
+    </div>
+    <div id="ai-tab-prompt" style="display:none;">
+      <p style="color:#888;font-size:12px;margin-bottom:8px;">复制下面的提示词，发给任何 AI（ChatGPT / Claude / Gemini），然后把回复粘贴到"粘贴JSON"标签页：</p>
+      <pre id="ai-prompt-text" style="background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px;color:#c0ffc0;font-size:11.5px;white-space:pre-wrap;word-wrap:break-word;max-height:350px;overflow-y:auto;line-height:1.6;"></pre>
+      <button id="ai-copy-prompt" style="margin-top:10px;padding:8px 20px;background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.4);border-radius:8px;color:#a5b4fc;cursor:pointer;font-family:inherit;">📋 复制提示词</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── AI Import Logic ──
+const aiModal = document.getElementById('ai-modal');
+document.getElementById('btn-ai-import').onclick = () => { aiModal.style.display = 'flex'; };
+document.getElementById('ai-modal-close').onclick = () => { aiModal.style.display = 'none'; };
+aiModal.addEventListener('click', (e) => { if (e.target === aiModal) aiModal.style.display = 'none'; });
+
+// Tab switching
+document.querySelectorAll('.ai-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.ai-tab').forEach(t => { t.style.background = 'rgba(255,255,255,0.05)'; t.style.borderColor = 'rgba(255,255,255,0.1)'; t.style.color = '#888'; });
+    tab.style.background = 'rgba(99,102,241,0.2)'; tab.style.borderColor = 'rgba(99,102,241,0.4)'; tab.style.color = '#a5b4fc';
+    document.getElementById('ai-tab-paste').style.display = tab.dataset.tab === 'paste' ? 'block' : 'none';
+    document.getElementById('ai-tab-prompt').style.display = tab.dataset.tab === 'prompt' ? 'block' : 'none';
+  });
+});
+
+// Prompt template
+const promptTemplate = `请帮我把以下内容总结成一个思维导图的 JSON 结构。
+
+规则：
+1. 输出纯 JSON，不要 markdown 代码块
+2. 用中文标签
+3. 格式如下：
+
+{
+  "title": "主题名称",
+  "nodes": [
+    {"id": "1", "label": "中心主题", "color": "#6366f1"},
+    {"id": "2", "label": "关键概念1", "desc": "简短描述"},
+    {"id": "3", "label": "关键概念2"},
+    {"id": "4", "label": "子概念2.1", "desc": "详细说明"},
+    {"id": "5", "label": "子概念2.2"}
+  ],
+  "edges": [
+    {"from": "1", "to": "2"},
+    {"from": "1", "to": "3"},
+    {"from": "3", "to": "4", "label": "包含"},
+    {"from": "3", "to": "5", "label": "导致"}
+  ]
+}
+
+要求：
+- id 用字符串数字 "1", "2", "3"...
+- 第一个节点是中心主题
+- edges 的 from/to 对应节点 id
+- 可选: desc 字段是节点的简短描述
+- 可选: color 字段是节点颜色 (hex)
+- 可选: edges 的 label 是关系描述
+- 节点数量控制在 5-20 个
+
+以下是需要总结的内容：
+
+[在这里粘贴视频/文章内容]`;
+
+document.getElementById('ai-prompt-text').textContent = promptTemplate;
+document.getElementById('ai-copy-prompt').onclick = () => {
+  navigator.clipboard.writeText(promptTemplate).then(() => {
+    document.getElementById('ai-copy-prompt').textContent = '✅ 已复制！';
+    setTimeout(() => { document.getElementById('ai-copy-prompt').textContent = '📋 复制提示词'; }, 2000);
+  });
+};
+
+// Example
+document.getElementById('ai-example').onclick = () => {
+  document.getElementById('ai-json-input').value = JSON.stringify({
+    "title": "美股驱动因素分层",
+    "nodes": [
+      {"id": "1", "label": "美股短期涨跌", "color": "#6366f1"},
+      {"id": "2", "label": "1D-5D: Gamma", "desc": "Dealer hedging / GEX"},
+      {"id": "3", "label": "5D-60D: CTA", "desc": "趋势动量追踪"},
+      {"id": "4", "label": "126D+: 基本面", "desc": "利率/信用/宏观"},
+      {"id": "5", "label": "VIX风险溢价", "desc": "独立机制，非CTA"},
+      {"id": "6", "label": "GEX极低", "desc": "20D return +2.4%"},
+      {"id": "7", "label": "CTA全线做空", "desc": "均值回归信号"},
+      {"id": "8", "label": "收益率曲线"},
+      {"id": "9", "label": "信用利差"},
+      {"id": "10", "label": "结论: 解释框架", "desc": "非预测模型", "color": "#e94560"}
+    ],
+    "edges": [
+      {"from": "1", "to": "2", "label": "短期"},
+      {"from": "1", "to": "3", "label": "中期"},
+      {"from": "1", "to": "4", "label": "长期"},
+      {"from": "1", "to": "5"},
+      {"from": "2", "to": "6"},
+      {"from": "3", "to": "7"},
+      {"from": "4", "to": "8"},
+      {"from": "4", "to": "9"},
+      {"from": "5", "to": "10"}
+    ]
+  }, null, 2);
+};
+
+// ── Auto-layout: tree from root ──
+function autoLayout(nodes, edges) {
+  const idMap = {};
+  nodes.forEach(n => { idMap[n.id] = { ...n, children: [] }; });
+  const childSet = new Set();
+  edges.forEach(e => { childSet.add(e.to); if (idMap[e.from]) idMap[e.from].children.push(e.to); });
+  // Find root: first node not pointed to, or first node
+  let rootId = nodes[0]?.id;
+  for (const n of nodes) { if (!childSet.has(n.id)) { rootId = n.id; break; } }
+
+  const positions = {};
+  const H_GAP = 220, V_GAP = 90;
+
+  function layoutTree(nodeId, depth, yOffset) {
+    const node = idMap[nodeId];
+    if (!node || positions[nodeId]) return { height: V_GAP };
+    const children = node.children.filter(c => !positions[c]);
+    if (children.length === 0) {
+      positions[nodeId] = { x: 200 + depth * H_GAP, y: yOffset };
+      return { height: V_GAP };
+    }
+    let totalH = 0;
+    children.forEach(cid => {
+      const r = layoutTree(cid, depth + 1, yOffset + totalH);
+      totalH += r.height;
+    });
+    // Center parent vertically among children
+    const firstChild = positions[children[0]];
+    const lastChild = positions[children[children.length - 1]];
+    const centerY = (firstChild.y + lastChild.y) / 2;
+    positions[nodeId] = { x: 200 + depth * H_GAP, y: centerY };
+    return { height: Math.max(totalH, V_GAP) };
+  }
+  layoutTree(rootId, 0, 100);
+  // Place any orphans
+  let maxY = Math.max(...Object.values(positions).map(p => p.y), 100) + V_GAP;
+  nodes.forEach(n => {
+    if (!positions[n.id]) { positions[n.id] = { x: 200, y: maxY }; maxY += V_GAP; }
+  });
+  return positions;
+}
+
+// ── Generate mindmap from JSON ──
+document.getElementById('ai-generate').onclick = () => {
+  let raw = document.getElementById('ai-json-input').value.trim();
+  // Strip markdown code fences if present
+  raw = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '');
+  let data;
+  try { data = JSON.parse(raw); } catch(e) { alert('JSON 格式错误: ' + e.message); return; }
+  if (!data.nodes || !Array.isArray(data.nodes)) { alert('缺少 nodes 数组'); return; }
+
+  // Clear canvas
+  state.nodes = []; state.arrows = []; nodeLayer.innerHTML = '';
+  arrowLayer.querySelectorAll('g').forEach(g => g.remove());
+
+  // Layout
+  const positions = autoLayout(data.nodes, data.edges || []);
+  const colors = ['#1a1a2e','#16213e','#0f3460','#1b2838','#1e1e3f','#2d1b69'];
+
+  // Create nodes
+  const idToInternal = {};
+  data.nodes.forEach((n, i) => {
+    const pos = positions[n.id] || { x: 200 + (i % 4) * 200, y: 100 + Math.floor(i / 4) * 100 };
+    const bg = n.color || colors[i % colors.length];
+    const created = createNode(pos.x, pos.y, n.label, n.desc || '', bg, '#e94560');
+    idToInternal[n.id] = created.id;
+  });
+
+  // Create edges
+  (data.edges || []).forEach(e => {
+    const fromId = idToInternal[e.from];
+    const toId = idToInternal[e.to];
+    if (fromId == null || toId == null) return;
+    const fromNode = state.nodes.find(n => n.id === fromId);
+    const toNode = state.nodes.find(n => n.id === toId);
+    if (!fromNode || !toNode) return;
+    const { fromPort, toPort } = bestPorts(fromNode, toNode);
+    createArrow(fromId, fromPort, toId, toPort, e.label || '');
+  });
+
+  aiModal.style.display = 'none';
+  setMode('select');
+  resetView();
+  statusText.textContent = `✨ 已生成 ${data.nodes.length} 个节点, ${(data.edges||[]).length} 条连线`;
+};
+
+// ── Tidy Children: distribute direct children horizontally with equal spacing ──
+document.getElementById('btn-tidy-children').onclick = () => {
+  if (!state.selectedNode) {
+    statusText.textContent = '⚠️ 请先选择一个节点';
+    return;
+  }
+
+  const parentNode = state.nodes.find(n => n.id === state.selectedNode);
+  if (!parentNode) return;
+
+  // Find direct children: arrows FROM selected node
+  const childIds = new Set();
+  state.arrows.forEach(a => {
+    if (a.from === state.selectedNode) childIds.add(a.to);
+  });
+
+  if (childIds.size === 0) {
+    statusText.textContent = '⚠️ 该节点没有子节点';
+    return;
+  }
+
+  const childNodes = state.nodes.filter(n => childIds.has(n.id));
+  const H_GAP = 40; // gap between children edges
+  const Y_OFFSET = 120; // vertical distance below parent
+
+  // Get parent dimensions
+  const parentEl = document.querySelector(`[data-id="${parentNode.id}"]`);
+  const parentW = parentEl ? parentEl.offsetWidth : 140;
+  const parentH = parentEl ? parentEl.offsetHeight : 50;
+  const parentCenterX = parentNode.x + parentW / 2;
+
+  // Sort children by current X to preserve left-right order
+  const sorted = [...childNodes].sort((a, b) => a.x - b.x);
+
+  // Get each child's width
+  const widths = sorted.map(n => {
+    const el = document.querySelector(`[data-id="${n.id}"]`);
+    return el ? el.offsetWidth : 140;
+  });
+  const heights = sorted.map(n => {
+    const el = document.querySelector(`[data-id="${n.id}"]`);
+    return el ? el.offsetHeight : 50;
+  });
+
+  // Total width = sum of all child widths + gaps between them
+  const totalWidth = widths.reduce((s, w) => s + w, 0) + (sorted.length - 1) * H_GAP;
+
+  // Start X: center the group under parent
+  const startX = parentCenterX - totalWidth / 2;
+
+  // Target Y: below parent
+  let targetY = parentNode.y + parentH + Y_OFFSET;
+
+  // Non-child/non-parent nodes to check collisions against
+  const otherNodes = state.nodes.filter(n => n.id !== parentNode.id && !childIds.has(n.id));
+
+  // Check if target row collides with any other node; if so push down
+  function hasCollision(y) {
+    let curX = startX;
+    for (let i = 0; i < sorted.length; i++) {
+      const cw = widths[i], ch = heights[i];
+      for (const other of otherNodes) {
+        const oel = document.querySelector(`[data-id="${other.id}"]`);
+        const ow = oel ? oel.offsetWidth : 140;
+        const oh = oel ? oel.offsetHeight : 50;
+        // AABB overlap check
+        if (curX < other.x + ow + 20 && curX + cw + 20 > other.x &&
+            y < other.y + oh + 20 && y + ch + 20 > other.y) {
+          return true;
+        }
+      }
+      curX += cw + H_GAP;
+    }
+    return false;
+  }
+
+  // Push down until no collision (max 10 attempts)
+  for (let attempt = 0; attempt < 10 && hasCollision(targetY); attempt++) {
+    targetY += 80;
+  }
+
+  // Assign positions
+  let curX = startX;
+  sorted.forEach((node, i) => {
+    node.x = curX;
+    node.y = targetY;
+    curX += widths[i] + H_GAP;
+
+    const el = document.querySelector(`[data-id="${node.id}"]`);
+    if (el) {
+      el.style.transition = 'left 0.35s cubic-bezier(0.4,0,0.2,1), top 0.35s cubic-bezier(0.4,0,0.2,1)';
+      el.style.left = node.x + 'px';
+      el.style.top = node.y + 'px';
+      setTimeout(() => { el.style.transition = 'box-shadow 0.25s ease, transform 0.15s ease'; }, 400);
+    }
+  });
+
+  // Update arrow ports
+  state.arrows.forEach(a => {
+    if (a.from === state.selectedNode || childIds.has(a.from) || childIds.has(a.to)) {
+      const fromNode = state.nodes.find(n => n.id === a.from);
+      const toNode = state.nodes.find(n => n.id === a.to);
+      if (fromNode && toNode) {
+        const { fromPort, toPort } = bestPorts(fromNode, toNode);
+        a.fromPort = fromPort;
+        a.toPort = toPort;
+      }
+    }
+  });
+
+  setTimeout(() => refreshArrows(), 50);
+  statusText.textContent = `✨ 已整理 ${childNodes.length} 个子节点，水平等距排列`;
+};
+
+</script>
+</body>
+</html>
