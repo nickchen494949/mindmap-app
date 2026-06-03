@@ -228,6 +228,11 @@ EOF
 echo "$(date) Generating evidence packet..."
 cd "$WORK_DIR"
 node "$REPO_DIR/scripts/collect-evidence.js" --taskId "${TASK_NAME%.md}" --target "${TARGET:-mindmap-app}" 2>&1 || echo "$(date) Evidence collection failed"
+
+# ── DeepSeek API Auto-Review ──
+echo "$(date) Running DeepSeek API Auto-Review..."
+node "$REPO_DIR/scripts/deepseek-reviewer.js" "${TASK_NAME%.md}" 2>&1 || echo "$(date) DeepSeek Review failed"
+
 cd "$REPO_DIR"
 
 # ── Write heartbeat ──
