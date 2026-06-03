@@ -9,7 +9,11 @@ REPO_DIR="/Users/happygolucky/Desktop/系统图app"
 AGY="/Users/happygolucky/.local/bin/agy"
 cd "$REPO_DIR"
 
-mkdir -p .ai/inbox .ai/outbox .ai/done .ai/logs
+# Clear any stale token env vars so git uses gh credential helper
+unset GITHUB_TOKEN 2>/dev/null || true
+unset GH_TOKEN 2>/dev/null || true
+
+mkdir -p .ai/inbox .ai/outbox .ai/done .ai/logs generated
 
 echo "$(date) === Watcher run started ==="
 
