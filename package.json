@@ -1,0 +1,23 @@
+{
+  "name": "mindmap-repo",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nickchen494949/mindmap-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nickchen494949/mindmap-app/issues"
+  },
+  "homepage": "https://github.com/nickchen494949/mindmap-app#readme",
+  "description": "",
+  "dependencies": {
+    "playwright": "^1.60.0"
+  }
+}

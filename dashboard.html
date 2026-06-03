@@ -5,196 +5,376 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Pipeline Dashboard</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+  
+  :root {
+    --bg-dark: #090d16;
+    --bg-card: rgba(17, 25, 40, 0.75);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --clr-primary: #6366f1;
+    --clr-success: #10b981;
+    --clr-warning: #f59e0b;
+    --clr-danger: #ef4444;
+    --clr-audit: #8b5cf6;
+    --glow-primary: rgba(99, 102, 241, 0.15);
+  }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  
   body {
-    font-family: 'Inter', sans-serif;
-    background: #0f172a;
-    color: #e2e8f0;
+    font-family: 'Outfit', sans-serif;
+    background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, var(--bg-dark) 70%);
+    color: var(--text-primary);
     min-height: 100vh;
-    padding: 16px;
-    max-width: 800px;
+    padding: 24px;
+    max-width: 1000px;
     margin: 0 auto;
   }
   
   .header {
     text-align: center;
-    padding: 24px 0;
-    border-bottom: 1px solid #1e293b;
-    margin-bottom: 24px;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 32px;
+    backdrop-filter: blur(12px);
+    background: rgba(9, 13, 22, 0.4);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
   }
+  
   .header h1 {
-    font-size: 24px;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6, #a78bfa);
+    font-size: 32px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #818cf8, #a78bfa, #f472b6);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
   }
-  .header .subtitle { color: #64748b; font-size: 13px; margin-top: 4px; }
-  .header .last-update { color: #475569; font-size: 12px; margin-top: 8px; }
+  
+  .header .subtitle { 
+    color: var(--text-secondary); 
+    font-size: 15px; 
+    font-weight: 400;
+    opacity: 0.9;
+  }
+  
+  .header .last-update { 
+    color: var(--text-muted); 
+    font-size: 12px; 
+    margin-top: 12px; 
+    font-family: 'JetBrains Mono', monospace;
+  }
+  
   .header .watcher-status {
     display: inline-block;
-    margin-top: 8px;
-    padding: 4px 12px;
-    border-radius: 20px;
+    margin-top: 12px;
+    padding: 6px 16px;
+    border-radius: 30px;
     font-size: 12px;
     font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   }
-  .watcher-status.idle { background: rgba(34,197,94,0.15); color: #22c55e; }
-  .watcher-status.busy { background: rgba(99,102,241,0.15); color: #818cf8; animation: pulse 1.5s infinite; }
+  .watcher-status.idle { 
+    background: rgba(16, 185, 129, 0.1); 
+    color: var(--clr-success); 
+    border: 1px solid rgba(16, 185, 129, 0.2);
+  }
+  .watcher-status.busy { 
+    background: rgba(139, 92, 246, 0.1); 
+    color: var(--clr-audit); 
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    animation: pulse 1.5s infinite; 
+  }
   
   .stats {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 24px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
   }
   .stat-card {
-    background: #1e293b;
-    border-radius: 10px;
-    padding: 16px;
+    background: var(--bg-card);
+    backdrop-filter: blur(16px);
+    border-radius: 14px;
+    padding: 20px 16px;
     text-align: center;
-    border: 1px solid #334155;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, border-color 0.3s;
   }
-  .stat-card .number { font-size: 28px; font-weight: 700; }
-  .stat-card .label { color: #94a3b8; font-size: 11px; margin-top: 2px; }
-  .stat-card.done .number { color: #22c55e; }
-  .stat-card.pending .number { color: #f59e0b; }
-  .stat-card.projects .number { color: #6366f1; }
-  .stat-card.total .number { color: #e2e8f0; }
+  .stat-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+  .stat-card .number { 
+    font-size: 32px; 
+    font-weight: 800; 
+    font-family: 'Outfit', sans-serif;
+  }
+  .stat-card .label { 
+    color: var(--text-secondary); 
+    font-size: 12px; 
+    margin-top: 4px; 
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+  }
+  .stat-card.total .number { color: var(--text-primary); }
+  .stat-card.done .number { color: var(--clr-success); }
+  .stat-card.review .number { color: var(--clr-audit); }
+  .stat-card.running .number { color: var(--clr-warning); }
+  .stat-card.failed .number { color: var(--clr-danger); }
 
   /* Timeline */
-  .timeline { margin-bottom: 24px; }
-  .timeline h2 { font-size: 16px; color: #94a3b8; margin-bottom: 12px; }
+  .section-title { 
+    font-size: 18px; 
+    font-weight: 700;
+    color: var(--text-primary); 
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title span {
+    font-size: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: 12px;
+    color: var(--text-secondary);
+  }
+  
+  .timeline { margin-bottom: 32px; }
   
   .timeline-item {
     position: relative;
-    padding: 12px 16px 12px 40px;
-    background: #1e293b;
-    border-radius: 10px;
-    border: 1px solid #334155;
+    padding: 20px 24px;
+    background: var(--bg-card);
+    backdrop-filter: blur(16px);
+    border-radius: 14px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 12px;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+  .timeline-item:hover { 
+    border-color: rgba(99, 102, 241, 0.4); 
+    box-shadow: 0 4px 25px rgba(99, 102, 241, 0.1);
+    transform: translateX(2px);
+  }
+  
+  .timeline-item .task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     margin-bottom: 8px;
-    transition: border-color 0.2s;
+    flex-wrap: wrap;
+    gap: 8px;
   }
-  .timeline-item:hover { border-color: #6366f1; }
-  .timeline-item::before {
-    content: '';
-    position: absolute;
-    left: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-  }
-  .timeline-item.done::before { background: #22c55e; }
-  .timeline-item.pending::before { background: #f59e0b; }
-  .timeline-item.running::before { background: #818cf8; animation: pulse 1s infinite; }
   
   .timeline-item .task-name {
-    font-weight: 600;
-    font-size: 14px;
-    margin-bottom: 4px;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text-primary);
   }
   .timeline-item .task-time {
-    color: #64748b;
-    font-size: 11px;
-  }
-  .timeline-item .task-detail {
-    color: #94a3b8;
+    color: var(--text-muted);
     font-size: 12px;
-    margin-top: 6px;
-    line-height: 1.5;
-    white-space: pre-wrap;
-    word-break: break-word;
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 2px;
   }
+  
+  .timeline-item .task-meta {
+    display: flex;
+    gap: 12px;
+    margin: 8px 0;
+    flex-wrap: wrap;
+  }
+  
   .timeline-item .task-target {
-    display: inline-block;
-    background: rgba(99,102,241,0.15);
+    background: rgba(99, 102, 241, 0.15);
     color: #818cf8;
     font-size: 11px;
-    padding: 2px 8px;
-    border-radius: 4px;
-    margin-top: 4px;
-  }
-  .timeline-item .task-badge {
-    position: absolute;
-    right: 12px;
-    top: 12px;
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 12px;
     font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(99, 102, 241, 0.25);
   }
-  .task-badge.done { background: rgba(34,197,94,0.15); color: #22c55e; }
-  .task-badge.pending { background: rgba(245,158,11,0.15); color: #f59e0b; }
+  
+  .timeline-item .task-sha {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 3px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .timeline-item .task-attempt {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--clr-warning);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+  }
+
+  .timeline-item .task-links {
+    display: flex;
+    gap: 16px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .timeline-item .task-link {
+    font-size: 12px;
+    color: #818cf8;
+    text-decoration: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.2s;
+  }
+  .timeline-item .task-link:hover {
+    color: #a78bfa;
+  }
+  
+  .timeline-item .task-detail {
+    color: var(--text-secondary);
+    font-size: 13px;
+    margin-top: 10px;
+    line-height: 1.6;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px 14px;
+    border-radius: 8px;
+    border-left: 3px solid var(--clr-primary);
+  }
+
+  .timeline-item .task-errors {
+    color: #fda4af;
+    font-size: 12px;
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: rgba(239, 68, 68, 0.1);
+    border-radius: 8px;
+    border-left: 3px solid var(--clr-danger);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  
+  .timeline-item .task-badge {
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .task-badge.done { background: rgba(16, 185, 129, 0.15); color: var(--clr-success); border: 1px solid rgba(16, 185, 129, 0.3); }
+  .task-badge.needs_chatgpt_audit { background: rgba(139, 92, 246, 0.15); color: var(--clr-audit); border: 1px solid rgba(139, 92, 246, 0.3); }
+  .task-badge.running { background: rgba(245, 158, 11, 0.15); color: var(--clr-warning); border: 1px solid rgba(245, 158, 11, 0.3); animation: pulse 1s infinite; }
+  .task-badge.failed { background: rgba(239, 68, 68, 0.15); color: var(--clr-danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+  .task-badge.pending { background: rgba(148, 163, 184, 0.15); color: var(--text-secondary); border: 1px solid rgba(148, 163, 184, 0.3); }
   
   /* Activity Log */
-  .activity-log { margin-bottom: 24px; }
-  .activity-log h2 { font-size: 16px; color: #94a3b8; margin-bottom: 12px; }
-  .log-entry {
-    font-family: 'SF Mono', 'Menlo', monospace;
-    font-size: 11px;
-    color: #64748b;
-    padding: 4px 0;
-    border-bottom: 1px solid #1e293b;
-    line-height: 1.6;
+  .activity-log { margin-bottom: 32px; }
+  .log-container {
+    background: var(--bg-card);
+    border-radius: 14px;
+    padding: 16px;
+    border: 1px solid var(--border-color);
+    max-height: 250px;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
   }
-  .log-entry .log-time { color: #475569; }
-  .log-entry .log-action { color: #94a3b8; }
-  .log-entry .log-highlight { color: #22c55e; font-weight: 600; }
-  .log-entry .log-warn { color: #f59e0b; }
+  .log-entry {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-secondary);
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    line-height: 1.6;
+    display: flex;
+    gap: 8px;
+  }
+  .log-entry:last-child { border-bottom: none; }
+  .log-entry .log-time { color: var(--text-muted); flex-shrink: 0; }
+  .log-entry .log-action { color: var(--text-primary); }
   .log-entry .log-sender {
     display: inline-block;
     padding: 1px 6px;
-    border-radius: 3px;
+    border-radius: 4px;
     font-size: 10px;
-    font-weight: 600;
-    margin-right: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    flex-shrink: 0;
   }
-  .log-sender.chatgpt { background: rgba(16,163,127,0.2); color: #10a37f; }
-  .log-sender.agy { background: rgba(99,102,241,0.2); color: #818cf8; }
-  .log-sender.watcher { background: rgba(245,158,11,0.2); color: #f59e0b; }
+  .log-sender.chatgpt { background: rgba(139, 92, 246, 0.2); color: #c084fc; }
+  .log-sender.agy { background: rgba(99, 102, 241, 0.2); color: #818cf8; }
+  .log-sender.watcher { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
 
-  .empty { color: #475569; text-align: center; padding: 20px; font-size: 13px; }
+  .empty { color: var(--text-muted); text-align: center; padding: 24px; font-size: 14px; }
   
   @keyframes pulse {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
+    50% { opacity: 0.6; }
   }
   
   .refresh-btn {
     position: fixed;
-    bottom: 16px;
-    right: 16px;
-    background: #6366f1;
+    bottom: 24px;
+    right: 24px;
+    background: var(--clr-primary);
     color: white;
     border: none;
     border-radius: 50%;
-    width: 44px;
-    height: 44px;
-    font-size: 18px;
+    width: 52px;
+    height: 52px;
+    font-size: 20px;
     cursor: pointer;
-    box-shadow: 0 4px 20px rgba(99,102,241,0.4);
+    box-shadow: 0 4px 20px rgba(99,102,241,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background-color 0.2s;
+    z-index: 100;
+  }
+  .refresh-btn:hover {
+    transform: scale(1.05);
+    background-color: #4f46e5;
   }
 
-  .section { margin-bottom: 24px; }
-  .section h2 { font-size: 16px; color: #94a3b8; margin-bottom: 12px; }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
   .project-card {
-    background: #1e293b;
-    border: 1px solid #334155;
-    border-radius: 10px;
-    padding: 12px 16px;
-    margin-bottom: 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
   }
-  .project-card .name { font-weight: 600; font-size: 14px; }
-  .project-card .path { color: #64748b; font-size: 11px; }
+  .project-card .name { font-weight: 700; font-size: 15px; }
+  .project-card .path { color: var(--text-muted); font-size: 12px; font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
   .project-card a {
     color: #818cf8;
     text-decoration: none;
-    font-size: 12px;
+    font-size: 13px;
+    font-weight: 600;
   }
 </style>
 </head>
@@ -202,26 +382,28 @@
 
 <div class="header">
   <h1>🧠 AI Pipeline Dashboard</h1>
-  <div class="subtitle">ChatGPT 指挥 → GitHub 信箱 → Watcher 调度 → Antigravity 执行</div>
-  <div class="last-update" id="last-update">Loading...</div>
-  <div class="watcher-status idle" id="watcher-status">⚡ Watcher 运行中</div>
+  <div class="subtitle">ChatGPT (Reviewer) &lt;=&gt; GitHub (Mailbox) &lt;=&gt; Watcher (Scheduler) &lt;=&gt; Antigravity (Executor)</div>
+  <div class="last-update" id="last-update">Loading system state...</div>
+  <div class="watcher-status idle" id="watcher-status">⚡ Watcher Ready</div>
 </div>
 
 <div class="stats" id="stats"></div>
 
 <div class="timeline">
-  <h2>📋 任务时间线</h2>
+  <h2 class="section-title">📋 Task Queue / History <span id="task-count">0</span></h2>
   <div id="timeline-list"></div>
 </div>
 
 <div class="activity-log">
-  <h2>📝 执行日志</h2>
-  <div id="activity-list"></div>
+  <h2 class="section-title">📝 Watcher Exec Logs</h2>
+  <div class="log-container">
+    <div id="activity-list"></div>
+  </div>
 </div>
 
 <div class="section">
-  <h2>📁 项目列表</h2>
-  <div id="project-list"></div>
+  <h2 class="section-title">📁 Project Ecosystem</h2>
+  <div class="projects-grid" id="project-list"></div>
 </div>
 
 <button class="refresh-btn" onclick="location.reload()">🔄</button>
@@ -233,95 +415,177 @@ async function loadStatus() {
     const data = await resp.json();
     render(data);
   } catch(e) {
-    document.getElementById('last-update').textContent = '⚠️ status.json not found';
+    document.getElementById('last-update').innerHTML = '⚠️ <code>status.json</code> not found or loading error';
+  }
+}
+
+function getStatusLabel(status) {
+  switch (status) {
+    case 'done': return '✅ PASSED';
+    case 'needs_chatgpt_audit': return '⏳ AUDIT REQUIRED';
+    case 'running': return '⚙️ EXECUTING';
+    case 'failed': return '❌ FAILED';
+    case 'pending': return '⏳ PENDING';
+    default: return status.toUpperCase();
   }
 }
 
 function render(data) {
-  document.getElementById('last-update').textContent = '🕐 ' + data.lastUpdate;
+  document.getElementById('last-update').innerHTML = '🕐 Last Update: ' + data.lastUpdate;
   
   // Watcher status
-  var ws = document.getElementById('watcher-status');
-  if (data.pendingTasks > 0) {
+  const ws = document.getElementById('watcher-status');
+  if (data.running && data.running.length > 0) {
     ws.className = 'watcher-status busy';
-    ws.textContent = '⚙️ 正在处理任务...';
+    ws.textContent = '⚙️ Watcher Processing Tasks...';
   } else {
     ws.className = 'watcher-status idle';
-    ws.textContent = '⚡ Watcher 待命中 (每2分钟扫描)';
+    ws.textContent = '⚡ Watcher Standing By (2m Interval)';
   }
+
+  // Count items
+  const details = data.taskDetails || {};
+  const numTotal = Object.keys(details).length;
+  const numDone = Object.values(details).filter(t => t.status === 'done').length;
+  const numAudit = Object.values(details).filter(t => t.status === 'needs_chatgpt_audit').length;
+  const numRunning = Object.values(details).filter(t => t.status === 'running').length;
+  const numFailed = Object.values(details).filter(t => t.status === 'failed').length;
+
+  document.getElementById('task-count').textContent = numTotal;
 
   // Stats
   document.getElementById('stats').innerHTML =
-    '<div class="stat-card total"><div class="number">' + data.totalTasks + '</div><div class="label">总任务</div></div>' +
-    '<div class="stat-card done"><div class="number">' + data.doneTasks + '</div><div class="label">已完成</div></div>' +
-    '<div class="stat-card pending"><div class="number">' + data.pendingTasks + '</div><div class="label">等待中</div></div>' +
-    '<div class="stat-card projects"><div class="number">' + data.projects.length + '</div><div class="label">项目</div></div>';
+    '<div class="stat-card total"><div class="number">' + numTotal + '</div><div class="label">Total Tasks</div></div>' +
+    '<div class="stat-card done"><div class="number">' + numDone + '</div><div class="label">Done</div></div>' +
+    '<div class="stat-card review"><div class="number">' + numAudit + '</div><div class="label">Needs Audit</div></div>' +
+    '<div class="stat-card running"><div class="number">' + numRunning + '</div><div class="label">Running</div></div>' +
+    '<div class="stat-card failed"><div class="number">' + numFailed + '</div><div class="label">Failed</div></div>';
 
-  // Timeline - show all tasks with details
-  var tl = document.getElementById('timeline-list');
-  var allTasks = [];
+  // Timeline
+  const tl = document.getElementById('timeline-list');
+  const allTasks = Object.keys(details).map(taskId => ({
+    id: taskId,
+    ...details[taskId]
+  }));
   
-  // Add done tasks
-  (data.done || []).forEach(function(t) {
-    allTasks.push({ name: t, status: 'done', detail: data.taskDetails ? data.taskDetails[t] : null });
-  });
-  // Add pending tasks
-  (data.pending || []).forEach(function(t) {
-    allTasks.push({ name: t, status: 'pending', detail: data.taskDetails ? data.taskDetails[t] : null });
-  });
-  
-  // Reverse so newest first
-  allTasks.reverse();
+  // Sort: Active first (running, needs_audit, pending), then failed, then done
+  const statusWeight = {
+    'running': 0,
+    'needs_chatgpt_audit': 1,
+    'pending': 2,
+    'failed': 3,
+    'done': 4
+  };
+  allTasks.sort((a, b) => (statusWeight[a.status] ?? 5) - (statusWeight[b.status] ?? 5));
   
   if (allTasks.length === 0) {
-    tl.innerHTML = '<div class="empty">还没有任何任务</div>';
+    tl.innerHTML = '<div class="empty">No tasks in the pipeline.</div>';
   } else {
-    tl.innerHTML = allTasks.map(function(t) {
-      var detail = t.detail || {};
-      var targetHtml = detail.target ? '<div class="task-target">→ ' + detail.target + '</div>' : '';
-      var summaryHtml = detail.summary ? '<div class="task-detail">' + detail.summary + '</div>' : '';
-      var timeHtml = detail.completedAt ? '<div class="task-time">完成于: ' + detail.completedAt + '</div>' : '';
-      return '<div class="timeline-item ' + t.status + '">' +
-        '<span class="task-badge ' + t.status + '">' + (t.status === 'done' ? '✅ 完成' : '⏳ 等待') + '</span>' +
-        '<div class="task-name">' + t.name.replace('task-', '').replace('.md', '').replace(/-/g, ' ') + '</div>' +
-        timeHtml + targetHtml + summaryHtml +
-      '</div>';
+    tl.innerHTML = allTasks.map(t => {
+      const statusBadge = `<span class="task-badge ${t.status}">${getStatusLabel(t.status)}</span>`;
+      
+      const commitHtml = t.lastCommit ? `<span class="task-sha">SHA: ${t.lastCommit.substring(0, 7)}</span>` : '';
+      const attemptHtml = `<span class="task-attempt">Attempt: ${t.attempt}/${t.maxAttempts}</span>`;
+      
+      const targetHtml = t.target ? `<span class="task-target">${t.target}</span>` : '';
+      
+      let summaryHtml = '';
+      if (t.summary) {
+        summaryHtml = `<div class="task-detail">${t.summary}</div>`;
+      }
+
+      let errorsHtml = '';
+      if (t.blockingErrors && t.blockingErrors.length > 0) {
+        errorsHtml = `<div class="task-errors"><strong>Blocking Issues:</strong><br>${t.blockingErrors.map(e => `• ${e}`).join('<br>')}</div>`;
+      } else if (t.status === 'failed') {
+        errorsHtml = `<div class="task-errors"><strong>Status:</strong> Failed after exceeding maximum retry attempts (${t.maxAttempts}).</div>`;
+      }
+
+      // Link mappings
+      const repoUrl = `https://github.com/nickchen494949/mindmap-app`;
+      const evidenceUrl = `${repoUrl}/tree/main/${t.evidencePacketPath}`;
+      const liveUrl = t.liveUrl;
+      const reviewUrl = t.chatgptAuditPath ? `${repoUrl}/blob/main/${t.chatgptAuditPath}` : '';
+
+      let linksHtml = '';
+      if (t.status !== 'pending' && t.status !== 'running') {
+        linksHtml += `<a href="${evidenceUrl}" target="_blank" class="task-link">📊 Evidence Packet</a>`;
+        if (liveUrl) {
+          linksHtml += `<a href="${liveUrl}" target="_blank" class="task-link">🔗 View Live Site</a>`;
+        }
+        if (reviewUrl) {
+          linksHtml += `<a href="${reviewUrl}" target="_blank" class="task-link">✍️ ChatGPT Audit Log</a>`;
+        }
+      }
+
+      const completedHtml = t.completedAt ? `<div class="task-time">Passed at: ${t.completedAt}</div>` : '';
+
+      return `
+        <div class="timeline-item">
+          <div class="task-header">
+            <div>
+              <div class="task-name">${t.title}</div>
+              ${completedHtml}
+            </div>
+            ${statusBadge}
+          </div>
+          <div class="task-meta">
+            ${targetHtml}
+            ${commitHtml}
+            ${attemptHtml}
+          </div>
+          ${summaryHtml}
+          ${errorsHtml}
+          ${linksHtml ? `<div class="task-links">${linksHtml}</div>` : ''}
+        </div>
+      `;
     }).join('');
   }
 
   // Activity log
-  var al = document.getElementById('activity-list');
+  const al = document.getElementById('activity-list');
   if (data.activityLog && data.activityLog.length > 0) {
-    al.innerHTML = data.activityLog.map(function(entry) {
-      var senderClass = entry.sender || 'watcher';
-      var senderLabel = senderClass === 'chatgpt' ? 'ChatGPT' : senderClass === 'agy' ? 'Antigravity' : 'Watcher';
-      return '<div class="log-entry">' +
-        '<span class="log-time">[' + entry.time + ']</span> ' +
-        '<span class="log-sender ' + senderClass + '">' + senderLabel + '</span> ' +
-        '<span class="log-action">' + entry.action + '</span>' +
-      '</div>';
+    // Show last 30 entries
+    const entries = [...data.activityLog].reverse();
+    al.innerHTML = entries.map(entry => {
+      const senderClass = entry.sender || 'watcher';
+      const senderLabel = senderClass === 'chatgpt' ? 'Audit' : senderClass === 'agy' ? 'Exec' : 'Watcher';
+      return `
+        <div class="log-entry">
+          <span class="log-time">[${entry.time}]</span> 
+          <span class="log-sender ${senderClass}">${senderLabel}</span> 
+          <span class="log-action">${entry.action}</span>
+        </div>
+      `;
     }).join('');
   } else {
-    al.innerHTML = '<div class="empty">暂无日志</div>';
+    al.innerHTML = '<div class="empty">No logs available.</div>';
   }
 
   // Projects
-  var pl = document.getElementById('project-list');
-  if (data.projects.length === 0) {
-    pl.innerHTML = '<div class="empty">暂无外部项目</div>';
+  const pl = document.getElementById('project-list');
+  if (!data.projects || data.projects.length === 0) {
+    pl.innerHTML = '<div class="empty">No projects found.</div>';
   } else {
-    pl.innerHTML = data.projects.map(function(p) {
-      return '<div class="project-card">' +
-        '<div><div class="name">📁 ' + p + '</div>' +
-        '<div class="path">~/projects/' + p + '</div></div>' +
-        '<a href="https://nickchen494949.github.io/' + p + '/" target="_blank">🔗 Live</a>' +
-      '</div>';
+    pl.innerHTML = data.projects.map(p => {
+      const live = p === 'mindmap-app' 
+        ? 'https://nickchen494949.github.io/mindmap-app/' 
+        : `https://nickchen494949.github.io/${p}/`;
+      return `
+        <div class="project-card">
+          <div>
+            <div class="name">📁 ${p}</div>
+            <div class="path">~/projects/${p}</div>
+          </div>
+          <a href="${live}" target="_blank">🔗 Open Live</a>
+        </div>
+      `;
     }).join('');
   }
 }
 
 loadStatus();
-setInterval(loadStatus, 30000);
+setInterval(loadStatus, 15000);
 </script>
 </body>
 </html>
