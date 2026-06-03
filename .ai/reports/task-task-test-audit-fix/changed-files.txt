@@ -1,0 +1,14 @@
+.ai/heartbeat/watcher.json
+.ai/logs/task-task-test-audit-fix.md.log
+.ai/reports/task-test-audit/evidence.json
+.ai/reports/task-test-audit/live-audit.json
+.ai/reports/task-test-audit/page-text.txt
+.ai/reports/task-test-audit/screenshot.png
+.ai/reports/task-test-audit/summary.md
+.ai/state/task-test-audit.json
+.ai/task-index.json
+.gitignore
+control-tower-data.json
+dashboard.html
+scripts/generate-task-index.js
+status.json

@@ -1,0 +1,24 @@
+^DI have successfully resolved the visual polish and badge rendering issues identified in the audit. Here is a summary of the changes:
+
+### 1. Fixed Badge Override Bug in Widget Titles
+* **Problem**: The CSS selector `.widget-title span` was too broad and styled all `<span>` tags nested inside widget headers. This overrode the status-specific styling of standard badges (like the `system-heartbeat-summary` badge and the watcher logs `LIVE` badge), causing them to render with a flat, muted gray style instead of their corresponding success/failure colors.
+* **Fix**: Updated the styling rule in [dashboard.html](file:///Users/happygolucky/mindmap-repo/dashboard.html#L608-L621) to target `.widget-title span:not(.task-badge)` so it only styles text labels and preserves the colorful status indicators of `.task-badge` components.
+
+### 2. Formatted and Styled Evidence Matrix Badges
+* **Problem**: Links to files in the evidence matrices (e.g. `evidence.json`, `summary.md`) had no custom styling and rendered as plain default links.
+* **Fix**: Added proper flex layout containers (`.evidence-files`) and styled the links as tag badges (`.evidence-file-badge`) with dark backgrounds, borders, monospace font, and hover highlight transitions in [dashboard.html](file:///Users/happygolucky/mindmap-repo/dashboard.html#L423-L457).
+
+### 3. Styled Scrollbars & Badge Layout
+* **Problem**: Default browser scrollbars looked unpolished in terminal logs and other scrollable cards.
+* **Fix**: Introduced premium custom webkit scrollbar rules at the top of the CSS block in [dashboard.html](file:///Users/happygolucky/mindmap-repo/dashboard.html#L25-L42). Also set `.task-badge` elements to `display: inline-flex` to align correctly vertically and improve centering.
+
+### 4. Corrected Task Title Parsing for `task-task-` Prefixes
+* **Problem**: Active tasks prefix-encoded as `task-task-...` (such as `task-task-20260603-control-tower-evidence-review-flow.md`) were not found by the generator's `fileSearchOrder`. This caused task details in [task-index.json](file:///Users/happygolucky/mindmap-repo/.ai/task-index.json) to fall back to a generic title of `"Task"`.
+* **Fix**: Updated [scripts/generate-task-index.js](file:///Users/happygolucky/mindmap-repo/scripts/generate-task-index.js#L390-L417) to check for prefix variants (`task-${taskId}.md` and `task-${taskId}-fix.md`) when searching for files, successfully resolving correct parsing of task titles on the dashboard.
+
+### 5. Rendered Correct Badges for Blocking Items
+* **Problem**: Section 9 (Blocking Issues) had hardcoded class `task-badge failed` for showing task statuses, always displaying them in red even if they were `blocked` or `failed_review`.
+* **Fix**: Updated the markup in [dashboard.html](file:///Users/happygolucky/mindmap-repo/dashboard.html#L1682-L1686) to inject `${t.status}` as the class and display standard labels using `getStatusLabel(t.status)`.
+
+### 6. Validation
+* Ran the watcher daemon integration tests (`verify-control-tower.js`) and the state machine audit loop tests (`test-audit-loop.js`). All test suites passed successfully.

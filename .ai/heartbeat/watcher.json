@@ -1,10 +1,1 @@
-{
-  "name": "watcher",
-  "lastSeen": "2026-06-03T11:25:19Z",
-  "lastScannedCommit": "903501d59bf6c8837ad3e9c159487d6ee614e41e",
-  "inboxCount": 1,
-  "doneCount": 14,
-  "status": "alive",
-  "lastTask": "task-task-20260603-control-tower-evidence-review-flow-fix.md",
-  "failedCount": 0
-}
+{"name":"watcher","lastSeen":"2026-06-03T11:32:06Z","lastScannedCommit":"827ac79eeb945beb082d9be5a8cb7de0673ae640","lastTask":"task-task-test-audit-fix.md","inboxCount":0,"doneCount":15,"failedCount":0,"status":"alive"}

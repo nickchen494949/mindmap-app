@@ -1,0 +1,43 @@
+{
+  "taskId": "task-task-test-audit-fix",
+  "target": "mindmap-app",
+  "status": "needs_chatgpt_audit",
+  "commitSha": "827ac79eeb945beb082d9be5a8cb7de0673ae640",
+  "changedFiles": [
+    ".ai/heartbeat/watcher.json",
+    ".ai/logs/task-task-test-audit-fix.md.log",
+    ".ai/reports/task-test-audit/evidence.json",
+    ".ai/reports/task-test-audit/live-audit.json",
+    ".ai/reports/task-test-audit/page-text.txt",
+    ".ai/reports/task-test-audit/screenshot.png",
+    ".ai/reports/task-test-audit/summary.md",
+    ".ai/state/task-test-audit.json",
+    ".ai/task-index.json",
+    ".gitignore",
+    "control-tower-data.json",
+    "dashboard.html",
+    "scripts/generate-task-index.js",
+    "status.json"
+  ],
+  "logTailPath": ".ai/reports/task-task-test-audit-fix/log-tail.txt",
+  "knownRisks": [],
+  "questionsForChatGPT": [],
+  "generatedAt": "2026-06-03T11:32:06.664Z",
+  "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+  "pageTextPath": ".ai/reports/task-task-test-audit-fix/page-text.txt",
+  "screenshotPath": ".ai/reports/task-task-test-audit-fix/screenshot.png",
+  "consoleErrorsPath": ".ai/reports/task-task-test-audit-fix/console-errors.txt",
+  "networkErrorsPath": ".ai/reports/task-task-test-audit-fix/network-errors.txt",
+  "dataAuditPath": null,
+  "attempt": 1,
+  "mechanicalChecks": {
+    "buildPass": true,
+    "livePageLoads": true,
+    "consoleErrorCount": 0,
+    "networkErrorCount": 0,
+    "dataAuditPass": true
+  },
+  "screenshots": [
+    ".ai/reports/task-task-test-audit-fix/screenshot.png"
+  ]
+}
