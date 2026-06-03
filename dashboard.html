@@ -12,138 +12,216 @@
     background: #0f172a;
     color: #e2e8f0;
     min-height: 100vh;
-    padding: 20px;
+    padding: 16px;
+    max-width: 800px;
+    margin: 0 auto;
   }
+  
   .header {
     text-align: center;
-    padding: 30px 0;
+    padding: 24px 0;
     border-bottom: 1px solid #1e293b;
-    margin-bottom: 30px;
+    margin-bottom: 24px;
   }
   .header h1 {
-    font-size: 28px;
+    font-size: 24px;
     background: linear-gradient(135deg, #6366f1, #8b5cf6, #a78bfa);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 8px;
   }
-  .header .subtitle { color: #64748b; font-size: 14px; }
+  .header .subtitle { color: #64748b; font-size: 13px; margin-top: 4px; }
   .header .last-update { color: #475569; font-size: 12px; margin-top: 8px; }
+  .header .watcher-status {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .watcher-status.idle { background: rgba(34,197,94,0.15); color: #22c55e; }
+  .watcher-status.busy { background: rgba(99,102,241,0.15); color: #818cf8; animation: pulse 1.5s infinite; }
   
   .stats {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 16px;
-    margin-bottom: 30px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
   }
   .stat-card {
     background: #1e293b;
-    border-radius: 12px;
-    padding: 20px;
+    border-radius: 10px;
+    padding: 16px;
     text-align: center;
     border: 1px solid #334155;
   }
-  .stat-card .number {
-    font-size: 36px;
-    font-weight: 700;
-    margin-bottom: 4px;
-  }
-  .stat-card .label { color: #94a3b8; font-size: 13px; }
+  .stat-card .number { font-size: 28px; font-weight: 700; }
+  .stat-card .label { color: #94a3b8; font-size: 11px; margin-top: 2px; }
   .stat-card.done .number { color: #22c55e; }
   .stat-card.pending .number { color: #f59e0b; }
   .stat-card.projects .number { color: #6366f1; }
   .stat-card.total .number { color: #e2e8f0; }
 
-  .section { margin-bottom: 30px; }
-  .section h2 {
-    font-size: 18px;
-    color: #94a3b8;
-    margin-bottom: 12px;
-    padding-left: 4px;
-  }
+  /* Timeline */
+  .timeline { margin-bottom: 24px; }
+  .timeline h2 { font-size: 16px; color: #94a3b8; margin-bottom: 12px; }
   
-  .task-list { display: flex; flex-direction: column; gap: 8px; }
-  .task-item {
+  .timeline-item {
+    position: relative;
+    padding: 12px 16px 12px 40px;
     background: #1e293b;
     border-radius: 10px;
-    padding: 14px 18px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
     border: 1px solid #334155;
+    margin-bottom: 8px;
     transition: border-color 0.2s;
   }
-  .task-item:hover { border-color: #6366f1; }
-  .task-item .icon { font-size: 20px; flex-shrink: 0; }
-  .task-item .info { flex: 1; min-width: 0; }
-  .task-item .name {
+  .timeline-item:hover { border-color: #6366f1; }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+  .timeline-item.done::before { background: #22c55e; }
+  .timeline-item.pending::before { background: #f59e0b; }
+  .timeline-item.running::before { background: #818cf8; animation: pulse 1s infinite; }
+  
+  .timeline-item .task-name {
     font-weight: 600;
     font-size: 14px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    margin-bottom: 4px;
   }
-  .task-item .meta { color: #64748b; font-size: 12px; margin-top: 2px; }
-  .task-item .badge {
+  .timeline-item .task-time {
+    color: #64748b;
     font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-weight: 600;
-    flex-shrink: 0;
   }
-  .badge.done { background: rgba(34,197,94,0.15); color: #22c55e; }
-  .badge.pending { background: rgba(245,158,11,0.15); color: #f59e0b; }
-  .badge.running { background: rgba(99,102,241,0.15); color: #818cf8; animation: pulse 1.5s infinite; }
+  .timeline-item .task-detail {
+    color: #94a3b8;
+    font-size: 12px;
+    margin-top: 6px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .timeline-item .task-target {
+    display: inline-block;
+    background: rgba(99,102,241,0.15);
+    color: #818cf8;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-top: 4px;
+  }
+  .timeline-item .task-badge {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+  }
+  .task-badge.done { background: rgba(34,197,94,0.15); color: #22c55e; }
+  .task-badge.pending { background: rgba(245,158,11,0.15); color: #f59e0b; }
+  
+  /* Activity Log */
+  .activity-log { margin-bottom: 24px; }
+  .activity-log h2 { font-size: 16px; color: #94a3b8; margin-bottom: 12px; }
+  .log-entry {
+    font-family: 'SF Mono', 'Menlo', monospace;
+    font-size: 11px;
+    color: #64748b;
+    padding: 4px 0;
+    border-bottom: 1px solid #1e293b;
+    line-height: 1.6;
+  }
+  .log-entry .log-time { color: #475569; }
+  .log-entry .log-action { color: #94a3b8; }
+  .log-entry .log-highlight { color: #22c55e; font-weight: 600; }
+  .log-entry .log-warn { color: #f59e0b; }
+  .log-entry .log-sender {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .log-sender.chatgpt { background: rgba(16,163,127,0.2); color: #10a37f; }
+  .log-sender.agy { background: rgba(99,102,241,0.2); color: #818cf8; }
+  .log-sender.watcher { background: rgba(245,158,11,0.2); color: #f59e0b; }
+
+  .empty { color: #475569; text-align: center; padding: 20px; font-size: 13px; }
   
   @keyframes pulse {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+    50% { opacity: 0.4; }
   }
-  
-  .empty { color: #475569; text-align: center; padding: 20px; font-size: 14px; }
   
   .refresh-btn {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 16px;
+    right: 16px;
     background: #6366f1;
     color: white;
     border: none;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    font-size: 20px;
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
     cursor: pointer;
     box-shadow: 0 4px 20px rgba(99,102,241,0.4);
-    transition: transform 0.2s;
   }
-  .refresh-btn:hover { transform: scale(1.1); }
-  .refresh-btn:active { transform: scale(0.95); }
+
+  .section { margin-bottom: 24px; }
+  .section h2 { font-size: 16px; color: #94a3b8; margin-bottom: 12px; }
+  .project-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .project-card .name { font-weight: 600; font-size: 14px; }
+  .project-card .path { color: #64748b; font-size: 11px; }
+  .project-card a {
+    color: #818cf8;
+    text-decoration: none;
+    font-size: 12px;
+  }
 </style>
 </head>
 <body>
 
 <div class="header">
   <h1>🧠 AI Pipeline Dashboard</h1>
-  <div class="subtitle">ChatGPT → GitHub → Watcher → Antigravity</div>
+  <div class="subtitle">ChatGPT 指挥 → GitHub 信箱 → Watcher 调度 → Antigravity 执行</div>
   <div class="last-update" id="last-update">Loading...</div>
+  <div class="watcher-status idle" id="watcher-status">⚡ Watcher 运行中</div>
 </div>
 
 <div class="stats" id="stats"></div>
 
-<div class="section">
-  <h2>⏳ Pending Tasks</h2>
-  <div class="task-list" id="pending-list"></div>
+<div class="timeline">
+  <h2>📋 任务时间线</h2>
+  <div id="timeline-list"></div>
+</div>
+
+<div class="activity-log">
+  <h2>📝 执行日志</h2>
+  <div id="activity-list"></div>
 </div>
 
 <div class="section">
-  <h2>✅ Completed Tasks</h2>
-  <div class="task-list" id="done-list"></div>
-</div>
-
-<div class="section">
-  <h2>📁 Projects</h2>
-  <div class="task-list" id="project-list"></div>
+  <h2>📁 项目列表</h2>
+  <div id="project-list"></div>
 </div>
 
 <button class="refresh-btn" onclick="location.reload()">🔄</button>
@@ -155,76 +233,95 @@ async function loadStatus() {
     const data = await resp.json();
     render(data);
   } catch(e) {
-    document.getElementById('last-update').textContent = '⚠️ status.json not found. Watcher has not run yet.';
+    document.getElementById('last-update').textContent = '⚠️ status.json not found';
   }
 }
 
 function render(data) {
-  // Last update
-  document.getElementById('last-update').textContent = '🕐 Last updated: ' + data.lastUpdate;
+  document.getElementById('last-update').textContent = '🕐 ' + data.lastUpdate;
   
+  // Watcher status
+  var ws = document.getElementById('watcher-status');
+  if (data.pendingTasks > 0) {
+    ws.className = 'watcher-status busy';
+    ws.textContent = '⚙️ 正在处理任务...';
+  } else {
+    ws.className = 'watcher-status idle';
+    ws.textContent = '⚡ Watcher 待命中 (每2分钟扫描)';
+  }
+
   // Stats
-  const statsEl = document.getElementById('stats');
-  statsEl.innerHTML = `
-    <div class="stat-card total"><div class="number">${data.totalTasks}</div><div class="label">Total Tasks</div></div>
-    <div class="stat-card done"><div class="number">${data.doneTasks}</div><div class="label">Completed</div></div>
-    <div class="stat-card pending"><div class="number">${data.pendingTasks}</div><div class="label">Pending</div></div>
-    <div class="stat-card projects"><div class="number">${data.projects.length}</div><div class="label">Projects</div></div>
-  `;
+  document.getElementById('stats').innerHTML =
+    '<div class="stat-card total"><div class="number">' + data.totalTasks + '</div><div class="label">总任务</div></div>' +
+    '<div class="stat-card done"><div class="number">' + data.doneTasks + '</div><div class="label">已完成</div></div>' +
+    '<div class="stat-card pending"><div class="number">' + data.pendingTasks + '</div><div class="label">等待中</div></div>' +
+    '<div class="stat-card projects"><div class="number">' + data.projects.length + '</div><div class="label">项目</div></div>';
+
+  // Timeline - show all tasks with details
+  var tl = document.getElementById('timeline-list');
+  var allTasks = [];
   
-  // Pending
-  const pendingEl = document.getElementById('pending-list');
-  if (data.pending.length === 0) {
-    pendingEl.innerHTML = '<div class="empty">No pending tasks. All clear! 🎉</div>';
+  // Add done tasks
+  (data.done || []).forEach(function(t) {
+    allTasks.push({ name: t, status: 'done', detail: data.taskDetails ? data.taskDetails[t] : null });
+  });
+  // Add pending tasks
+  (data.pending || []).forEach(function(t) {
+    allTasks.push({ name: t, status: 'pending', detail: data.taskDetails ? data.taskDetails[t] : null });
+  });
+  
+  // Reverse so newest first
+  allTasks.reverse();
+  
+  if (allTasks.length === 0) {
+    tl.innerHTML = '<div class="empty">还没有任何任务</div>';
   } else {
-    pendingEl.innerHTML = data.pending.map(t => `
-      <div class="task-item">
-        <div class="icon">📋</div>
-        <div class="info">
-          <div class="name">${t}</div>
-        </div>
-        <span class="badge pending">PENDING</span>
-      </div>
-    `).join('');
+    tl.innerHTML = allTasks.map(function(t) {
+      var detail = t.detail || {};
+      var targetHtml = detail.target ? '<div class="task-target">→ ' + detail.target + '</div>' : '';
+      var summaryHtml = detail.summary ? '<div class="task-detail">' + detail.summary + '</div>' : '';
+      var timeHtml = detail.completedAt ? '<div class="task-time">完成于: ' + detail.completedAt + '</div>' : '';
+      return '<div class="timeline-item ' + t.status + '">' +
+        '<span class="task-badge ' + t.status + '">' + (t.status === 'done' ? '✅ 完成' : '⏳ 等待') + '</span>' +
+        '<div class="task-name">' + t.name.replace('task-', '').replace('.md', '').replace(/-/g, ' ') + '</div>' +
+        timeHtml + targetHtml + summaryHtml +
+      '</div>';
+    }).join('');
   }
-  
-  // Done
-  const doneEl = document.getElementById('done-list');
-  if (data.done.length === 0) {
-    doneEl.innerHTML = '<div class="empty">No completed tasks yet.</div>';
+
+  // Activity log
+  var al = document.getElementById('activity-list');
+  if (data.activityLog && data.activityLog.length > 0) {
+    al.innerHTML = data.activityLog.map(function(entry) {
+      var senderClass = entry.sender || 'watcher';
+      var senderLabel = senderClass === 'chatgpt' ? 'ChatGPT' : senderClass === 'agy' ? 'Antigravity' : 'Watcher';
+      return '<div class="log-entry">' +
+        '<span class="log-time">[' + entry.time + ']</span> ' +
+        '<span class="log-sender ' + senderClass + '">' + senderLabel + '</span> ' +
+        '<span class="log-action">' + entry.action + '</span>' +
+      '</div>';
+    }).join('');
   } else {
-    doneEl.innerHTML = data.done.map(t => `
-      <div class="task-item">
-        <div class="icon">✅</div>
-        <div class="info">
-          <div class="name">${t}</div>
-        </div>
-        <span class="badge done">DONE</span>
-      </div>
-    `).join('');
+    al.innerHTML = '<div class="empty">暂无日志</div>';
   }
-  
+
   // Projects
-  const projEl = document.getElementById('project-list');
+  var pl = document.getElementById('project-list');
   if (data.projects.length === 0) {
-    projEl.innerHTML = '<div class="empty">No external projects yet.</div>';
+    pl.innerHTML = '<div class="empty">暂无外部项目</div>';
   } else {
-    projEl.innerHTML = data.projects.map(p => `
-      <div class="task-item">
-        <div class="icon">📁</div>
-        <div class="info">
-          <div class="name">${p}</div>
-          <div class="meta">~/projects/${p}</div>
-        </div>
-        <span class="badge done">ACTIVE</span>
-      </div>
-    `).join('');
+    pl.innerHTML = data.projects.map(function(p) {
+      return '<div class="project-card">' +
+        '<div><div class="name">📁 ' + p + '</div>' +
+        '<div class="path">~/projects/' + p + '</div></div>' +
+        '<a href="https://nickchen494949.github.io/' + p + '/" target="_blank">🔗 Live</a>' +
+      '</div>';
+    }).join('');
   }
 }
 
 loadStatus();
-// Auto-refresh every 60 seconds
-setInterval(loadStatus, 60000);
+setInterval(loadStatus, 30000);
 </script>
 </body>
 </html>
