@@ -92,7 +92,7 @@ try {
 
   // 3. Execute collect-evidence.js (agy simulation)
   console.log('Executing evidence collection...');
-  execSync(`node scripts/collect-evidence.js --taskId ${taskId} --target mindmap-app --attempt 1`, { stdio: 'inherit' });
+  execSync(`node /Users/happygolucky/mindmap-repo/scripts/collect-evidence.js --taskId ${taskId} --target mindmap-app --attempt 1`, { cwd: '/Users/happygolucky/projects/mindmap-app', stdio: 'inherit' });
 
   // 4. Verify results of Test A
   const reviewFile = path.join(aiDir, 'review', `${taskId}.md`);
@@ -145,7 +145,7 @@ try {
   if (!fs.existsSync(fixTaskInboxFile)) throw new Error('Test B failed: new fix task was not created in inbox/');
   
   const stateDataB = JSON.parse(fs.readFileSync(stateFile, 'utf8'));
-  if (stateDataB.status !== 'pending') throw new Error(`Test B failed: status is ${stateDataB.status}, expected pending`);
+  if (stateDataB.status !== 'failed_review') throw new Error(`Test B failed: status is ${stateDataB.status}, expected failed_review`);
   if (stateDataB.attempt !== 2) throw new Error(`Test B failed: attempt is ${stateDataB.attempt}, expected 2`);
   if (stateDataB.chatgptVerdict !== 'FAIL') throw new Error('Test B failed: chatgptVerdict was not updated to FAIL');
   if (stateDataB.blockingErrors.length !== 2) throw new Error('Test B failed: failed to extract blocking errors from verdict');
@@ -164,7 +164,7 @@ try {
 
   // 2. Execute collect-evidence.js (agy simulation for attempt 2)
   console.log('Executing evidence collection for fix task...');
-  execSync(`node scripts/collect-evidence.js --taskId ${taskId} --target mindmap-app --attempt 2`, { stdio: 'inherit' });
+  execSync(`node /Users/happygolucky/mindmap-repo/scripts/collect-evidence.js --taskId ${taskId} --target mindmap-app --attempt 2`, { cwd: '/Users/happygolucky/projects/mindmap-app', stdio: 'inherit' });
 
   // 3. Verify task is back in review
   if (!fs.existsSync(reviewFile)) throw new Error('Test C failed: task file was not moved back to review/ after execution');

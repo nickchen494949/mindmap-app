@@ -32,6 +32,29 @@ console.log(`=== Starting evidence collection for task: ${taskId} ===`);
 console.log(`Target project: ${target}`);
 console.log(`Live URL: ${liveUrl}`);
 
+// Clean up any old audit verdict files from previous attempts
+const baseTaskId = taskId.replace(/-fix$/, '');
+const cleanupPaths = [
+  path.join(process.cwd(), '.ai', 'reviews', taskId, 'chatgpt-audit.md'),
+  path.join(process.cwd(), '.ai', 'reviews', baseTaskId, 'chatgpt-audit.md'),
+  path.join(process.cwd(), '.ai', 'review', taskId, 'chatgpt-audit.md'),
+  path.join(process.cwd(), '.ai', 'review', baseTaskId, 'chatgpt-audit.md'),
+  path.join('/Users/happygolucky/mindmap-repo/.ai', 'reviews', taskId, 'chatgpt-audit.md'),
+  path.join('/Users/happygolucky/mindmap-repo/.ai', 'reviews', baseTaskId, 'chatgpt-audit.md'),
+  path.join('/Users/happygolucky/mindmap-repo/.ai', 'review', taskId, 'chatgpt-audit.md'),
+  path.join('/Users/happygolucky/mindmap-repo/.ai', 'review', baseTaskId, 'chatgpt-audit.md')
+];
+cleanupPaths.forEach(p => {
+  if (fs.existsSync(p)) {
+    try {
+      fs.unlinkSync(p);
+      console.log(`Cleaned up old audit file: ${p}`);
+    } catch (e) {
+      console.warn(`Failed to delete old audit file: ${p}`, e.message);
+    }
+  }
+});
+
 const reportsDir = path.join(process.cwd(), '.ai', 'reports', taskId);
 if (!fs.existsSync(reportsDir)) {
   fs.mkdirSync(reportsDir, { recursive: true });
@@ -355,20 +378,59 @@ function checkLiveUrl() {
     knownRisks.push('FRED data validation bugs detected in data-audit.json');
   }
 
+  // Write log-tail.txt
+  let logTailContent = 'Execution log not available';
+  const baseTaskId = taskId.replace(/-fix$/, '');
+  const possibleLogPaths = [
+    path.join('/Users/happygolucky/mindmap-repo', '.ai', 'logs', `${taskId}.md.log`),
+    path.join('/Users/happygolucky/mindmap-repo', '.ai', 'logs', `${taskId}.log`),
+    path.join('/Users/happygolucky/mindmap-repo', '.ai', 'logs', `${baseTaskId}.md.log`),
+    path.join('/Users/happygolucky/mindmap-repo', '.ai', 'logs', `${baseTaskId}.log`),
+    path.join(process.cwd(), '.ai', 'logs', `${taskId}.md.log`),
+    path.join(process.cwd(), '.ai', 'logs', `${taskId}.log`)
+  ];
+
+  for (const logPath of possibleLogPaths) {
+    if (fs.existsSync(logPath)) {
+      try {
+        const fullLog = fs.readFileSync(logPath, 'utf8');
+        const lines = fullLog.split('\n');
+        logTailContent = lines.slice(-100).join('\n');
+        break;
+      } catch (e) {
+        console.warn(`Failed to read log file at ${logPath}:`, e.message);
+      }
+    }
+  }
+
+  const logTailFile = path.join(reportsDir, 'log-tail.txt');
+  fs.writeFileSync(logTailFile, logTailContent, 'utf8');
+  console.log(`Log tail saved to: ${logTailFile}`);
+
   // 8. Main evidence.json
   const evidence = {
-    taskId,
-    target,
+    taskId: taskId,
+    target: target,
     status: 'needs_chatgpt_audit',
-    attempt: parseInt(args.attempt || '1', 10),
-    commitSha,
-    liveUrl,
-    changedFiles,
-    mechanicalChecks,
-    knownRisks,
+    commitSha: commitSha,
+    changedFiles: changedFiles,
+    logTailPath: `.ai/reports/${taskId}/log-tail.txt`,
+    knownRisks: knownRisks,
     questionsForChatGPT: [],
-    screenshots: [`.ai/reports/${taskId}/screenshot.png`],
-    pageTextPath: `.ai/reports/${taskId}/page-text.txt`
+    generatedAt: new Date().toISOString(),
+
+    // Web/data optional fields
+    liveUrl: liveUrl,
+    pageTextPath: `.ai/reports/${taskId}/page-text.txt`,
+    screenshotPath: fs.existsSync(path.join(reportsDir, 'screenshot.png')) ? `.ai/reports/${taskId}/screenshot.png` : null,
+    consoleErrorsPath: fs.existsSync(path.join(reportsDir, 'console-errors.txt')) ? `.ai/reports/${taskId}/console-errors.txt` : null,
+    networkErrorsPath: fs.existsSync(path.join(reportsDir, 'network-errors.txt')) ? `.ai/reports/${taskId}/network-errors.txt` : null,
+    dataAuditPath: fs.existsSync(path.join(reportsDir, 'data-audit.json')) ? `.ai/reports/${taskId}/data-audit.json` : null,
+
+    // Extra fields for compatibility
+    attempt: parseInt(args.attempt || '1', 10),
+    mechanicalChecks: mechanicalChecks,
+    screenshots: [`.ai/reports/${taskId}/screenshot.png`]
   };
   fs.writeFileSync(path.join(reportsDir, 'evidence.json'), JSON.stringify(evidence, null, 2), 'utf8');
 
@@ -399,7 +461,6 @@ function checkLiveUrl() {
   console.log(`=== Evidence packet generated successfully in: ${reportsDir} ===`);
 
   // 10. Generate / update task state JSON
-  const baseTaskId = taskId.replace(/-fix$/, '');
   const stateDir = path.join(process.cwd(), '.ai', 'state');
   if (!fs.existsSync(stateDir)) {
     fs.mkdirSync(stateDir, { recursive: true });
@@ -446,7 +507,9 @@ function checkLiveUrl() {
   const possibleTaskNames = [
     `${baseTaskId}.md`,
     `${baseTaskId}-fix.md`,
-    `${taskId}.md`
+    `${taskId}.md`,
+    `task-${taskId}-fix.md`,
+    `task-${baseTaskId}-fix.md`
   ];
   const possibleDirs = [
     path.join(process.cwd(), '.ai', 'inbox'),
@@ -503,7 +566,7 @@ function checkLiveUrl() {
 
   // 13. Run task index generator to update the dashboard views
   try {
-    const indexerPath = path.join(process.cwd(), 'scripts', 'generate-task-index.js');
+    const indexerPath = path.join(__dirname, 'generate-task-index.js');
     if (fs.existsSync(indexerPath)) {
       console.log('Running task index generator...');
       execSync(`node "${indexerPath}"`, { stdio: 'inherit' });
@@ -511,4 +574,6 @@ function checkLiveUrl() {
   } catch (e) {
     console.error('Failed to run task index generator:', e.message);
   }
+
+  process.exit(0);
 })();

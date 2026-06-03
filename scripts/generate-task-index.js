@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-// 1. Determine the AI directory to scan
+// Determine the AI directory to scan
 let aiDir = '/Users/happygolucky/mindmap-repo/.ai';
 if (!fs.existsSync(aiDir)) {
   aiDir = '/Users/happygolucky/projects/mindmap-app/.ai';
@@ -52,6 +52,45 @@ function runCmd(cmd, cwd) {
   }
 }
 
+// Robust audit file parser
+function parseAuditFile(filePath) {
+  if (!fs.existsSync(filePath)) return { verdict: null, issues: [] };
+  const content = fs.readFileSync(filePath, 'utf8');
+  let verdict = null;
+  if (content.includes('VERDICT: PASS')) {
+    verdict = 'PASS';
+  } else if (content.includes('VERDICT: FAIL')) {
+    verdict = 'FAIL';
+  }
+
+  const issues = [];
+  if (verdict === 'FAIL') {
+    const lines = content.split('\n');
+    let collect = false;
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (trimmed.includes('VERDICT: FAIL')) {
+        collect = true;
+        continue;
+      }
+      if (trimmed.toLowerCase().includes('blocking issues:')) {
+        collect = true;
+        continue;
+      }
+      if (collect && trimmed) {
+        if (trimmed.toLowerCase().startsWith('verdict:') || trimmed.toLowerCase().startsWith('blocking issues:')) {
+          continue;
+        }
+        let issue = trimmed.replace(/^[-*+]\s*/, '').replace(/^\d+[\s:.)]+\s*/, '').trim();
+        if (issue) {
+          issues.push(issue);
+        }
+      }
+    }
+  }
+  return { verdict, issues };
+}
+
 // 2. Process ChatGPT Reviews first
 function checkReviews() {
   console.log('=== Checking for ChatGPT reviews/audits in state machine ===');
@@ -77,11 +116,20 @@ function checkReviews() {
     }
 
     if (fs.existsSync(chatgptAuditPath)) {
+      if (state && state.updatedAt) {
+        const auditStats = fs.statSync(chatgptAuditPath);
+        const auditMtime = auditStats.mtime.getTime();
+        const stateTime = new Date(state.updatedAt).getTime();
+        if (auditMtime < stateTime - 2000) {
+          console.log(`Audit file is stale for ${taskId} (modified: ${auditStats.mtime.toISOString()}, task updated: ${state.updatedAt}). Skipping review processing.`);
+          return;
+        }
+      }
       console.log(`Found review verdict file for ${taskId}: ${chatgptAuditPath}`);
-      const reviewContent = fs.readFileSync(chatgptAuditPath, 'utf8');
       
-      const hasPass = reviewContent.includes('VERDICT: PASS');
-      const hasFail = reviewContent.includes('VERDICT: FAIL');
+      const parsed = parseAuditFile(chatgptAuditPath);
+      const hasPass = parsed.verdict === 'PASS';
+      const hasFail = parsed.verdict === 'FAIL';
 
       if (!state) {
         state = {
@@ -121,7 +169,7 @@ function checkReviews() {
         fs.writeFileSync(stateFile, JSON.stringify(state, null, 2), 'utf8');
 
         // Sync to target project if applicable
-        if (target && target !== 'mindmap-app' && fs.existsSync(workDir)) {
+        if (target && workDir !== '/Users/happygolucky/mindmap-repo' && fs.existsSync(workDir)) {
           try {
             safeMkdir(path.join(workDir, '.ai', 'done'));
             safeMkdir(path.join(workDir, '.ai', 'state'));
@@ -139,19 +187,7 @@ function checkReviews() {
       } else if (hasFail) {
         console.log(`Verdict for ${taskId}: FAIL`);
         
-        // Extract blocking issues/reasons from the review file
-        const lines = reviewContent.split('\n');
-        const blockingErrors = [];
-        let capture = false;
-        lines.forEach(line => {
-          if (line.includes('VERDICT: FAIL')) {
-            capture = true;
-            return;
-          }
-          if (capture) {
-            if (line.trim()) blockingErrors.push(line.trim());
-          }
-        });
+        const blockingErrors = parsed.issues;
 
         state.chatgptVerdict = 'FAIL';
         state.chatgptAuditPath = chatgptAuditPath.replace(aiDir + '/', '.ai/');
@@ -171,7 +207,7 @@ function checkReviews() {
 
           fs.writeFileSync(stateFile, JSON.stringify(state, null, 2), 'utf8');
 
-          if (target && target !== 'mindmap-app' && fs.existsSync(workDir)) {
+          if (target && workDir !== '/Users/happygolucky/mindmap-repo' && fs.existsSync(workDir)) {
             try {
               safeMkdir(path.join(workDir, '.ai', 'failed'));
               if (fs.existsSync(path.join(workDir, '.ai', 'review', file))) {
@@ -185,7 +221,8 @@ function checkReviews() {
           }
         } else {
           console.log(`Task ${taskId} failed. Retrying (Attempt ${state.attempt}).`);
-          state.status = 'pending';
+          // Set status to failed_review as required
+          state.status = 'failed_review';
 
           // Move task file from review to fix (acting as archive/history of previous attempt)
           const archiveName = `${taskId}-attempt-${state.attempt - 1}.md`;
@@ -217,7 +254,7 @@ function checkReviews() {
 
           fs.writeFileSync(stateFile, JSON.stringify(state, null, 2), 'utf8');
 
-          if (target && target !== 'mindmap-app' && fs.existsSync(workDir)) {
+          if (target && workDir !== '/Users/happygolucky/mindmap-repo' && fs.existsSync(workDir)) {
             try {
               safeMkdir(path.join(workDir, '.ai', 'fix'));
               safeMkdir(path.join(workDir, '.ai', 'inbox'));
@@ -229,7 +266,9 @@ function checkReviews() {
               }
               fs.writeFileSync(path.join(workDir, '.ai', 'inbox', fixTaskName), fixTaskContent, 'utf8');
               fs.copyFileSync(stateFile, path.join(workDir, '.ai', 'state', `${taskId}.json`));
-            } catch (e) {}
+            } catch (e) {
+              console.error(`Syncing FAIL to ${target} failed:`, e);
+            }
           }
         }
       }
@@ -240,202 +279,239 @@ function checkReviews() {
 // Execute checkReviews
 checkReviews();
 
-// 3. Scan files to find all task files
+// 3. Scan files to find all task files and build task index map
 const tasksMap = {};
 
-function scanDir(dirName, flags) {
+function getBaseTaskId(filename) {
+  let base = filename.replace(/\.md$/, '');
+  base = base.replace(/-fix$/, '');
+  base = base.replace(/-attempt-\d+$/, '');
+  return base;
+}
+
+const locationPriority = {
+  'running': 1,
+  'review': 2,
+  'inbox': 3,
+  'failed': 4,
+  'done': 5,
+  'fix': 6
+};
+
+// Scan a directory to register task files and locations
+function scanDir(dirName) {
   const dirPath = path.join(aiDir, dirName);
   if (!fs.existsSync(dirPath)) return;
   
   const files = fs.readdirSync(dirPath);
   files.forEach(file => {
     if (file.startsWith('task-') && file.endsWith('.md')) {
-      const taskId = file.substring(0, file.length - 3).replace(/-fix$/, '');
+      const taskId = getBaseTaskId(file);
       if (!tasksMap[taskId]) {
         tasksMap[taskId] = {
           taskId,
-          title: taskId,
-          target: null,
-          fileExistsInInbox: false,
-          markedDone: false,
-          markedFailed: false,
-          evidenceExists: false,
-          status: 'pending',
-          createdAt: null
+          locations: [],
+          mtimes: []
         };
       }
+      tasksMap[taskId].locations.push(dirName);
       
-      const filePath = path.join(dirPath, file);
       try {
-        const stats = fs.statSync(filePath);
-        const mtime = stats.mtime.toISOString();
-        if (!tasksMap[taskId].createdAt || mtime < tasksMap[taskId].createdAt) {
-          tasksMap[taskId].createdAt = mtime;
-        }
-      } catch (e) {
-        // ignore
-      }
-
-      // Read file content for title and target
-      try {
-        const content = fs.readFileSync(filePath, 'utf8');
-        
-        // Find title
-        const titleMatch = content.match(/^#\s*(.*)/m);
-        if (titleMatch) {
-          tasksMap[taskId].title = titleMatch[1].trim();
-        }
-        
-        // Find target
-        const targetMatch = content.match(/^target:\s*(.*)/mi);
-        if (targetMatch) {
-          tasksMap[taskId].target = targetMatch[1].trim();
-        }
-      } catch (e) {
-        // ignore
-      }
-      
-      if (flags.isInbox) tasksMap[taskId].fileExistsInInbox = true;
-      if (flags.isDone) tasksMap[taskId].markedDone = true;
-      if (flags.isFailed) tasksMap[taskId].markedFailed = true;
+        const stats = fs.statSync(path.join(dirPath, file));
+        tasksMap[taskId].mtimes.push(stats.mtime.toISOString());
+      } catch (e) {}
     }
   });
 }
 
-scanDir('inbox', { isInbox: true });
-scanDir('done', { isDone: true });
-scanDir('failed', { isFailed: true });
-scanDir('running', {});
-scanDir('review', {});
-scanDir('fix', {});
+const locations = ['inbox', 'running', 'review', 'fix', 'done', 'failed'];
+locations.forEach(loc => scanDir(loc));
 
-// Also scan .ai/reports for taskId directories to check evidenceExists
-if (fs.existsSync(reportsDir)) {
-  const files = fs.readdirSync(reportsDir);
-  files.forEach(file => {
-    const fullPath = path.join(reportsDir, file);
-    if (fs.statSync(fullPath).isDirectory() && file.startsWith('task-')) {
-      const taskId = file;
-      if (!tasksMap[taskId]) {
-        tasksMap[taskId] = {
-          taskId,
-          title: taskId,
-          target: null,
-          fileExistsInInbox: false,
-          markedDone: false,
-          markedFailed: false,
-          evidenceExists: false,
-          status: 'pending',
-          createdAt: null
-        };
-      }
-      
-      // Evidence exists if directory is not empty
-      try {
-        const reportContents = fs.readdirSync(fullPath);
-        if (reportContents.length > 0) {
-          tasksMap[taskId].evidenceExists = true;
-        }
-      } catch (e) {
-        // ignore
-      }
-    }
-  });
-}
-
-// Fetch states and processes to fill details
-const runningProcesses = runCmd('ps aux', process.cwd());
-
-const tasksList = Object.values(tasksMap);
-tasksList.forEach(task => {
-  const taskId = task.taskId;
-  
-  // Try to load state JSON if it exists
-  const stateFile = path.join(stateDir, `${taskId}.json`);
-  if (fs.existsSync(stateFile)) {
-    try {
-      const stateData = JSON.parse(fs.readFileSync(stateFile, 'utf8'));
-      task.attempt = stateData.attempt;
-      task.maxAttempts = stateData.maxAttempts;
-      task.liveUrl = stateData.liveUrl;
-      task.evidencePacketPath = stateData.evidencePacketPath;
-      task.chatgptAuditPath = stateData.chatgptAuditPath;
-      task.chatgptVerdict = stateData.chatgptVerdict;
-      task.blockingErrors = stateData.blockingErrors;
-      task.lastCommit = stateData.lastCommit;
-      task.status = stateData.status;
-      if (stateData.startedAt) {
-        task.createdAt = stateData.startedAt;
-      }
-      if (stateData.target && !task.target) {
-        task.target = stateData.target;
-      }
-    } catch (e) {
-      // ignore
-    }
-  }
-
-  // Fallbacks for missing state properties
-  task.attempt = task.attempt || 1;
-  task.maxAttempts = task.maxAttempts || 3;
-  task.liveUrl = task.liveUrl || `https://nickchen494949.github.io/${task.target || 'mindmap-app'}/`;
-  task.evidencePacketPath = task.evidencePacketPath || `.ai/reports/${taskId}/`;
-  task.blockingErrors = task.blockingErrors || [];
-
-  // If reports directory exists, look for summary.md for a task summary
-  const summaryFile = path.join(reportsDir, taskId, 'summary.md');
-  if (fs.existsSync(summaryFile)) {
-    try {
-      task.summary = fs.readFileSync(summaryFile, 'utf8').trim();
-    } catch (e) {
-      // ignore
-    }
-  }
-  
-  // Set default flags if undefined
-  task.fileExistsInInbox = task.fileExistsInInbox || false;
-  task.markedDone = task.markedDone || false;
-  task.markedFailed = task.markedFailed || false;
-  task.evidenceExists = task.evidenceExists || false;
-  
-  // Determine status if not loaded from state JSON
-  if (!task.status) {
-    if (task.markedDone) {
-      task.status = 'done';
-    } else if (task.markedFailed) {
-      task.status = 'failed';
-    } else if (fs.existsSync(path.join(reviewDir, `${taskId}.md`))) {
-      task.status = 'needs_chatgpt_audit';
-    } else if (fs.existsSync(path.join(runningDir, `${taskId}.md`))) {
-      task.status = 'running';
-    } else {
-      // Check if log file exists
-      const logFile = path.join(logsDir, `${taskId}.md.log`);
-      const logExists = fs.existsSync(logFile);
-      
-      if (logExists) {
-        // Check if process is running
-        const isProcessRunning = runningProcesses.includes(taskId) && (runningProcesses.includes('agy') || runningProcesses.includes('node'));
-        if (isProcessRunning) {
-          task.status = 'running';
-        } else {
-          task.status = 'pending';
-        }
-      } else {
-        task.status = 'pending';
-      }
-    }
+// Also check state directory for task JSONs that might not have active task files
+const stateFiles = safeReaddir(stateDir).filter(f => f.startsWith('task-') && f.endsWith('.json'));
+stateFiles.forEach(file => {
+  const taskId = file.replace('.json', '');
+  if (!tasksMap[taskId]) {
+    tasksMap[taskId] = {
+      taskId,
+      locations: [],
+      mtimes: []
+    };
   }
 });
 
-// Sort tasks: Active first, then done/failed. Within groups, sort by createdAt descending (newest first)
+// Build the array of formatted task entries
+const tasksList = [];
+const runningProcesses = runCmd('ps aux', process.cwd());
+
+Object.keys(tasksMap).forEach(taskId => {
+  const tInfo = tasksMap[taskId];
+  
+  // Determine location based on highest priority
+  let location = 'unknown';
+  if (tInfo.locations.length > 0) {
+    tInfo.locations.sort((a, b) => {
+      return (locationPriority[a] || 99) - (locationPriority[b] || 99);
+    });
+    location = tInfo.locations[0];
+  }
+  
+  // Load state JSON if it exists
+  const stateFile = path.join(stateDir, `${taskId}.json`);
+  let stateData = null;
+  if (fs.existsSync(stateFile)) {
+    try {
+      stateData = JSON.parse(fs.readFileSync(stateFile, 'utf8'));
+    } catch (e) {}
+  }
+  
+  // Parse target from active task file or state file
+  let target = stateData ? stateData.target : null;
+  let title = taskId.replace('task-', '').replace(/-/g, ' ');
+  let createdAt = tInfo.mtimes.length > 0 ? tInfo.mtimes.sort()[0] : (stateData ? stateData.startedAt : new Date().toISOString());
+
+  // Try to find the file and extract target and title
+  const fileSearchOrder = [
+    path.join(runningDir, `${taskId}.md`),
+    path.join(runningDir, `${taskId}-fix.md`),
+    path.join(reviewDir, `${taskId}.md`),
+    path.join(inboxDir, `${taskId}.md`),
+    path.join(inboxDir, `${taskId}-fix.md`),
+    path.join(doneDir, `${taskId}.md`),
+    path.join(failedDir, `${taskId}.md`),
+    path.join(fixDir, `${taskId}-attempt-1.md`),
+    path.join(fixDir, `${taskId}-attempt-2.md`)
+  ];
+
+  for (const filePath of fileSearchOrder) {
+    if (fs.existsSync(filePath)) {
+      try {
+        const content = fs.readFileSync(filePath, 'utf8');
+        const targetMatch = content.match(/^target:\s*(.*)/mi);
+        if (targetMatch && !target) {
+          target = targetMatch[1].trim();
+        }
+        const titleMatch = content.match(/^#\s*(.*)/m);
+        if (titleMatch) {
+          title = titleMatch[1].trim();
+        }
+        break;
+      } catch (e) {}
+    }
+  }
+
+  if (!target) target = 'mindmap-app';
+
+  // Check evidence
+  const hasEvidence = fs.existsSync(path.join(reportsDir, taskId, 'evidence.json'));
+  const evidencePath = hasEvidence ? `.ai/reports/${taskId}/evidence.json` : null;
+
+  // Check ChatGPT audit file
+  let chatgptAuditPath = path.join(reviewsDir, taskId, 'chatgpt-audit.md');
+  if (!fs.existsSync(chatgptAuditPath)) {
+    chatgptAuditPath = path.join(reviewDir, taskId, 'chatgpt-audit.md');
+  }
+  const hasAuditFile = fs.existsSync(chatgptAuditPath);
+  const parsedAudit = hasAuditFile ? parseAuditFile(chatgptAuditPath) : { verdict: null, issues: [] };
+
+  // Set chatgptVerdict and blockingIssues
+  let chatgptVerdict = parsedAudit.verdict;
+  if (!chatgptVerdict && stateData) {
+    chatgptVerdict = stateData.chatgptVerdict || null;
+  }
+  
+  let blockingIssues = [...parsedAudit.issues];
+  if (blockingIssues.length === 0 && stateData && stateData.blockingErrors) {
+    blockingIssues = [...stateData.blockingErrors];
+  }
+
+  // Load lastCommit and liveUrl
+  const lastCommit = stateData ? (stateData.lastCommit || null) : null;
+  const liveUrl = stateData ? (stateData.liveUrl || `https://nickchen494949.github.io/${target}/`) : `https://nickchen494949.github.io/${target}/`;
+
+  // Determine status
+  let status = 'unknown';
+  if (location === 'done') {
+    status = 'done';
+    // Test 5: Red flag if done but no ChatGPT PASS
+    if (chatgptVerdict !== 'PASS') {
+      if (!blockingIssues.includes('Task is marked done but lacks ChatGPT PASS verdict')) {
+        blockingIssues.push('Task is marked done but lacks ChatGPT PASS verdict');
+      }
+    }
+  } else if (location === 'running') {
+    status = 'running';
+  } else if (location === 'review') {
+    status = 'needs_chatgpt_audit';
+  } else if (location === 'failed') {
+    if (stateData && stateData.status === 'blocked') {
+      status = 'blocked';
+    } else {
+      status = 'failed';
+    }
+  } else if (location === 'inbox') {
+    if (stateData && stateData.status === 'blocked') {
+      status = 'blocked';
+    } else if (stateData && stateData.status === 'running') {
+      status = 'running';
+    } else {
+      status = 'inbox_unseen';
+    }
+  } else if (location === 'fix') {
+    status = 'failed';
+  }
+
+  // Read blocked errors if any
+  if (stateData && stateData.status === 'blocked' && stateData.errors) {
+    if (!blockingIssues.includes(stateData.errors)) {
+      blockingIssues.push(stateData.errors);
+    }
+  }
+
+  // Support for attempt counts in entry for UI
+  const attempt = stateData ? stateData.attempt : 1;
+  const maxAttempts = stateData ? stateData.maxAttempts : 3;
+
+  // Add specific invalidDone property if applicable
+  const invalidDone = (location === 'done' && chatgptVerdict !== 'PASS');
+
+  // Push task entry
+  tasksList.push({
+    taskId,
+    target,
+    location,
+    status,
+    statePath: `.ai/state/${taskId}.json`,
+    evidencePath,
+    chatgptAuditPath: hasAuditFile ? chatgptAuditPath.replace(aiDir + '/', '.ai/') : null,
+    chatgptVerdict,
+    lastCommit,
+    liveUrl,
+    blockingIssues,
+    
+    // Compatibility fields
+    title,
+    attempt,
+    maxAttempts,
+    createdAt,
+    evidenceExists: hasEvidence,
+    invalidDone,
+    blockingErrors: blockingIssues, // duplicate for compatibility
+    evidencePacketPath: `.ai/reports/${taskId}/`
+  });
+});
+
+// Sort tasks: Active first, then done/failed. Within groups, sort by mtime/createdAt descending
 const statusWeight = {
   'running': 0,
   'needs_chatgpt_audit': 1,
-  'pending': 2,
-  'failed': 3,
-  'done': 4
+  'inbox_unseen': 2,
+  'blocked': 3,
+  'failed': 4,
+  'done': 5,
+  'unknown': 6
 };
+
 tasksList.sort((a, b) => {
   const wA = statusWeight[a.status] !== undefined ? statusWeight[a.status] : 99;
   const wB = statusWeight[b.status] !== undefined ? statusWeight[b.status] : 99;
@@ -443,24 +519,28 @@ tasksList.sort((a, b) => {
   
   const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
   const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
-  return timeB - timeA; // Descending (newest first)
+  return timeB - timeA;
 });
 
-// Prepare watcher heartbeat
-const gitSha = runCmd('git rev-parse HEAD', aiDir) || 'unknown';
-const inboxCount = tasksList.filter(t => t.status === 'pending').length;
-const doneCount = tasksList.filter(t => t.status === 'done').length;
-
-const heartbeat = {
+// Load Watcher Heartbeat
+let heartbeat = {
   name: "watcher",
   lastSeen: new Date().toISOString(),
-  lastScannedCommit: gitSha,
-  inboxCount,
-  doneCount,
+  lastScannedCommit: runCmd('git rev-parse HEAD', aiDir) || 'unknown',
+  inboxCount: tasksList.filter(t => t.status === 'inbox_unseen').length,
+  doneCount: tasksList.filter(t => t.status === 'done').length,
   status: "alive"
 };
 
-// Generate projects list
+const hbFile = path.join(aiDir, 'heartbeat', 'watcher.json');
+if (fs.existsSync(hbFile)) {
+  try {
+    const rawHb = JSON.parse(fs.readFileSync(hbFile, 'utf8'));
+    heartbeat = { ...heartbeat, ...rawHb };
+  } catch (e) {}
+}
+
+// Generate ecosystem projects list
 const PROJECTS_DIR = '/Users/happygolucky/projects';
 let projects = ['mindmap-app'];
 if (fs.existsSync(PROJECTS_DIR)) {
@@ -491,18 +571,16 @@ if (fs.existsSync(watcherLogPath)) {
 
       activityLog.push({ time, sender, action });
     });
-  } catch (e) {
-    console.error('Error parsing watcher log:', e.message);
-  }
+  } catch (e) {}
 }
 
-// Build unified taskDetails map
+// Build unified taskDetails map for status.json compatibility
 const taskDetails = {};
 tasksList.forEach(t => {
   taskDetails[t.taskId] = {
     title: t.title,
     target: t.target,
-    status: t.status,
+    status: t.status === 'inbox_unseen' ? 'pending' : t.status, // map status back to backward compatible value if needed
     completedAt: t.status === 'done' ? t.createdAt : '',
     summary: t.summary || 'Task index updated',
     attempt: t.attempt,
@@ -511,20 +589,29 @@ tasksList.forEach(t => {
     liveUrl: t.liveUrl,
     evidencePacketPath: t.evidencePacketPath,
     chatgptVerdict: t.chatgptVerdict,
-    blockingErrors: t.blockingErrors
+    blockingErrors: t.blockingIssues
   };
 });
 
-// Compile status.json
+// Compile status.json with backward compatibility and Required work E
 const statusJson = {
+  // Required work E keys
+  pendingTasks: tasksList.filter(t => t.status === 'inbox_unseen' || t.status === 'pending').length,
+  runningTasks: tasksList.filter(t => t.status === 'running').length,
+  reviewTasks: tasksList.filter(t => t.status === 'needs_chatgpt_audit').length,
+  failedTasks: tasksList.filter(t => t.status === 'failed' || t.status === 'blocked').length,
+  doneTasks: tasksList.filter(t => t.status === 'done').length,
+  needsChatGPTAudit: tasksList.filter(t => t.status === 'needs_chatgpt_audit').map(t => t.taskId),
+  blocked: tasksList.filter(t => t.status === 'blocked').map(t => t.taskId),
+  heartbeat: heartbeat,
+
+  // Compatibility keys
   lastUpdate: new Date().toISOString().replace('T', ' ').substring(0, 19),
   totalTasks: tasksList.length,
-  doneTasks: tasksList.filter(t => t.status === 'done').length,
-  pendingTasks: tasksList.filter(t => t.status === 'pending' || t.status === 'running').length,
-  pending: tasksList.filter(t => t.status === 'pending').map(t => t.taskId),
+  pending: tasksList.filter(t => t.status === 'inbox_unseen' || t.status === 'pending').map(t => t.taskId),
   running: tasksList.filter(t => t.status === 'running').map(t => t.taskId),
   review: tasksList.filter(t => t.status === 'needs_chatgpt_audit').map(t => t.taskId),
-  failed: tasksList.filter(t => t.status === 'failed').map(t => t.taskId),
+  failed: tasksList.filter(t => t.status === 'failed' || t.status === 'blocked').map(t => t.taskId),
   done: tasksList.filter(t => t.status === 'done').map(t => t.taskId),
   projects,
   taskDetails,
@@ -549,21 +636,27 @@ const writeTargets = [
 
 writeTargets.forEach(target => {
   try {
-    // Write task-index
-    fs.writeFileSync(target.index, JSON.stringify(tasksList, null, 2), 'utf8');
-    console.log(`Successfully wrote task index to: ${target.index}`);
-    
-    // Write status.json
-    fs.writeFileSync(target.status, JSON.stringify(statusJson, null, 2), 'utf8');
-    console.log(`Successfully wrote status.json to: ${target.status}`);
-    
-    // Ensure heartbeat dir exists
-    if (!fs.existsSync(target.hbDir)) {
-      fs.mkdirSync(target.hbDir, { recursive: true });
+    // Ensure index folder exists
+    const idxDir = path.dirname(target.index);
+    if (fs.existsSync(path.dirname(idxDir))) {
+      safeMkdir(idxDir);
+      fs.writeFileSync(target.index, JSON.stringify(tasksList, null, 2), 'utf8');
+      console.log(`Successfully wrote task index to: ${target.index}`);
     }
-    // Write heartbeat
-    fs.writeFileSync(target.hb, JSON.stringify(heartbeat, null, 2), 'utf8');
-    console.log(`Successfully wrote heartbeat to: ${target.hb}`);
+    
+    // Ensure status folder exists
+    const statDir = path.dirname(target.status);
+    if (fs.existsSync(statDir)) {
+      fs.writeFileSync(target.status, JSON.stringify(statusJson, null, 2), 'utf8');
+      console.log(`Successfully wrote status.json to: ${target.status}`);
+    }
+    
+    // Ensure heartbeat folder exists
+    if (fs.existsSync(path.dirname(target.hbDir))) {
+      safeMkdir(target.hbDir);
+      fs.writeFileSync(target.hb, JSON.stringify(heartbeat, null, 2), 'utf8');
+      console.log(`Successfully wrote heartbeat to: ${target.hb}`);
+    }
   } catch (err) {
     console.error(`Failed to write target files:`, err.message);
   }

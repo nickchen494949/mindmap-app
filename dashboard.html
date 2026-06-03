@@ -33,7 +33,7 @@
     color: var(--text-primary);
     min-height: 100vh;
     padding: 24px;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     overflow-x: hidden;
   }
@@ -308,33 +308,7 @@
   .stat-card.done .value { color: var(--clr-success); }
   .stat-card.failed .value { color: var(--clr-danger); }
   
-  /* Columns layout */
-  .dashboard-layout {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 24px;
-  }
-  
-  @media (max-width: 900px) {
-    .dashboard-layout {
-      grid-template-columns: 1fr;
-    }
-    .pipeline-flow {
-      flex-direction: column;
-      gap: 12px;
-    }
-    .pipeline-connection {
-      display: none;
-    }
-  }
-  
-  /* Task card list */
-  .tasks-container {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  
+  /* Control Tower Columns Layout */
   .section-header {
     display: flex;
     justify-content: space-between;
@@ -347,56 +321,101 @@
     font-weight: 700;
     color: var(--text-primary);
   }
+
+  .dashboard-columns {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+    align-items: start;
+  }
   
+  .dashboard-column {
+    background: rgba(15, 23, 42, 0.35);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 14px;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .dashboard-column h3 {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  
+  .column-tasks {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 400px;
+  }
+
+  .sidebar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+  }
+  
+  /* Task Card Style */
   .task-card {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
   }
   
   .task-card:hover {
     border-color: rgba(99, 102, 241, 0.3);
-    box-shadow: 0 4px 28px rgba(99, 102, 241, 0.08);
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.12);
   }
   
   .task-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 14px;
-    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
   }
   
   .task-title-area {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
   }
   
   .task-title {
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--text-primary);
   }
   
   .task-id {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-muted);
   }
   
   .task-badge {
-    padding: 5px 14px;
-    border-radius: 20px;
-    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 9px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    letter-spacing: 0.3px;
+    flex-shrink: 0;
   }
   
   .task-badge.inbox_unseen, .task-badge.pending { background: rgba(100, 116, 139, 0.15); color: var(--text-secondary); border: 1px solid rgba(100, 116, 139, 0.3); }
@@ -405,25 +424,26 @@
   .task-badge.needs_audit, .task-badge.needs_chatgpt_audit { background: rgba(139, 92, 246, 0.15); color: var(--clr-audit); border: 1px solid rgba(139, 92, 246, 0.3); }
   .task-badge.done { background: rgba(16, 185, 129, 0.15); color: var(--clr-success); border: 1px solid rgba(16, 185, 129, 0.3); }
   .task-badge.failed { background: rgba(239, 68, 68, 0.15); color: var(--clr-danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+  .task-badge.blocked { background: rgba(239, 68, 68, 0.25); color: #fda4af; border: 1px solid rgba(239, 68, 68, 0.4); }
   
   .task-meta {
     display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
+    gap: 4px;
+    margin-bottom: 12px;
     flex-wrap: wrap;
   }
   
   .meta-tag {
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--border-color);
-    border-radius: 6px;
-    padding: 3px 8px;
-    font-size: 11px;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 10px;
     font-weight: 550;
     color: var(--text-secondary);
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 3px;
   }
   
   .meta-tag.target {
@@ -436,34 +456,49 @@
     font-family: 'JetBrains Mono', monospace;
   }
   
+  /* Red Flag Warning in Card */
+  .red-flag-badge {
+    background: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
   /* Checklist */
   .checklist {
     background: rgba(0, 0, 0, 0.25);
     border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 16px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 12px;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
   }
   
   .check-item {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 13px;
+    gap: 6px;
+    font-size: 11px;
     color: var(--text-secondary);
   }
   
   .check-item .indicator {
-    width: 20px;
-    height: 20px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 11px;
+    font-size: 8px;
     font-weight: 700;
     flex-shrink: 0;
   }
@@ -485,53 +520,53 @@
   }
   
   /* Task details */
-  .task-details {
-    margin-top: 14px;
-  }
-  
   .summary-box {
     background: rgba(255, 255, 255, 0.02);
     border-left: 3px solid var(--clr-primary);
-    border-radius: 0 8px 8px 0;
-    padding: 12px 16px;
-    font-size: 13px;
-    line-height: 1.5;
+    border-radius: 0 6px 6px 0;
+    padding: 8px 10px;
+    font-size: 11px;
+    line-height: 1.4;
     color: var(--text-secondary);
-    margin-bottom: 14px;
+    margin-bottom: 10px;
+    max-height: 80px;
+    overflow-y: auto;
   }
   
   .errors-box {
     background: rgba(239, 68, 68, 0.08);
     border-left: 3px solid var(--clr-danger);
-    border-radius: 0 8px 8px 0;
-    padding: 12px 16px;
-    font-size: 13px;
+    border-radius: 0 6px 6px 0;
+    padding: 8px 10px;
+    font-size: 11px;
     color: #fda4af;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
+    max-height: 100px;
+    overflow-y: auto;
   }
   
   .errors-box ul {
-    margin-left: 20px;
-    margin-top: 4px;
+    margin-left: 14px;
+    margin-top: 2px;
   }
   
   .links-panel {
     display: flex;
-    gap: 16px;
+    gap: 8px;
     flex-wrap: wrap;
-    margin-top: 14px;
-    padding-top: 14px;
+    margin-top: 10px;
+    padding-top: 10px;
     border-top: 1px solid var(--border-color);
   }
   
   .action-link {
     color: #818cf8;
     text-decoration: none;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 2px;
     transition: color 0.2s;
   }
   
@@ -539,13 +574,7 @@
     color: #a78bfa;
   }
   
-  /* Sidebar */
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-  
+  /* Sidebar widgets */
   .sidebar-widget {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
@@ -592,10 +621,6 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.03);
     white-space: pre-wrap;
     word-break: break-all;
-  }
-  
-  .log-line:last-child {
-    border-bottom: none;
   }
   
   .log-timestamp {
@@ -716,6 +741,12 @@
     from { transform: translateY(-10px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
   }
+
+  @media (max-width: 1200px) {
+    .dashboard-columns {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
 </head>
 <body>
@@ -771,73 +802,110 @@
 
   <div class="stats-grid" id="stats-grid">
     <div class="stat-card total"><div class="value" id="stat-total">0</div><div class="label">Total Tasks</div></div>
-    <div class="stat-card pending"><div class="value" id="stat-pending">0</div><div class="label">Pending</div></div>
+    <div class="stat-card pending"><div class="value" id="stat-pending">0</div><div class="label">Inbox / Unseen</div></div>
     <div class="stat-card running"><div class="value" id="stat-running">0</div><div class="label">Running</div></div>
     <div class="stat-card needs_chatgpt_audit"><div class="value" id="stat-audit">0</div><div class="label">Needs ChatGPT Audit</div></div>
     <div class="stat-card done"><div class="value" id="stat-done">0</div><div class="label">Done</div></div>
-    <div class="stat-card failed"><div class="value" id="stat-failed">0</div><div class="label">Failed</div></div>
+    <div class="stat-card failed"><div class="value" id="stat-failed">0</div><div class="label">Failed / Blocked</div></div>
   </div>
 
-  <div class="dashboard-layout">
-    <!-- Left panel: Task queue -->
-    <div>
-      <div class="section-header">
-        <h2 class="section-title">📋 Task Lifecycle & Logs</h2>
+  <!-- Task Control Tower Columns -->
+  <div class="section-header">
+    <h2 class="section-title">📋 Task Control Tower</h2>
+  </div>
+  
+  <div class="dashboard-columns">
+    <div class="dashboard-column" id="col-inbox">
+      <h3>📥 Inbox / Unseen</h3>
+      <div class="column-tasks" id="tasks-inbox">
+        <div style="color: var(--text-muted); text-align: center; padding: 20px; font-size: 12px;">No tasks</div>
       </div>
-      <div class="tasks-container" id="tasks-list">
-        <div style="color: var(--text-muted); text-align: center; padding: 40px;">Scanning files...</div>
+    </div>
+    <div class="dashboard-column" id="col-running">
+      <h3>⚙️ Running</h3>
+      <div class="column-tasks" id="tasks-running">
+        <div style="color: var(--text-muted); text-align: center; padding: 20px; font-size: 12px;">No tasks</div>
+      </div>
+    </div>
+    <div class="dashboard-column" id="col-audit">
+      <h3>⏳ Needs Audit</h3>
+      <div class="column-tasks" id="tasks-audit">
+        <div style="color: var(--text-muted); text-align: center; padding: 20px; font-size: 12px;">No tasks</div>
+      </div>
+    </div>
+    <div class="dashboard-column" id="col-failed">
+      <h3>🚫 Failed / Blocked</h3>
+      <div class="column-tasks" id="tasks-failed">
+        <div style="color: var(--text-muted); text-align: center; padding: 20px; font-size: 12px;">No tasks</div>
+      </div>
+    </div>
+    <div class="dashboard-column" id="col-done">
+      <h3>✅ Done (PASS)</h3>
+      <div class="column-tasks" id="tasks-done">
+        <div style="color: var(--text-muted); text-align: center; padding: 20px; font-size: 12px;">No tasks</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom section grid: heartbeats and terminal logs -->
+  <div class="sidebar-grid">
+    <div class="sidebar-widget">
+      <div class="widget-title">
+        <span>Watcher Heartbeat</span>
+        <span id="heartbeat-status">STANDBY</span>
+      </div>
+      <div style="font-size: 13px; line-height: 1.6; display: flex; flex-direction: column; gap: 8px;">
+        <div style="display:flex; justify-content:space-between;">
+          <span style="color:var(--text-secondary);">Last Seen:</span>
+          <span id="hb-last-seen" style="font-family:'JetBrains Mono',monospace;">Never</span>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span style="color:var(--text-secondary);">Scanned Commit:</span>
+          <span id="hb-commit" style="font-family:'JetBrains Mono',monospace; color:#818cf8;">-</span>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span style="color:var(--text-secondary);">Inbox Count:</span>
+          <span id="hb-inbox" style="font-weight:600;">0</span>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span style="color:var(--text-secondary);">Done Count:</span>
+          <span id="hb-done" style="font-weight:600;">0</span>
+        </div>
+      </div>
+      
+      <div class="widget-title" style="margin-top:20px;">
+        <span>Agy Heartbeat</span>
+        <span id="agy-heartbeat-status" style="font-size:11px; padding:2px 8px; border-radius:10px; background:rgba(255,255,255,0.06); color:var(--text-muted);">NOT ACTIVE</span>
+      </div>
+      <div style="font-size: 13px; line-height: 1.6; display: flex; flex-direction: column; gap: 8px;">
+        <div style="display:flex; justify-content:space-between;">
+          <span style="color:var(--text-secondary);">Last Seen:</span>
+          <span id="agy-hb-last-seen" style="font-family:'JetBrains Mono',monospace;">Never</span>
+        </div>
       </div>
     </div>
 
-    <!-- Right panel: Heartbeats & Logs -->
-    <div class="sidebar">
-      <div class="sidebar-widget">
-        <div class="widget-title">
-          <span>Watcher Heartbeat</span>
-          <span id="heartbeat-status">STANDBY</span>
-        </div>
-        <div style="font-size: 13px; line-height: 1.6; display: flex; flex-direction: column; gap: 8px;">
-          <div style="display:flex; justify-content:space-between;">
-            <span style="color:var(--text-secondary);">Last Seen:</span>
-            <span id="hb-last-seen" style="font-family:'JetBrains Mono',monospace;">Never</span>
-          </div>
-          <div style="display:flex; justify-content:space-between;">
-            <span style="color:var(--text-secondary);">Scanned Commit:</span>
-            <span id="hb-commit" style="font-family:'JetBrains Mono',monospace; color:#818cf8;">-</span>
-          </div>
-          <div style="display:flex; justify-content:space-between;">
-            <span style="color:var(--text-secondary);">Inbox Count:</span>
-            <span id="hb-inbox" style="font-weight:600;">0</span>
-          </div>
-          <div style="display:flex; justify-content:space-between;">
-            <span style="color:var(--text-secondary);">Done Count:</span>
-            <span id="hb-done" style="font-weight:600;">0</span>
-          </div>
-        </div>
+    <div class="sidebar-widget" id="exec-logs-widget">
+      <div class="widget-title">
+        <span>Watcher Execution Logs</span>
+        <span>LIVE</span>
       </div>
-
-      <div class="sidebar-widget" id="exec-logs-widget">
-        <div class="widget-title">
-          <span>Watcher Execution Logs</span>
-          <span>LIVE</span>
-        </div>
-        <div class="terminal-box" id="exec-logs">
-          <div class="log-line" style="color:var(--text-muted)">No logs loaded from status.json</div>
-        </div>
+      <div class="terminal-box" id="exec-logs">
+        <div class="log-line" style="color:var(--text-muted)">No logs loaded from status.json</div>
       </div>
+    </div>
 
-      <div class="sidebar-widget">
-        <div class="widget-title">
-          <span>Ecosystem Projects</span>
-        </div>
-        <div class="project-list" id="project-list">
-          <div class="project-item">
-            <div>
-              <div class="name">🧠 mindmap-app</div>
-              <div class="path">~/projects/mindmap-app</div>
-            </div>
-            <a href="https://nickchen494949.github.io/mindmap-app/" target="_blank">Open Live</a>
+    <div class="sidebar-widget">
+      <div class="widget-title">
+        <span>Ecosystem Projects</span>
+      </div>
+      <div class="project-list" id="project-list">
+        <div class="project-item">
+          <div>
+            <div class="name">🧠 mindmap-app</div>
+            <div class="path">~/projects/mindmap-app</div>
           </div>
+          <a href="https://nickchen494949.github.io/mindmap-app/" target="_blank">Open Live</a>
         </div>
       </div>
     </div>
@@ -850,14 +918,12 @@
 // Format status label for human consumption
 function getStatusLabel(status) {
   switch (status) {
-    case 'pending': return '⏳ PENDING';
     case 'inbox_unseen': return '⏳ INBOX UNSEEN';
-    case 'seen': return '👀 WATCHER SEEN';
     case 'running': return '⚙️ RUNNING';
     case 'needs_chatgpt_audit': return '⏳ NEEDS AUDIT';
-    case 'needs_audit': return '⏳ AUDIT REQUIRED';
     case 'done': return '✅ PASSED';
     case 'failed': return '❌ FAILED';
+    case 'blocked': return '🚫 BLOCKED';
     default: return status ? status.toUpperCase() : 'UNKNOWN';
   }
 }
@@ -867,6 +933,7 @@ async function loadData() {
   const t = Date.now();
   let taskIndex = [];
   let heartbeat = null;
+  let agyHeartbeat = null;
   let statusData = null;
   let loadingError = false;
 
@@ -894,6 +961,15 @@ async function loadData() {
   }
 
   try {
+    const r = await fetch(`.ai/heartbeat/agy.json?t=${t}`);
+    if (r.ok) {
+      agyHeartbeat = await r.json();
+    }
+  } catch (e) {
+    console.error('Failed to load agy.json', e);
+  }
+
+  try {
     const r = await fetch(`status.json?t=${t}`);
     if (r.ok) {
       statusData = await r.json();
@@ -905,7 +981,7 @@ async function loadData() {
   if (loadingError && taskIndex.length === 0) {
     renderErrorFallback();
   } else {
-    render(taskIndex, heartbeat, statusData);
+    render(taskIndex, heartbeat, agyHeartbeat, statusData);
   }
 }
 
@@ -936,21 +1012,20 @@ function renderErrorFallback() {
   document.getElementById('app-root').innerHTML = message;
 }
 
-function render(taskIndex, heartbeat, statusData) {
+function render(taskIndex, heartbeat, agyHeartbeat, statusData) {
   const now = new Date();
   document.getElementById('last-update').innerHTML = '🕐 Last Checked: ' + now.toLocaleTimeString() + ' | ' + now.toLocaleDateString();
   
   // Set stats
   const total = taskIndex.length;
-  const pending = taskIndex.filter(t => t.status === 'pending' || t.status === 'inbox_unseen' || t.status === 'seen').length;
+  const inbox = taskIndex.filter(t => t.status === 'inbox_unseen').length;
   const running = taskIndex.filter(t => t.status === 'running').length;
-  const audit = taskIndex.filter(t => t.status === 'needs_chatgpt_audit' || t.status === 'needs_audit').length;
+  const audit = taskIndex.filter(t => t.status === 'needs_chatgpt_audit').length;
   const done = taskIndex.filter(t => t.status === 'done').length;
-  const failed = taskIndex.filter(t => t.status === 'failed').length;
+  const failed = taskIndex.filter(t => t.status === 'failed' || t.status === 'blocked').length;
   
   document.getElementById('stat-total').textContent = total;
-  const pendingEl = document.getElementById('stat-pending');
-  if (pendingEl) pendingEl.textContent = pending;
+  document.getElementById('stat-pending').textContent = inbox;
   document.getElementById('stat-running').textContent = running;
   document.getElementById('stat-audit').textContent = audit;
   document.getElementById('stat-done').textContent = done;
@@ -959,44 +1034,84 @@ function render(taskIndex, heartbeat, statusData) {
   // Warnings calculation
   const warnings = [];
   
-  // Warning 1: Task in inbox > 5 min but not seen
+  // Red flag 1: task exists in inbox but no state file
   taskIndex.forEach(t => {
-    if (t.status === 'inbox_unseen' && t.createdAt) {
-      const elapsed = Date.now() - new Date(t.createdAt).getTime();
-      if (elapsed > 5 * 60 * 1000) {
-        warnings.push({
-          title: `Watcher 没看到: ${t.taskId}`,
-          desc: `任务在 inbox 中已停留了 ${Math.round(elapsed / 60000)} 分钟，但 Watcher 尚未读取该任务。`
-        });
-      }
+    if (t.location === 'inbox' && t.summary === 'No state file generated yet') {
+      warnings.push({
+        title: `缺少状态文件 (Red Flag): ${t.taskId}`,
+        desc: `任务文件存在于 inbox 中，但没有生成相应的状态 state/ 记录文件。`
+      });
     }
   });
-  
-  // Warning 2: Watcher heartbeat > 3 min stale
+
+  // Red flag 2: task in review but no evidence packet
+  taskIndex.forEach(t => {
+    if (t.location === 'review' && !t.evidenceExists) {
+      warnings.push({
+        title: `缺少验收报告 (Red Flag): ${t.taskId}`,
+        desc: `任务已进入 review，但没有在其 reports/ 目录下找到验收报告 (evidence.json)。`
+      });
+    }
+  });
+
+  // Red flag 3: task in done but no ChatGPT PASS
+  taskIndex.forEach(t => {
+    if (t.location === 'done' && t.chatgptVerdict !== 'PASS') {
+      warnings.push({
+        title: `非法的完成状态 (Red Flag): ${t.taskId}`,
+        desc: `任务被标记为 done 归档，但没有获得 ChatGPT 审查通过 (VERDICT: PASS)。`
+      });
+    }
+  });
+
+  // Red flag 4: watcher heartbeat stale
   let watcherStale = false;
   if (heartbeat && heartbeat.lastSeen) {
     const hbElapsed = Date.now() - new Date(heartbeat.lastSeen).getTime();
     if (hbElapsed > 3 * 60 * 1000) {
       watcherStale = true;
       warnings.push({
-        title: "Watcher 可能死了",
-        desc: `Watcher 的最后心跳时间为 ${new Date(heartbeat.lastSeen).toLocaleString()} (距今已过去 ${Math.round(hbElapsed / 60000)} 分钟)。`
+        title: "Watcher 心跳异常 (Red Flag)",
+        desc: `Watcher 的最后活跃时间为 ${new Date(heartbeat.lastSeen).toLocaleString()} (距今已过去 ${Math.round(hbElapsed / 60000)} 分钟)。`
       });
     }
   } else {
     watcherStale = true;
     warnings.push({
-      title: "Watcher 心跳异常",
-      desc: "无法获取 Watcher 的心跳状态，请检查 Watcher 进程是否在运行。"
+      title: "Watcher 心跳缺失 (Red Flag)",
+      desc: "无法获取 Watcher 的心跳状态，请检查 Watcher 是否已经运行过。"
     });
   }
-  
-  // Warning 3: Done but no evidence
-  taskIndex.forEach(t => {
-    if (t.status === 'done' && !t.evidenceExists) {
+
+  // Red flag 5: agy heartbeat missing/stale if available
+  if (agyHeartbeat && agyHeartbeat.lastSeen) {
+    const agyHbElapsed = Date.now() - new Date(agyHeartbeat.lastSeen).getTime();
+    const agyHbStatusSpan = document.getElementById('agy-heartbeat-status');
+    if (agyHbElapsed > 3 * 60 * 1000) {
       warnings.push({
-        title: `缺少验收报告: ${t.taskId}`,
-        desc: "该任务已标记为完成，但系统未在其 reports 文件夹下找到有效的验收报告。"
+        title: "Agy 心跳异常 (Red Flag)",
+        desc: `Executor (Agy) 的心跳已过期，最后活跃时间为 ${new Date(agyHeartbeat.lastSeen).toLocaleString()}。`
+      });
+      agyHbStatusSpan.textContent = 'STALE';
+      agyHbStatusSpan.style.background = 'rgba(239, 68, 68, 0.2)';
+      agyHbStatusSpan.style.color = 'var(--clr-danger)';
+    } else {
+      agyHbStatusSpan.textContent = 'ALIVE';
+      agyHbStatusSpan.style.background = 'rgba(16, 185, 129, 0.2)';
+      agyHbStatusSpan.style.color = 'var(--clr-success)';
+    }
+    document.getElementById('agy-hb-last-seen').textContent = new Date(agyHeartbeat.lastSeen).toLocaleTimeString();
+  } else {
+    document.getElementById('agy-hb-last-seen').textContent = 'Never';
+  }
+
+  // Red flag 6 & 7: firewall blocked task & unknown target blocked
+  taskIndex.forEach(t => {
+    if (t.status === 'blocked') {
+      const isUnknownTarget = t.blockingIssues.some(i => i.toLowerCase().includes('unknown target'));
+      warnings.push({
+        title: isUnknownTarget ? `未授权的目标拦截 (Red Flag): ${t.taskId}` : `防火墙安全审查拦截 (Red Flag): ${t.taskId}`,
+        desc: `任务已被防火墙拒绝：${t.blockingIssues.join('; ')}`
       });
     }
   });
@@ -1018,7 +1133,7 @@ function render(taskIndex, heartbeat, statusData) {
     alertsPanel.style.display = 'none';
   }
   
-  // Watcher badge & status
+  // Watcher badge & status update
   const badgeContainer = document.getElementById('watcher-badge-container');
   const hbStatusSpan = document.getElementById('heartbeat-status');
   if (watcherStale) {
@@ -1050,123 +1165,178 @@ function render(taskIndex, heartbeat, statusData) {
   }
   
   // Flow Visualizer (Current/Latest Task)
-  // Sort by createdAt to find the latest
   const latestTask = taskIndex.length > 0 ? taskIndex.reduce((prev, current) => {
-    return (new Date(prev.createdAt).getTime() > new Date(current.createdAt).getTime()) ? prev : current;
+    const prevTime = prev.createdAt ? new Date(prev.createdAt).getTime() : 0;
+    const currTime = current.createdAt ? new Date(current.createdAt).getTime() : 0;
+    return (prevTime > currTime) ? prev : current;
   }) : null;
   
   renderPipeline(latestTask);
   
-  // Render task cards
-  const tasksListDiv = document.getElementById('tasks-list');
-  if (taskIndex.length === 0) {
-    tasksListDiv.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 40px;">No tasks found in .ai workspace.</div>';
-  } else {
-    tasksListDiv.innerHTML = taskIndex.map(t => {
-      // Calculate booleans for Checklist
-      const checkExists = t.fileExistsInInbox || t.status === 'done' || t.status === 'failed' || t.evidenceExists;
-      const checkSeen = t.status !== 'inbox_unseen' && t.status !== 'pending';
-      const checkExecuted = ['running', 'needs_chatgpt_audit', 'needs_audit', 'done', 'failed'].includes(t.status);
-      const checkEvidence = t.evidenceExists;
-      const checkDone = t.status === 'done';
-      
-      const badgeHtml = `<span class="task-badge ${t.status}">${getStatusLabel(t.status)}</span>`;
-      const attemptHtml = `<span class="meta-tag">Attempt: ${t.attempt || 1}/${t.maxAttempts || 3}</span>`;
-      const targetHtml = t.target ? `<span class="meta-tag target">📁 ${t.target}</span>` : '';
-      const commitHtml = t.lastCommit ? `<span class="meta-tag time">SHA: ${t.lastCommit.substring(0, 7)}</span>` : '';
-      const createdHtml = t.createdAt ? `<span class="meta-tag time">Created: ${new Date(t.createdAt).toLocaleTimeString()}</span>` : '';
-      
-      let summaryHtml = '';
-      if (t.summary) {
-        summaryHtml = `<div class="summary-box"><strong>Task Summary:</strong><br>${t.summary.replace(/\n/g, '<br>')}</div>`;
-      }
-      
-      let errorsHtml = '';
-      if (t.blockingErrors && t.blockingErrors.length > 0) {
-        errorsHtml = `
-          <div class="errors-box">
-            <strong>⚠️ Blocking Issues:</strong>
-            <ul>
-              ${t.blockingErrors.map(e => `<li>${e}</li>`).join('')}
-            </ul>
-          </div>
-        `;
-      } else if (t.status === 'failed') {
-        errorsHtml = `
-          <div class="errors-box">
-            <strong>⚠️ Failed:</strong> Task exceeded maximum retry attempts without passing audit.
-          </div>
-        `;
-      }
-      
-      // Links
-      const repoUrl = `https://github.com/nickchen494949/mindmap-app`;
-      const evidenceUrl = t.evidenceExists ? `${repoUrl}/tree/main/${t.evidencePacketPath}` : '#';
-      const liveUrl = t.liveUrl;
-      const reviewUrl = t.chatgptAuditPath ? `${repoUrl}/blob/main/${t.chatgptAuditPath}` : '#';
-      const logUrl = `${repoUrl}/blob/main/.ai/logs/${t.taskId}.md.log`;
-      
-      let linksHtml = '';
-      if (t.status !== 'inbox_unseen') {
-        linksHtml += `<a href="${logUrl}" target="_blank" class="action-link">📝 Execution Log</a>`;
-        if (t.evidenceExists) {
-          linksHtml += `<a href="${evidenceUrl}" target="_blank" class="action-link">📊 Evidence Packet</a>`;
-        }
-        if (liveUrl) {
-          linksHtml += `<a href="${liveUrl}" target="_blank" class="action-link">🔗 View Live Site</a>`;
-        }
-        if (t.chatgptAuditPath) {
-          linksHtml += `<a href="${reviewUrl}" target="_blank" class="action-link">✍️ ChatGPT Audit Verdict</a>`;
-        }
-      }
-      
-      return `
-        <div class="task-card">
-          <div class="task-header">
-            <div class="task-title-area">
-              <div class="task-title">${t.title}</div>
-              <div class="task-id">ID: ${t.taskId}</div>
-            </div>
-            ${badgeHtml}
-          </div>
-          <div class="task-meta">
-            ${targetHtml}
-            ${attemptHtml}
-            ${commitHtml}
-            ${createdHtml}
-          </div>
-          
-          <div class="checklist">
-            <div class="check-item ${checkExists ? 'pass' : 'fail'}">
-              <div class="indicator">${checkExists ? '✓' : '✗'}</div>
-              Exists in GitHub
-            </div>
-            <div class="check-item ${checkSeen ? 'pass' : 'fail'}">
-              <div class="indicator">${checkSeen ? '✓' : '✗'}</div>
-              Watcher Saw It
-            </div>
-            <div class="check-item ${checkExecuted ? 'pass' : 'fail'}">
-              <div class="indicator">${checkExecuted ? '✓' : '✗'}</div>
-              Agy Executed It
-            </div>
-            <div class="check-item ${checkEvidence ? 'pass' : 'fail'}">
-              <div class="indicator">${checkEvidence ? '✓' : '✗'}</div>
-              Evidence Created
-            </div>
-            <div class="check-item ${checkDone ? 'pass' : 'fail'}">
-              <div class="indicator">${checkDone ? '✓' : '✗'}</div>
-              Marked Done
-            </div>
-          </div>
-          
-          ${summaryHtml}
-          ${errorsHtml}
-          
-          ${linksHtml ? `<div class="links-panel">${linksHtml}</div>` : ''}
+  // Group and render tasks into columns
+  const colContainers = {
+    'inbox_unseen': document.getElementById('tasks-inbox'),
+    'running': document.getElementById('tasks-running'),
+    'needs_chatgpt_audit': document.getElementById('tasks-audit'),
+    'failed': document.getElementById('tasks-failed'),
+    'blocked': document.getElementById('tasks-failed'),
+    'done': document.getElementById('tasks-done')
+  };
+
+  // Clear columns
+  Object.values(colContainers).forEach(container => {
+    if (container) container.innerHTML = '';
+  });
+
+  const taskHtmlMap = {
+    'inbox_unseen': [],
+    'running': [],
+    'needs_chatgpt_audit': [],
+    'failed': [],
+    'done': []
+  };
+
+  taskIndex.forEach(t => {
+    // Determine card-level red flags
+    const cardRedFlags = [];
+    if (t.location === 'inbox' && t.summary === 'No state file generated yet') {
+      cardRedFlags.push('⚠️ Missing state file');
+    }
+    if (t.location === 'review' && !t.evidenceExists) {
+      cardRedFlags.push('⚠️ Missing evidence packet');
+    }
+    if (t.location === 'done' && t.chatgptVerdict !== 'PASS') {
+      cardRedFlags.push('⚠️ Lacks ChatGPT PASS');
+    }
+    if (t.status === 'blocked') {
+      const isUnknownTarget = t.blockingIssues.some(i => i.toLowerCase().includes('unknown target'));
+      cardRedFlags.push(isUnknownTarget ? '🚫 Unknown Target Blocked' : '🚫 Firewall Blocked');
+    }
+
+    const checkExists = t.fileExistsInInbox || t.status === 'done' || t.status === 'failed' || t.evidenceExists;
+    const checkSeen = t.status !== 'inbox_unseen' && t.status !== 'pending';
+    const checkExecuted = ['running', 'needs_chatgpt_audit', 'done', 'failed'].includes(t.status);
+    const checkEvidence = t.evidenceExists;
+    const checkDone = t.status === 'done' && t.chatgptVerdict === 'PASS';
+
+    const badgeHtml = `<span class="task-badge ${t.status}">${getStatusLabel(t.status)}</span>`;
+    const attemptHtml = `<span class="meta-tag">Attempt: ${t.attempt || 1}/${t.maxAttempts || 3}</span>`;
+    const targetHtml = t.target ? `<span class="meta-tag target">📁 ${t.target}</span>` : '';
+    const commitHtml = t.lastCommit ? `<span class="meta-tag time">SHA: ${t.lastCommit.substring(0, 7)}</span>` : '';
+    
+    let redFlagsHtml = '';
+    if (cardRedFlags.length > 0) {
+      redFlagsHtml = cardRedFlags.map(rf => `<div class="red-flag-badge">${rf}</div>`).join('');
+    }
+
+    let summaryHtml = '';
+    if (t.summary && t.summary !== 'No state file generated yet') {
+      summaryHtml = `<div class="summary-box"><strong>Summary:</strong><br>${t.summary.replace(/\n/g, '<br>')}</div>`;
+    }
+    
+    let errorsHtml = '';
+    if (t.blockingIssues && t.blockingIssues.length > 0) {
+      errorsHtml = `
+        <div class="errors-box">
+          <strong>⚠️ Issues:</strong>
+          <ul>
+            ${t.blockingIssues.map(e => `<li>${e}</li>`).join('')}
+          </ul>
         </div>
       `;
-    }).join('');
-  }
+    }
+    
+    // Links
+    const repoUrl = `https://github.com/nickchen494949/mindmap-app`;
+    const evidenceUrl = t.evidenceExists ? `${repoUrl}/tree/main/${t.evidencePacketPath}` : '#';
+    const liveUrl = t.liveUrl;
+    const reviewUrl = t.chatgptAuditPath ? `${repoUrl}/blob/main/${t.chatgptAuditPath}` : '#';
+    const logUrl = `${repoUrl}/blob/main/.ai/logs/${t.taskId}.md.log`;
+    
+    let linksHtml = '';
+    if (t.status !== 'inbox_unseen') {
+      linksHtml += `<a href="${logUrl}" target="_blank" class="action-link">📝 Log</a>`;
+      if (t.evidenceExists) {
+        linksHtml += `<a href="${evidenceUrl}" target="_blank" class="action-link">📊 Evidence</a>`;
+      }
+      if (liveUrl) {
+        linksHtml += `<a href="${liveUrl}" target="_blank" class="action-link">🔗 Live</a>`;
+      }
+      if (t.chatgptAuditPath) {
+        linksHtml += `<a href="${reviewUrl}" target="_blank" class="action-link">✍️ Audit</a>`;
+      }
+    }
+
+    const cardHtml = `
+      <div class="task-card">
+        <div class="task-header">
+          <div class="task-title-area">
+            <div class="task-title">${t.title}</div>
+            <div class="task-id">ID: ${t.taskId}</div>
+          </div>
+          ${badgeHtml}
+        </div>
+        <div class="task-meta">
+          ${targetHtml}
+          ${attemptHtml}
+          ${commitHtml}
+        </div>
+        
+        <div class="checklist">
+          <div class="check-item ${checkExists ? 'pass' : 'fail'}">
+            <div class="indicator">${checkExists ? '✓' : '✗'}</div>
+            Exists in Git
+          </div>
+          <div class="check-item ${checkSeen ? 'pass' : 'fail'}">
+            <div class="indicator">${checkSeen ? '✓' : '✗'}</div>
+            Watcher Scanned
+          </div>
+          <div class="check-item ${checkExecuted ? 'pass' : 'fail'}">
+            <div class="indicator">${checkExecuted ? '✓' : '✗'}</div>
+            Agy Executed
+          </div>
+          <div class="check-item ${checkEvidence ? 'pass' : 'fail'}">
+            <div class="indicator">${checkEvidence ? '✓' : '✗'}</div>
+            Evidence Packet
+          </div>
+          <div class="check-item ${checkDone ? 'pass' : 'fail'}">
+            <div class="indicator">${checkDone ? '✓' : '✗'}</div>
+            Audit Passed (done)
+          </div>
+        </div>
+        
+        ${summaryHtml}
+        ${errorsHtml}
+        ${redFlagsHtml}
+        ${linksHtml ? `<div class="links-panel">${linksHtml}</div>` : ''}
+      </div>
+    `;
+
+    // Map to columns
+    let colGroup = t.status;
+    if (colGroup === 'blocked') colGroup = 'failed';
+    if (taskHtmlMap[colGroup] !== undefined) {
+      taskHtmlMap[colGroup].push(cardHtml);
+    } else {
+      taskHtmlMap['inbox_unseen'].push(cardHtml);
+    }
+  });
+
+  // Render to columns
+  Object.keys(taskHtmlMap).forEach(key => {
+    let colId = 'tasks-inbox';
+    if (key === 'running') colId = 'tasks-running';
+    if (key === 'needs_chatgpt_audit') colId = 'tasks-audit';
+    if (key === 'failed') colId = 'tasks-failed';
+    if (key === 'done') colId = 'tasks-done';
+
+    const container = document.getElementById(colId);
+    if (taskHtmlMap[key].length > 0) {
+      container.innerHTML = taskHtmlMap[key].join('');
+    } else {
+      container.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 20px; font-size: 12px;">No tasks</div>';
+    }
+  });
   
   // Render execution logs if status.json is loaded
   const execLogsDiv = document.getElementById('exec-logs');
@@ -1185,7 +1355,6 @@ function render(taskIndex, heartbeat, statusData) {
     }).join('');
     document.getElementById('exec-logs-widget').style.display = 'block';
   } else {
-    // Hide or display default if statusData is not present
     execLogsDiv.innerHTML = '<div style="color:var(--text-muted)">No activity log found in status.json</div>';
   }
   
@@ -1210,7 +1379,7 @@ function render(taskIndex, heartbeat, statusData) {
 }
 
 function renderPipeline(task) {
-  // Reset all
+  // Reset all flow nodes
   const nodes = ['chatgpt', 'github', 'watcher', 'agy', 'report', 'done'];
   const conns = ['github', 'watcher', 'agy', 'report', 'done'];
   
@@ -1226,14 +1395,14 @@ function renderPipeline(task) {
   
   if (!task) return;
   
-  // Determine state levels
-  let level = 0; // 0: none, 1: Chatgpt, 2: GitHub, 3: Watcher, 4: Agy, 5: Report, 6: Done
+  // Determine state level
+  let level = 0;
   
-  const hasTaskFile = task.fileExistsInInbox || task.markedDone || task.markedFailed || task.evidenceExists;
+  const hasTaskFile = task.location !== 'unknown';
   const isSeen = task.status !== 'inbox_unseen';
-  const isExecuted = ['running', 'needs_chatgpt_audit', 'needs_audit', 'done', 'failed'].includes(task.status);
+  const isExecuted = ['running', 'needs_chatgpt_audit', 'done', 'failed'].includes(task.status);
   const hasEvidence = task.evidenceExists;
-  const isDone = task.status === 'done';
+  const isDone = task.status === 'done' && task.chatgptVerdict === 'PASS';
   
   if (hasTaskFile) {
     level = 2; // In GitHub
@@ -1251,7 +1420,7 @@ function renderPipeline(task) {
     level = 6; // Done
   }
   
-  // Apply done states
+  // Apply done classes
   if (level >= 1) document.getElementById('step-chatgpt').className = 'pipeline-node done';
   
   if (level >= 2) {
@@ -1280,16 +1449,12 @@ function renderPipeline(task) {
   }
   
   // Apply active (pulse) state to the current step in progress
-  if (task.status === 'inbox_unseen' || task.status === 'pending') {
+  if (task.status === 'inbox_unseen') {
     document.getElementById('step-watcher').className = 'pipeline-node active';
-  } else if (task.status === 'seen') {
-    document.getElementById('step-agy').className = 'pipeline-node active';
   } else if (task.status === 'running') {
     document.getElementById('step-agy').className = 'pipeline-node active';
-  } else if (task.status === 'needs_chatgpt_audit' || task.status === 'needs_audit') {
+  } else if (task.status === 'needs_chatgpt_audit') {
     document.getElementById('step-report').className = 'pipeline-node active';
-  } else if (task.status === 'failed') {
-    // Keep failed status but no pulse on completed step
   }
 }
 
