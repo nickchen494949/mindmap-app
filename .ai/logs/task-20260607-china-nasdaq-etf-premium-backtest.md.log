@@ -1,0 +1,29 @@
+^DI am waiting for the `akshare` test script to complete fetching the ETF net asset value (NAV) and market price history. I will proceed as soon as the results are returned.
+I am waiting for the split check script to run and return the comparison of adjusted vs unadjusted ETF prices against their NAV. This will help ensure the premium is calculated correctly without split distortion.
+I am waiting for the Python backtest script to finish downloading the remaining data, run the event studies, generate the plots, and write the final markdown report. I will check the progress immediately upon notification of completion.
+I am waiting for the second phase of the backtest script (ETF NAV and price downloads, calculations, report writing, and chart plotting) to complete. I will inspect the log output as soon as it finishes.
+I am waiting for the updated report generation script to complete. Once complete, I will verify the report.
+I am waiting for the report regeneration to finish. I will verify the updated markdown text immediately.
+I have completed the backtest on the China-listed Nasdaq/QDII ETF premium. Below is a summary of the work done:
+
+### Summary of Actions
+1. **Set Up Clean Python Environment**:
+   - Added `.venv/` to [.gitignore](file:///Users/happygolucky/mindmap-repo/.gitignore) to ensure virtual environment files are never committed.
+   - Built a local Python virtual environment `.venv` and installed dependencies (`pandas`, `numpy`, `yfinance`, `akshare`, `matplotlib`, `requests`).
+2. **Created Research Pipeline**:
+   - Developed [research_china_nasdaq_premium.py](file:///Users/happygolucky/mindmap-repo/.ai/research/research_china_nasdaq_premium.py) to fetch and align unadjusted ETF prices (from Sina Finance via `akshare`) and nominal unit NAVs (from EastMoney via `akshare`) for **Guotai Nasdaq-100 ETF (513100)** and **GF Nasdaq-100 ETF (159941)**. Using nominal data avoids split-adjustment distortions.
+   - Downloaded daily historical data for QQQ, TQQQ, and the USD/CNY exchange rate proxy (`CNY=X`) via `yfinance`.
+   - Programmed a look-ahead bias-free alignment where trade entry occurs at the **Open of the next US session** (US date $T_{exec}$) after the China ETF premium is publicly known.
+3. **Performed Event Study & Analysis**:
+   - Computed returns, win rates, and maximum drawdowns across forward windows (1D, 5D, 20D, 60D) across multiple regimes (unconditional, percentiles, z-scores, absolute premiums).
+   - Evaluated conditional tests under QQQ trend states (Uptrend vs. Selloff) and capital pressure regimes (RMB weakening vs. strengthening).
+4. **Generated Reports & Visualizations**:
+   - Saved historical premium charts vs. NAV and QQQ price to the report folder.
+   - Authored the final [final-report.md](file:///Users/happygolucky/mindmap-repo/.ai/reports/task-20260607-china-nasdaq-etf-premium-backtest/final-report.md) with comprehensive results tables and detailed quantitative finance interpretations.
+   - Created a copy of the report and charts as a system artifact: [final-report.md (Artifact)](file:///Users/happygolucky/.gemini/antigravity-cli/brain/6e299bf3-f8a5-414c-a5a3-cbbc6f1b56f9/final-report.md).
+
+### Key Backtest Conclusions
+- **No Direct Return Predictability**: Normal range ETF premium values do *not* have linear predictive power for future QQQ/TQQQ returns.
+- **Strong Overheat / Risk Warning**: Extreme premium spikes ($\ge$95th percentile, Z-Score $\ge$ 2.0, or absolute premium $>5\%$) are powerful leading indicators for **increased near-term maximum drawdowns** (especially for TQQQ). 
+- **RMB Pressure Correlation**: Spikes during RMB weakening cycles are associated with significantly larger drawdowns in QQQ/TQQQ, showing it behaves as a coincident thermometer for domestic retail FOMO and capital flight.
+- **Recommendation**: Integrate the premium metric as a sentiment/overheat warning widget on the `qqq-dashboard` in a subsequent task.
