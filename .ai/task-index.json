@@ -1,24 +1,24 @@
 [
   {
-    "taskId": "task-20260607c-watcher-smoke-test",
+    "taskId": "task-20260607d-china-nasdaq-premium-backtest",
     "target": "mindmap-app",
     "location": "review",
     "status": "needs_chatgpt_audit",
-    "statePath": ".ai/state/task-20260607c-watcher-smoke-test.json",
-    "evidencePath": ".ai/reports/task-20260607c-watcher-smoke-test/evidence.json",
+    "statePath": ".ai/state/task-20260607d-china-nasdaq-premium-backtest.json",
+    "evidencePath": ".ai/reports/task-20260607d-china-nasdaq-premium-backtest/evidence.json",
     "chatgptAuditPath": null,
     "chatgptVerdict": null,
-    "lastCommit": "8ed1139010df6fcf05d2eada97326ffce548afbd",
+    "lastCommit": "01e443b2acea5428d8c87354f084f1523cc99844",
     "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
     "blockingIssues": [],
     "title": "Task",
     "attempt": 1,
     "maxAttempts": 3,
-    "createdAt": "2026-06-07T07:00:25.375Z",
+    "createdAt": "2026-06-07T07:07:23.162Z",
     "evidenceExists": true,
     "invalidDone": false,
     "blockingErrors": [],
-    "evidencePacketPath": ".ai/reports/task-20260607c-watcher-smoke-test/"
+    "evidencePacketPath": ".ai/reports/task-20260607d-china-nasdaq-premium-backtest/"
   },
   {
     "taskId": "task-test-audit",
@@ -144,6 +144,27 @@
     "invalidDone": false,
     "blockingErrors": [],
     "evidencePacketPath": ".ai/reports/task-20260603-fix-control-tower-public-data/"
+  },
+  {
+    "taskId": "task-20260607c-watcher-smoke-test",
+    "target": "mindmap-app",
+    "location": "done",
+    "status": "done",
+    "statePath": ".ai/state/task-20260607c-watcher-smoke-test.json",
+    "evidencePath": ".ai/reports/task-20260607c-watcher-smoke-test/evidence.json",
+    "chatgptAuditPath": ".ai/review/task-20260607c-watcher-smoke-test/chatgpt-audit.md",
+    "chatgptVerdict": "PASS",
+    "lastCommit": "8ed1139010df6fcf05d2eada97326ffce548afbd",
+    "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+    "blockingIssues": [],
+    "title": "Task",
+    "attempt": 1,
+    "maxAttempts": 3,
+    "createdAt": "2026-06-07T07:00:25.375Z",
+    "evidenceExists": true,
+    "invalidDone": false,
+    "blockingErrors": [],
+    "evidencePacketPath": ".ai/reports/task-20260607c-watcher-smoke-test/"
   },
   {
     "taskId": "task-20260607-china-nasdaq-etf-premium-backtest",

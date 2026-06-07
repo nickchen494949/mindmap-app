@@ -1,0 +1,9 @@
+.ai/logs/task-20260607d-china-nasdaq-premium-backtest.md.log
+.ai/reports/task-20260607d-china-nasdaq-premium-backtest/final-report.md
+.ai/reports/task-20260607d-china-nasdaq-premium-backtest/premium_vs_nav_159941.png
+.ai/reports/task-20260607d-china-nasdaq-premium-backtest/premium_vs_nav_513100.png
+.ai/reports/task-20260607d-china-nasdaq-premium-backtest/premium_vs_qqq_159941.png
+.ai/reports/task-20260607d-china-nasdaq-premium-backtest/premium_vs_qqq_513100.png
+.ai/research/research_china_nasdaq_premium.py
+.ai/state/task-20260607d-china-nasdaq-premium-backtest.md.json
+.gitignore

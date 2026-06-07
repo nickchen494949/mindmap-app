@@ -3,9 +3,9 @@
   "runningTasks": 0,
   "reviewTasks": 4,
   "failedTasks": 0,
-  "doneTasks": 14,
+  "doneTasks": 15,
   "needsChatGPTAudit": [
-    "task-20260607c-watcher-smoke-test",
+    "task-20260607d-china-nasdaq-premium-backtest",
     "task-test-audit",
     "task-20260603-control-tower-evidence-review-flow",
     "task-20260603-fix-control-tower-public-data"
@@ -13,25 +13,26 @@
   "blocked": [],
   "heartbeat": {
     "name": "watcher",
-    "lastSeen": "2026-06-07T06:58:22Z",
-    "lastScannedCommit": "3722793d278b0ce5995afafac158b5c8858c7b30",
+    "lastSeen": "2026-06-07T07:05:20Z",
+    "lastScannedCommit": "30ccac98c199f5be37b7c0de530bd6a666634d98",
     "inboxCount": 0,
-    "doneCount": 15,
+    "doneCount": 16,
     "status": "idle",
     "failedCount": 0
   },
-  "lastUpdate": "2026-06-07 07:01:13",
-  "totalTasks": 18,
+  "lastUpdate": "2026-06-07 07:17:01",
+  "totalTasks": 19,
   "pending": [],
   "running": [],
   "review": [
-    "task-20260607c-watcher-smoke-test",
+    "task-20260607d-china-nasdaq-premium-backtest",
     "task-test-audit",
     "task-20260603-control-tower-evidence-review-flow",
     "task-20260603-fix-control-tower-public-data"
   ],
   "failed": [],
   "done": [
+    "task-20260607c-watcher-smoke-test",
     "task-20260607-china-nasdaq-etf-premium-backtest",
     "task-20260603-no-api-chatgpt-audit-loop",
     "task-20260603-control-tower-dashboard",
@@ -53,7 +54,7 @@
     "us-macro-dashboard"
   ],
   "taskDetails": {
-    "task-20260607c-watcher-smoke-test": {
+    "task-20260607d-china-nasdaq-premium-backtest": {
       "title": "Task",
       "target": "mindmap-app",
       "status": "needs_chatgpt_audit",
@@ -61,9 +62,9 @@
       "summary": "Task index updated",
       "attempt": 1,
       "maxAttempts": 3,
-      "lastCommit": "8ed1139010df6fcf05d2eada97326ffce548afbd",
+      "lastCommit": "01e443b2acea5428d8c87354f084f1523cc99844",
       "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
-      "evidencePacketPath": ".ai/reports/task-20260607c-watcher-smoke-test/",
+      "evidencePacketPath": ".ai/reports/task-20260607d-china-nasdaq-premium-backtest/",
       "chatgptVerdict": null,
       "blockingErrors": []
     },
@@ -138,6 +139,20 @@
       "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
       "evidencePacketPath": ".ai/reports/task-20260603-fix-control-tower-public-data/",
       "chatgptVerdict": null,
+      "blockingErrors": []
+    },
+    "task-20260607c-watcher-smoke-test": {
+      "title": "Task",
+      "target": "mindmap-app",
+      "status": "done",
+      "completedAt": "2026-06-07T07:00:25.375Z",
+      "summary": "Task index updated",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "lastCommit": "8ed1139010df6fcf05d2eada97326ffce548afbd",
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "evidencePacketPath": ".ai/reports/task-20260607c-watcher-smoke-test/",
+      "chatgptVerdict": "PASS",
       "blockingErrors": []
     },
     "task-20260607-china-nasdaq-etf-premium-backtest": {
@@ -365,17 +380,17 @@
   },
   "activityLog": [
     {
-      "time": "Sun Jun  7 15:01:06",
+      "time": "Sun Jun  7 15:16:54",
       "sender": "watcher",
       "action": "+08 2026 === Commit firewall check"
     },
     {
-      "time": "Sun Jun  7 15:01:06",
+      "time": "Sun Jun  7 15:16:54",
       "sender": "watcher",
       "action": "+08 2026 ✅ Firewall passed"
     },
     {
-      "time": "Sun Jun  7 15:01:06",
+      "time": "Sun Jun  7 15:16:54",
       "sender": "watcher",
       "action": "+08 2026 Generating evidence packet..."
     }

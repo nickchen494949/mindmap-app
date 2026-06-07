@@ -1,0 +1,13 @@
+^DThe research script is now running in the background. I will wait for it to complete.
+The updated research script is now running in the background to recalculate and write the new report. I will wait for it to complete.
+I have completed the task exactly according to the requirements in [task-20260607d-china-nasdaq-premium-backtest.md](file:///Users/happygolucky/mindmap-repo/.ai/inbox/task-20260607d-china-nasdaq-premium-backtest.md).
+
+### Summary of Changes
+1. **Updated Research Script**: Modified [research_china_nasdaq_premium.py](file:///Users/happygolucky/mindmap-repo/.ai/research/research_china_nasdaq_premium.py) to:
+   - Save all final outputs to the correct task-specific reports folder: `.ai/reports/task-20260607d-china-nasdaq-premium-backtest/`.
+   - Implement a forward/holdout style sanity check split (In-Sample: start to 2021-12-31; Holdout: 2022-01-01 to 2026-06-07).
+   - Write the required `Bottom line: <one plain-language sentence>` block at the end of the markdown report.
+2. **Executed Backtest**: Proactively ran the python script using the local virtual environment to generate updated charts and the final report.
+3. **Cleaned up old files**: Reverted modified tracked files in the incorrect folder `.ai/reports/task-20260607-china-nasdaq-etf-premium-backtest/`.
+
+The final report is available at [final-report.md](file:///Users/happygolucky/mindmap-repo/.ai/reports/task-20260607d-china-nasdaq-premium-backtest/final-report.md).

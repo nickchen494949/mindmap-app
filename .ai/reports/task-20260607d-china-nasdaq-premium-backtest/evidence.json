@@ -1,0 +1,38 @@
+{
+  "taskId": "task-20260607d-china-nasdaq-premium-backtest",
+  "target": "mindmap-app",
+  "status": "needs_chatgpt_audit",
+  "commitSha": "01e443b2acea5428d8c87354f084f1523cc99844",
+  "changedFiles": [
+    ".ai/logs/task-20260607d-china-nasdaq-premium-backtest.md.log",
+    ".ai/reports/task-20260607d-china-nasdaq-premium-backtest/final-report.md",
+    ".ai/reports/task-20260607d-china-nasdaq-premium-backtest/premium_vs_nav_159941.png",
+    ".ai/reports/task-20260607d-china-nasdaq-premium-backtest/premium_vs_nav_513100.png",
+    ".ai/reports/task-20260607d-china-nasdaq-premium-backtest/premium_vs_qqq_159941.png",
+    ".ai/reports/task-20260607d-china-nasdaq-premium-backtest/premium_vs_qqq_513100.png",
+    ".ai/research/research_china_nasdaq_premium.py",
+    ".ai/state/task-20260607d-china-nasdaq-premium-backtest.md.json",
+    ".gitignore"
+  ],
+  "logTailPath": ".ai/reports/task-20260607d-china-nasdaq-premium-backtest/log-tail.txt",
+  "knownRisks": [],
+  "questionsForChatGPT": [],
+  "generatedAt": "2026-06-07T07:17:00.961Z",
+  "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+  "pageTextPath": ".ai/reports/task-20260607d-china-nasdaq-premium-backtest/page-text.txt",
+  "screenshotPath": ".ai/reports/task-20260607d-china-nasdaq-premium-backtest/screenshot.png",
+  "consoleErrorsPath": ".ai/reports/task-20260607d-china-nasdaq-premium-backtest/console-errors.txt",
+  "networkErrorsPath": ".ai/reports/task-20260607d-china-nasdaq-premium-backtest/network-errors.txt",
+  "dataAuditPath": null,
+  "attempt": 1,
+  "mechanicalChecks": {
+    "buildPass": true,
+    "livePageLoads": true,
+    "consoleErrorCount": 0,
+    "networkErrorCount": 0,
+    "dataAuditPass": true
+  },
+  "screenshots": [
+    ".ai/reports/task-20260607d-china-nasdaq-premium-backtest/screenshot.png"
+  ]
+}
