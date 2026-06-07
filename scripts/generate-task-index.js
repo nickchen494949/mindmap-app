@@ -3,7 +3,8 @@ const path = require('path');
 const { execSync } = require('child_process');
 
 // Determine the AI directory to scan
-let aiDir = '/Users/happygolucky/mindmap-repo/.ai';
+const REPO_DIR = process.env.REPO_DIR || '/Users/happygolucky/mindmap-repo';
+let aiDir = path.join(REPO_DIR, '.ai');
 if (!fs.existsSync(aiDir)) {
   aiDir = '/Users/happygolucky/projects/mindmap-app/.ai';
 }
@@ -174,7 +175,7 @@ function checkReviews() {
       }
 
       const target = state.target || 'mindmap-app';
-      const workDir = target ? path.join('/Users/happygolucky/projects', target) : '/Users/happygolucky/mindmap-repo';
+      const workDir = target ? path.join(process.env.PROJECTS_DIR || '/Users/happygolucky/projects', target) : REPO_DIR;
 
       if (hasPass) {
         console.log(`Verdict for ${taskId}: PASS`);
@@ -193,7 +194,7 @@ function checkReviews() {
         fs.writeFileSync(stateFile, JSON.stringify(state, null, 2), 'utf8');
 
         // Sync to target project if applicable
-        if (target && workDir !== '/Users/happygolucky/mindmap-repo' && fs.existsSync(workDir)) {
+        if (target && workDir !== REPO_DIR && fs.existsSync(workDir)) {
           try {
             safeMkdir(path.join(workDir, '.ai', 'done'));
             safeMkdir(path.join(workDir, '.ai', 'state'));
@@ -231,7 +232,7 @@ function checkReviews() {
 
           fs.writeFileSync(stateFile, JSON.stringify(state, null, 2), 'utf8');
 
-          if (target && workDir !== '/Users/happygolucky/mindmap-repo' && fs.existsSync(workDir)) {
+          if (target && workDir !== REPO_DIR && fs.existsSync(workDir)) {
             try {
               safeMkdir(path.join(workDir, '.ai', 'failed'));
               if (fs.existsSync(path.join(workDir, '.ai', 'review', file))) {
@@ -278,7 +279,7 @@ function checkReviews() {
 
           fs.writeFileSync(stateFile, JSON.stringify(state, null, 2), 'utf8');
 
-          if (target && workDir !== '/Users/happygolucky/mindmap-repo' && fs.existsSync(workDir)) {
+          if (target && workDir !== REPO_DIR && fs.existsSync(workDir)) {
             try {
               safeMkdir(path.join(workDir, '.ai', 'fix'));
               safeMkdir(path.join(workDir, '.ai', 'inbox'));
@@ -585,7 +586,7 @@ if (fs.existsSync(hbFile)) {
 }
 
 // Generate ecosystem projects list
-const PROJECTS_DIR = '/Users/happygolucky/projects';
+const PROJECTS_DIR = process.env.PROJECTS_DIR || '/Users/happygolucky/projects';
 let projects = ['mindmap-app'];
 if (fs.existsSync(PROJECTS_DIR)) {
   try {
@@ -598,7 +599,7 @@ if (fs.existsSync(PROJECTS_DIR)) {
 
 // Generate activity logs from watcher.out.log if possible
 let activityLog = [];
-const watcherLogPath = '/Users/happygolucky/watcher.out.log';
+const watcherLogPath = process.env.WATCHER_LOG || '/Users/happygolucky/watcher.out.log';
 if (fs.existsSync(watcherLogPath)) {
   try {
     const logLines = fs.readFileSync(watcherLogPath, 'utf8').split('\n').slice(-40);
@@ -722,20 +723,23 @@ const publicControlTowerData = {
 // Write output to both local and mindmap-repo directories
 const writeTargets = [
   {
-    index: path.join('/Users/happygolucky/mindmap-repo', '.ai', 'task-index.json'),
-    status: path.join('/Users/happygolucky/mindmap-repo', 'status.json'),
-    ctd: path.join('/Users/happygolucky/mindmap-repo', 'control-tower-data.json'),
-    hb: path.join('/Users/happygolucky/mindmap-repo', '.ai', 'heartbeat', 'watcher.json'),
-    hbDir: path.join('/Users/happygolucky/mindmap-repo', '.ai', 'heartbeat')
-  },
-  {
-    index: path.join('/Users/happygolucky/projects/mindmap-app', '.ai', 'task-index.json'),
-    status: path.join('/Users/happygolucky/projects/mindmap-app', 'status.json'),
-    ctd: path.join('/Users/happygolucky/projects/mindmap-app', 'control-tower-data.json'),
-    hb: path.join('/Users/happygolucky/projects/mindmap-app', '.ai', 'heartbeat', 'watcher.json'),
-    hbDir: path.join('/Users/happygolucky/projects/mindmap-app', '.ai', 'heartbeat')
+    index: path.join(REPO_DIR, '.ai', 'task-index.json'),
+    status: path.join(REPO_DIR, 'status.json'),
+    ctd: path.join(REPO_DIR, 'control-tower-data.json'),
+    hb: path.join(REPO_DIR, '.ai', 'heartbeat', 'watcher.json'),
+    hbDir: path.join(REPO_DIR, '.ai', 'heartbeat')
   }
 ];
+const secondaryTarget = path.join(PROJECTS_DIR, 'mindmap-app');
+if (fs.existsSync(secondaryTarget)) {
+  writeTargets.push({
+    index: path.join(secondaryTarget, '.ai', 'task-index.json'),
+    status: path.join(secondaryTarget, 'status.json'),
+    ctd: path.join(secondaryTarget, 'control-tower-data.json'),
+    hb: path.join(secondaryTarget, '.ai', 'heartbeat', 'watcher.json'),
+    hbDir: path.join(secondaryTarget, '.ai', 'heartbeat')
+  });
+}
 
 writeTargets.forEach(target => {
   try {

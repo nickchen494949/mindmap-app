@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const { execSync } = require('child_process');
+const REPO_DIR = process.env.REPO_DIR || '/Users/happygolucky/mindmap-repo';
 const { chromium } = require('playwright');
 
 // Helper to parse arguments
@@ -42,10 +43,10 @@ const cleanupPaths = [
   path.join(process.cwd(), '.ai', 'reviews', baseTaskId, 'chatgpt-audit.md'),
   path.join(process.cwd(), '.ai', 'review', taskId, 'chatgpt-audit.md'),
   path.join(process.cwd(), '.ai', 'review', baseTaskId, 'chatgpt-audit.md'),
-  path.join('/Users/happygolucky/mindmap-repo/.ai', 'reviews', taskId, 'chatgpt-audit.md'),
-  path.join('/Users/happygolucky/mindmap-repo/.ai', 'reviews', baseTaskId, 'chatgpt-audit.md'),
-  path.join('/Users/happygolucky/mindmap-repo/.ai', 'review', taskId, 'chatgpt-audit.md'),
-  path.join('/Users/happygolucky/mindmap-repo/.ai', 'review', baseTaskId, 'chatgpt-audit.md')
+  path.join(REPO_DIR, '.ai', 'reviews', taskId, 'chatgpt-audit.md'),
+  path.join(REPO_DIR, '.ai', 'reviews', baseTaskId, 'chatgpt-audit.md'),
+  path.join(REPO_DIR, '.ai', 'review', taskId, 'chatgpt-audit.md'),
+  path.join(REPO_DIR, '.ai', 'review', baseTaskId, 'chatgpt-audit.md')
 ];
 cleanupPaths.forEach(p => {
   if (fs.existsSync(p)) {
@@ -405,10 +406,10 @@ function checkLiveUrl() {
   let logTailContent = 'Execution log not available';
   const baseTaskId = taskId.replace(/-fix$/, '');
   const possibleLogPaths = [
-    path.join('/Users/happygolucky/mindmap-repo', '.ai', 'logs', `${taskId}.md.log`),
-    path.join('/Users/happygolucky/mindmap-repo', '.ai', 'logs', `${taskId}.log`),
-    path.join('/Users/happygolucky/mindmap-repo', '.ai', 'logs', `${baseTaskId}.md.log`),
-    path.join('/Users/happygolucky/mindmap-repo', '.ai', 'logs', `${baseTaskId}.log`),
+    path.join(REPO_DIR, '.ai', 'logs', `${taskId}.md.log`),
+    path.join(REPO_DIR, '.ai', 'logs', `${taskId}.log`),
+    path.join(REPO_DIR, '.ai', 'logs', `${baseTaskId}.md.log`),
+    path.join(REPO_DIR, '.ai', 'logs', `${baseTaskId}.log`),
     path.join(process.cwd(), '.ai', 'logs', `${taskId}.md.log`),
     path.join(process.cwd(), '.ai', 'logs', `${taskId}.log`)
   ];
@@ -555,7 +556,7 @@ function checkLiveUrl() {
   }
 
   // 12. Sync evidence and state to mindmap-repo
-  const repoAiDir = '/Users/happygolucky/mindmap-repo/.ai';
+  const repoAiDir = path.join(REPO_DIR, '.ai');
   if (fs.existsSync(repoAiDir)) {
     try {
       console.log('Syncing evidence and state to mindmap-repo...');

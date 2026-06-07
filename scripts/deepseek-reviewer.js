@@ -21,7 +21,7 @@ const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
 const API_URL = 'https://api.deepseek.com/chat/completions';
 const MODEL = 'deepseek-chat';
 
-const repoDir = '/Users/happygolucky/mindmap-repo';
+const repoDir = process.env.REPO_DIR || '/Users/happygolucky/mindmap-repo';
 const aiDir = path.join(repoDir, '.ai');
 const reportsDir = path.join(aiDir, 'reports');
 const reviewDir = path.join(aiDir, 'review');

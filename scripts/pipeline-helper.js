@@ -2,8 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const REPO_DIR = '/Users/happygolucky/mindmap-repo';
-const PROJECTS_DIR = '/Users/happygolucky/projects';
+const REPO_DIR = process.env.REPO_DIR || '/Users/happygolucky/mindmap-repo';
+const PROJECTS_DIR = process.env.PROJECTS_DIR || '/Users/happygolucky/projects';
 
 // Helper to ensure directories exist
 function ensureDirExists(dirPath) {
