@@ -1,31 +1,31 @@
 {
-  "generatedAt": "2026-06-07T06:46:05.352Z",
+  "generatedAt": "2026-06-07T07:01:13.392Z",
   "watcher": {
-    "status": "stale",
-    "lastSeen": "2026-06-07T05:11:05Z",
-    "lastScannedCommit": "09959a6d67dccf0ff917c527e371eb84fda61365",
+    "status": "alive",
+    "lastSeen": "2026-06-07T06:58:22Z",
+    "lastScannedCommit": "3722793d278b0ce5995afafac158b5c8858c7b30",
     "inboxCount": 0,
-    "doneCount": 0,
+    "doneCount": 1,
     "failedCount": 0
   },
   "stats": {
-    "total": 17,
+    "total": 18,
     "pending": 0,
     "running": 0,
     "needsChatGPTAudit": 4,
-    "done": 0,
+    "done": 1,
     "failed": 0,
     "invalidDone": 13
   },
   "tasks": [
     {
-      "taskId": "task-20260607-china-nasdaq-etf-premium-backtest",
+      "taskId": "task-20260607c-watcher-smoke-test",
       "target": "mindmap-app",
       "status": "needs_chatgpt_audit",
       "location": "review",
       "evidenceExists": true,
       "chatgptVerdict": null,
-      "lastCommit": "df9d685339af8558c4340fcd6d1ec9dbb18f0dde",
+      "lastCommit": "8ed1139010df6fcf05d2eada97326ffce548afbd",
       "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
       "blockingIssues": []
     },
@@ -90,6 +90,17 @@
       "evidenceExists": true,
       "chatgptVerdict": null,
       "lastCommit": "3265e076a4e995b87bc00bfeb1785686a98149a9",
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": []
+    },
+    {
+      "taskId": "task-20260607-china-nasdaq-etf-premium-backtest",
+      "target": "mindmap-app",
+      "status": "done",
+      "location": "done",
+      "evidenceExists": true,
+      "chatgptVerdict": "PASS",
+      "lastCommit": "df9d685339af8558c4340fcd6d1ec9dbb18f0dde",
       "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
       "blockingIssues": []
     },

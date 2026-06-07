@@ -1,0 +1,4 @@
+.ai/logs/task-20260607c-watcher-smoke-test.md.log
+.ai/reports/task-20260607c-watcher-smoke-test/final-report.md
+.ai/state/task-20260607c-watcher-smoke-test.md.json
+.gitignore

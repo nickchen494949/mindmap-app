@@ -1,24 +1,24 @@
 [
   {
-    "taskId": "task-20260607-china-nasdaq-etf-premium-backtest",
+    "taskId": "task-20260607c-watcher-smoke-test",
     "target": "mindmap-app",
     "location": "review",
     "status": "needs_chatgpt_audit",
-    "statePath": ".ai/state/task-20260607-china-nasdaq-etf-premium-backtest.json",
-    "evidencePath": ".ai/reports/task-20260607-china-nasdaq-etf-premium-backtest/evidence.json",
+    "statePath": ".ai/state/task-20260607c-watcher-smoke-test.json",
+    "evidencePath": ".ai/reports/task-20260607c-watcher-smoke-test/evidence.json",
     "chatgptAuditPath": null,
     "chatgptVerdict": null,
-    "lastCommit": "df9d685339af8558c4340fcd6d1ec9dbb18f0dde",
+    "lastCommit": "8ed1139010df6fcf05d2eada97326ffce548afbd",
     "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
     "blockingIssues": [],
     "title": "Task",
     "attempt": 1,
     "maxAttempts": 3,
-    "createdAt": "2026-06-07T06:15:26.812Z",
+    "createdAt": "2026-06-07T07:00:25.375Z",
     "evidenceExists": true,
     "invalidDone": false,
     "blockingErrors": [],
-    "evidencePacketPath": ".ai/reports/task-20260607-china-nasdaq-etf-premium-backtest/"
+    "evidencePacketPath": ".ai/reports/task-20260607c-watcher-smoke-test/"
   },
   {
     "taskId": "task-test-audit",
@@ -144,6 +144,27 @@
     "invalidDone": false,
     "blockingErrors": [],
     "evidencePacketPath": ".ai/reports/task-20260603-fix-control-tower-public-data/"
+  },
+  {
+    "taskId": "task-20260607-china-nasdaq-etf-premium-backtest",
+    "target": "mindmap-app",
+    "location": "done",
+    "status": "done",
+    "statePath": ".ai/state/task-20260607-china-nasdaq-etf-premium-backtest.json",
+    "evidencePath": ".ai/reports/task-20260607-china-nasdaq-etf-premium-backtest/evidence.json",
+    "chatgptAuditPath": ".ai/review/task-20260607-china-nasdaq-etf-premium-backtest/chatgpt-audit.md",
+    "chatgptVerdict": "PASS",
+    "lastCommit": "df9d685339af8558c4340fcd6d1ec9dbb18f0dde",
+    "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+    "blockingIssues": [],
+    "title": "Task",
+    "attempt": 1,
+    "maxAttempts": 3,
+    "createdAt": "2026-06-07T06:15:26.812Z",
+    "evidenceExists": true,
+    "invalidDone": false,
+    "blockingErrors": [],
+    "evidencePacketPath": ".ai/reports/task-20260607-china-nasdaq-etf-premium-backtest/"
   },
   {
     "taskId": "task-20260603-no-api-chatgpt-audit-loop",
