@@ -1,24 +1,20 @@
-target: qqq-dashboard
+target: mindmap-app
 
 # Task
-Backtest whether China-listed Nasdaq/QDII ETF premium is a useful predictor for QQQ/TQQQ risk or return.
+Run a standalone research/backtest on whether China-listed Nasdaq/QDII ETF premium is a useful predictor for QQQ/TQQQ risk or return.
 
-## Routing
-This task is placed in the AI queue/system repo because watcher reads `.ai/inbox/` here. The actual project to modify/test is `nickchen494949/qqq-dashboard`.
+## Execution Mode
+Execute entirely inside the system repo `nickchen494949/mindmap-app` because this target is already allowed by the watcher.
+
+Do NOT modify `qqq-dashboard` in this task.
+Do NOT modify any sealed TQQQ production strategy.
+This task is only to produce research evidence.
 
 ## Background
 User asked whether China Nasdaq ETF premium is a good predictor, then asked to backtest it.
 
-This is a research task only. Do not change the sealed production strategy unless the signal passes the full testing protocol.
-
-Current sealed production strategy must remain unchanged:
-- Fed SEP > Credit Z > Vol Z > Normal priority
-- NSL must remain on
-- T+1 next-open execution
-- Transaction cost protocol must remain intact
-
 ## Main Question
-Does China-listed Nasdaq/QDII ETF premium predict future QQQ/TQQQ returns, drawdowns, or overheat risk better than existing signals?
+Does China-listed Nasdaq/QDII ETF premium predict future QQQ/TQQQ returns, drawdowns, or overheat risk?
 
 ## One-Sentence Hypothesis
 China Nasdaq ETF premium is more likely a China retail/QDII quota stress indicator than a direct Nasdaq return predictor; it may only be useful as an extreme-overheat warning or dashboard sentiment thermometer.
@@ -38,13 +34,12 @@ For each ETF, collect daily history:
 - QQQ daily OHLC
 - TQQQ daily OHLC
 - USD/CNY or USD/CNH if available
-- existing dashboard risk signals: SEP, Credit Z, Vol Z
 
 Preferred Python data sources:
-1. Existing repo cache if already present
-2. akshare if available
-3. yfinance for QQQ/TQQQ/USD proxies
-4. Eastmoney/Sina/Netease endpoints only if stable and documented in code comments
+1. akshare if available
+2. yfinance for QQQ/TQQQ/USD proxies
+3. Eastmoney/Sina/Netease endpoints only if stable and documented in code comments
+4. If clean NAV data cannot be fetched automatically, produce a clear failure report explaining the exact missing data and a fallback plan.
 
 ## Core Test Design
 Do not test only same-day correlation.
@@ -84,47 +79,20 @@ C. RMB pressure regime
 - USD/CNY or USD/CNH 20D return positive / RMB weakening
 - Test whether premium predicts China capital pressure more than Nasdaq return
 
-D. Existing dashboard states
-- Normal
-- Vol danger
-- Credit danger
-- Fed out if SEP history overlaps
-
 ## Backtest Rules
 Avoid look-ahead bias:
 - Signal available after China market close
 - US execution must be next tradable US session open or next close, clearly specified
 - No same-day US close execution unless timestamp availability justifies it
 
-Transaction cost assumptions:
-- Use existing repo cost protocol where applicable
-- If testing as overlay, include 25 bps per switch baseline and 200 bps stress
-
-## Strategy Variants to Test
-Do not directly add to production. Test as separate research variants:
-
-1. Dashboard-only predictive study
-- No trading, just event study after high premium events.
-
-2. Overheat de-risk overlay
-- If premium extreme and existing state is Normal, reduce TQQQ exposure from 100% to 66%.
-- Must obey NSL unless explicitly testing diagnostic-only scenario.
-
-3. No-buy filter
-- If premium extreme, block adding/re-risking for N days.
-- This may be more realistic than forced sell.
-
-4. China-capital-pressure indicator
-- Test against CNH/CNY depreciation, China equity underperformance, and QDII premium persistence if data exists.
-
 ## Required Outputs
-Create outputs in `nickchen494949/qqq-dashboard`:
+Create outputs inside `mindmap-app`:
 
 1. Python script:
-- `tools/research_china_nasdaq_premium.py`
+- `.ai/research/research_china_nasdaq_premium.py`
 
 2. Markdown report:
-- `docs/research/china_nasdaq_etf_premium_backtest.md`
+- `.ai/reports/task-20260607-china-nasdaq-etf-premium-backtest/final-report.md`
 
 Report must include:
 - data coverage by ETF
@@ -134,34 +102,18 @@ Report must include:
 - mean/median forward return by window
 - win rate by window
 - forward max drawdown stats
-- t-stat or bootstrap confidence where sample size allows
 - baseline comparison vs unconditional QQQ/TQQQ returns
-- IS / holdout / forward split if enough data exists
+- conclusion: useful predictor yes/no, useful overheat warning yes/no, useful dashboard sentiment indicator yes/no
 
-## Production Acceptance Rules
-The signal can only be considered for production if all are true:
-- improves holdout and forward results, not just full-sample
-- survives threshold variants / parameter plateau
-- does not increase trades beyond acceptable limits
-- works under T+1 execution
-- survives 200 bps cost stress if used as trading overlay
-- adds value beyond existing Credit Z and Vol Z states
+## Decision Rule
+If data is clean and results are statistically useful, recommend a second task to integrate into `qqq-dashboard`.
 
-If it fails, recommend dashboard-only display:
-- China QDII Premium: normal / hot / extreme
-- Label explicitly: sentiment/quota-stress indicator, not Nasdaq predictor
-
-## Failure Checks
-Reject the signal if:
-- effect only appears with same-day execution
-- sample size is tiny at high premium thresholds
-- premium is driven by subscription suspension only and not market timing
-- results disappear in 2023-present forward period
-- it mostly duplicates Vol Z or QQQ momentum
-- forced selling underperforms while no-buy filter works better
+If data is not clean or results are weak, clearly say:
+- not production-ready
+- maybe only useful as China QDII sentiment/quota-stress indicator
 
 ## Do Not Do
-- Do not modify sealed production parameters.
-- Do not update dashboard production UI unless the research report is generated first.
-- Do not claim predictive power without holdout/forward evidence.
+- Do not touch `qqq-dashboard`.
+- Do not change dashboard production UI.
+- Do not claim predictive power without evidence.
 - Do not use same-day US close if timestamp would create look-ahead bias.
