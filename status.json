@@ -1,10 +1,11 @@
 {
   "pendingTasks": 0,
   "runningTasks": 0,
-  "reviewTasks": 3,
+  "reviewTasks": 4,
   "failedTasks": 0,
   "doneTasks": 13,
   "needsChatGPTAudit": [
+    "task-20260607-china-nasdaq-etf-premium-backtest",
     "task-test-audit",
     "task-20260603-control-tower-evidence-review-flow",
     "task-20260603-fix-control-tower-public-data"
@@ -12,19 +13,19 @@
   "blocked": [],
   "heartbeat": {
     "name": "watcher",
-    "lastSeen": "2026-06-03T11:25:19Z",
-    "lastScannedCommit": "903501d59bf6c8837ad3e9c159487d6ee614e41e",
-    "inboxCount": 1,
-    "doneCount": 14,
-    "status": "alive",
-    "lastTask": "task-task-20260603-control-tower-evidence-review-flow-fix.md",
+    "lastSeen": "2026-06-07T05:11:05Z",
+    "lastScannedCommit": "09959a6d67dccf0ff917c527e371eb84fda61365",
+    "inboxCount": 0,
+    "doneCount": 15,
+    "status": "idle",
     "failedCount": 0
   },
-  "lastUpdate": "2026-06-03 11:32:06",
-  "totalTasks": 16,
+  "lastUpdate": "2026-06-07 06:46:05",
+  "totalTasks": 17,
   "pending": [],
   "running": [],
   "review": [
+    "task-20260607-china-nasdaq-etf-premium-backtest",
     "task-test-audit",
     "task-20260603-control-tower-evidence-review-flow",
     "task-20260603-fix-control-tower-public-data"
@@ -51,6 +52,20 @@
     "us-macro-dashboard"
   ],
   "taskDetails": {
+    "task-20260607-china-nasdaq-etf-premium-backtest": {
+      "title": "Task",
+      "target": "mindmap-app",
+      "status": "needs_chatgpt_audit",
+      "completedAt": "",
+      "summary": "Task index updated",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "lastCommit": "df9d685339af8558c4340fcd6d1ec9dbb18f0dde",
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "evidencePacketPath": ".ai/reports/task-20260607-china-nasdaq-etf-premium-backtest/",
+      "chatgptVerdict": null,
+      "blockingErrors": []
+    },
     "task-test-audit": {
       "title": "Fix Task for task-test-audit (Attempt 2)",
       "target": "mindmap-app",
@@ -335,17 +350,17 @@
   },
   "activityLog": [
     {
-      "time": "Wed Jun  3 19:32:02",
+      "time": "Sun Jun  7 14:45:57",
       "sender": "watcher",
       "action": "+08 2026 === Commit firewall check"
     },
     {
-      "time": "Wed Jun  3 19:32:02",
+      "time": "Sun Jun  7 14:45:57",
       "sender": "watcher",
       "action": "+08 2026 ✅ Firewall passed"
     },
     {
-      "time": "Wed Jun  3 19:32:02",
+      "time": "Sun Jun  7 14:45:57",
       "sender": "watcher",
       "action": "+08 2026 Generating evidence packet..."
     }

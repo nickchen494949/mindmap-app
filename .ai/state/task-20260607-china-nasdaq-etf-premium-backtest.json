@@ -1,0 +1,16 @@
+{
+  "taskId": "task-20260607-china-nasdaq-etf-premium-backtest",
+  "target": "mindmap-app",
+  "status": "needs_chatgpt_audit",
+  "attempt": 1,
+  "maxAttempts": 3,
+  "startedAt": "2026-06-07T06:46:05.115Z",
+  "updatedAt": "2026-06-07T06:46:05.115Z",
+  "lastCommit": "df9d685339af8558c4340fcd6d1ec9dbb18f0dde",
+  "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+  "evidencePacketPath": ".ai/reports/task-20260607-china-nasdaq-etf-premium-backtest/",
+  "chatgptAuditPath": null,
+  "chatgptVerdict": null,
+  "blockingErrors": [],
+  "notes": []
+}

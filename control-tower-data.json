@@ -1,23 +1,34 @@
 {
-  "generatedAt": "2026-06-03T11:32:06.756Z",
+  "generatedAt": "2026-06-07T06:46:05.352Z",
   "watcher": {
     "status": "stale",
-    "lastSeen": "2026-06-03T11:25:19Z",
-    "lastScannedCommit": "903501d59bf6c8837ad3e9c159487d6ee614e41e",
+    "lastSeen": "2026-06-07T05:11:05Z",
+    "lastScannedCommit": "09959a6d67dccf0ff917c527e371eb84fda61365",
     "inboxCount": 0,
     "doneCount": 0,
     "failedCount": 0
   },
   "stats": {
-    "total": 16,
+    "total": 17,
     "pending": 0,
     "running": 0,
-    "needsChatGPTAudit": 3,
+    "needsChatGPTAudit": 4,
     "done": 0,
     "failed": 0,
     "invalidDone": 13
   },
   "tasks": [
+    {
+      "taskId": "task-20260607-china-nasdaq-etf-premium-backtest",
+      "target": "mindmap-app",
+      "status": "needs_chatgpt_audit",
+      "location": "review",
+      "evidenceExists": true,
+      "chatgptVerdict": null,
+      "lastCommit": "df9d685339af8558c4340fcd6d1ec9dbb18f0dde",
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": []
+    },
     {
       "taskId": "task-test-audit",
       "target": "mindmap-app",

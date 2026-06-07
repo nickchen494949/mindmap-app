@@ -1,0 +1,5 @@
+Commit: df9d685339af8558c4340fcd6d1ec9dbb18f0dde
+Author: nickchen494949
+Date: Sun Jun 7 14:45:57 2026 +0800
+Subject: ✅ task-20260607-china-nasdaq-etf-premium-backtest.md
+Body: 
