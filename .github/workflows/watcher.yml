@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REPO_DIR: ${{ github.workspace }}
-      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,8 +32,8 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install aider
-        run: pip install aider-chat
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code
 
       - name: Install npm deps + Playwright
         run: |

@@ -64,14 +64,12 @@ HARD RULES — VIOLATION = IMMEDIATE FAILURE:
 
 After finishing, summarize what you did."
 
-# ── Run aider (replaces local agy) ──
-echo "$(date) Running aider with DeepSeek..."
-aider \
-  --model deepseek/deepseek-chat \
+# ── Run Claude Code (replaces local agy) ──
+echo "$(date) Running Claude Code..."
+claude -p "$PROMPT" \
+  --allowedTools "Edit,Write,Bash" \
   --yes \
-  --no-auto-commits \
-  --message "$PROMPT" \
-  2>&1 | tee "$REPO_DIR/.ai/logs/$TASK_NAME.log" || echo "$(date) aider exited with error"
+  2>&1 | tee "$REPO_DIR/.ai/logs/$TASK_NAME.log" || echo "$(date) Claude Code exited with error"
 
 # ═══════════════════════════════════════════════════════
 # COMMIT FIREWALL
