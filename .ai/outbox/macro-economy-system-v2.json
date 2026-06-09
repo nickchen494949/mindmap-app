@@ -1,0 +1,677 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "x": 850,
+      "y": 50,
+      "label": "国家经济系统",
+      "desc": "看一个国家不是看单个数据，而是看五类主体、四条链条和最后状态。",
+      "bg": "#f8fafc",
+      "border": "#475569",
+      "nw": 240,
+      "showDesc": true
+    },
+    {
+      "id": 2,
+      "x": 300,
+      "y": 200,
+      "label": "比较筛选",
+      "desc": "在分析具体国家前先进行分类，避免将不同经济体模型的结论生搬硬套。",
+      "bg": "#f5f3ff",
+      "border": "#7c3aed",
+      "nw": 180,
+      "showDesc": true
+    },
+    {
+      "id": 3,
+      "x": 100,
+      "y": 350,
+      "label": "地区可比",
+      "desc": "地缘与文化相似性。如东亚模式（出口导向）、拉美陷阱、欧元区成员等。",
+      "bg": "#f5f3ff",
+      "border": "#7c3aed",
+      "nw": 180,
+      "showDesc": true
+    },
+    {
+      "id": 4,
+      "x": 300,
+      "y": 350,
+      "label": "发展阶段可比",
+      "desc": "所处发展水平相似。如发达国家（服务业主导）、新兴市场（制造与建设期）、低收入国家。",
+      "bg": "#f5f3ff",
+      "border": "#7c3aed",
+      "nw": 180,
+      "showDesc": true
+    },
+    {
+      "id": 5,
+      "x": 500,
+      "y": 350,
+      "label": "产业角色可比",
+      "desc": "在国际分工中的生态位。如资源国（沙特、澳）、制造国（中、德）、消费与金融国（美）。",
+      "bg": "#f5f3ff",
+      "border": "#7c3aed",
+      "nw": 180,
+      "showDesc": true
+    },
+    {
+      "id": 6,
+      "x": 700,
+      "y": 350,
+      "label": "央行",
+      "desc": "货币政策掌控者。通过调节基准利率、准备金率和提供流动性，维护本币币值稳定与金融体系安全。",
+      "bg": "#eff6ff",
+      "border": "#2563eb",
+      "nw": 200,
+      "showDesc": true
+    },
+    {
+      "id": 7,
+      "x": 920,
+      "y": 350,
+      "label": "政府",
+      "desc": "财政政策制定者。通过税收、发行国债筹资，进行财政支出和转移支付，调节社会总需求与公共投资。",
+      "bg": "#fffbeb",
+      "border": "#b45309",
+      "nw": 200,
+      "showDesc": true
+    },
+    {
+      "id": 8,
+      "x": 810,
+      "y": 480,
+      "label": "银行",
+      "desc": "金融中介与信贷创造枢纽。吸收居民和企业存款，向实体经济发放贷款，是货币政策传导的实际通道。",
+      "bg": "#ecfdf5",
+      "border": "#16a34a",
+      "nw": 200,
+      "showDesc": true
+    },
+    {
+      "id": 9,
+      "x": 620,
+      "y": 620,
+      "label": "企业",
+      "desc": "实体生产与就业创造的核心。通过雇佣居民、投资生产来获取利润，其投资意愿是经济增长的发动机。",
+      "bg": "#fff7ed",
+      "border": "#f59e0b",
+      "nw": 200,
+      "showDesc": true
+    },
+    {
+      "id": 10,
+      "x": 1000,
+      "y": 620,
+      "label": "居民",
+      "desc": "劳动力供给与最终消费主体。向企业提供劳动获取收入，向银行存款，并通过消费拉动市场总需求。",
+      "bg": "#fdf2f8",
+      "border": "#be185d",
+      "nw": 200,
+      "showDesc": true
+    },
+    {
+      "id": 11,
+      "x": 520,
+      "y": 760,
+      "label": "强企业",
+      "desc": "拥有高壁垒、低负债或强盈利能力，能抵御经济下行，维持高研发与人才投入。",
+      "bg": "#fff7ed",
+      "border": "#ea580c",
+      "nw": 180,
+      "showDesc": true
+    },
+    {
+      "id": 12,
+      "x": 720,
+      "y": 760,
+      "label": "弱企业/僵尸企业",
+      "desc": "高负债、无核心竞争力，依赖持续融资或政府补贴苟延残喘，对利率高度敏感。",
+      "bg": "#fef2f2",
+      "border": "#dc2626",
+      "nw": 180,
+      "showDesc": true
+    },
+    {
+      "id": 13,
+      "x": 900,
+      "y": 760,
+      "label": "高级员工",
+      "desc": "核心人才或高净值群体，受强企业保护，收入稳定或持续增长，资产配置能力强。",
+      "bg": "#fdf2f8",
+      "border": "#db2777",
+      "nw": 180,
+      "showDesc": true
+    },
+    {
+      "id": 14,
+      "x": 1100,
+      "y": 760,
+      "label": "普通员工",
+      "desc": "工薪阶层，收入随企业状况波动，面临房贷与日常消费的双重挤压。",
+      "bg": "#fdf2f8",
+      "border": "#e11d48",
+      "nw": 180,
+      "showDesc": true
+    },
+    {
+      "id": 15,
+      "x": 1300,
+      "y": 760,
+      "label": "零工/失业边缘",
+      "desc": "缺乏稳定合同的灵活就业或失业群体，抗风险能力极差，首先面临违约风险。",
+      "bg": "#fff5f5",
+      "border": "#ef4444",
+      "nw": 180,
+      "showDesc": true
+    },
+    {
+      "id": 16,
+      "x": 1480,
+      "y": 500,
+      "label": "资产价格/汇率",
+      "desc": "股市、债市、楼市与本币汇率。反映市场对主权信用 and 经济预期的定价，影响财富效应与国际资本流向。",
+      "bg": "#f0fdfa",
+      "border": "#0f766e",
+      "nw": 200,
+      "showDesc": true
+    },
+    {
+      "id": 17,
+      "x": 850,
+      "y": 920,
+      "label": "宏观状态输出",
+      "desc": "最后判断不是单个指标，而是增长、通胀、就业、信用、汇率、资产价格 and 坏账是否同向恶化。",
+      "bg": "#fafaf9",
+      "border": "#57534e",
+      "nw": 240,
+      "showDesc": true
+    },
+    {
+      "id": 18,
+      "x": 1400,
+      "y": 50,
+      "label": "箭头图例",
+      "desc": "蓝=利率链；绿=资金链；橙=实体收入链；红=风险链。",
+      "bg": "#ffffff",
+      "border": "#94a3b8",
+      "nw": 200,
+      "showDesc": true
+    },
+    {
+      "id": 19,
+      "x": 650,
+      "y": 200,
+      "label": "国内五主体",
+      "desc": "宏观经济的微观行动者：决策层（央行、政府）、中介（银行）与微观部门（企业、居民）。",
+      "bg": "#f8fafc",
+      "border": "#475569",
+      "nw": 180,
+      "showDesc": true
+    },
+    {
+      "id": 20,
+      "x": 1050,
+      "y": 200,
+      "label": "四条传导链",
+      "desc": "利率链（资金价格）、资金链（资金流向）、实体收入链（经济循环）、风险链（信用收缩）。",
+      "bg": "#f8fafc",
+      "border": "#475569",
+      "nw": 180,
+      "showDesc": true
+    },
+    {
+      "id": 21,
+      "x": 1350,
+      "y": 200,
+      "label": "读图方法",
+      "desc": "先看利率有没有变，再看钱有没有断，再看就业消费是否变弱，最后看坏账和汇率/资产价格是否恶化。",
+      "bg": "#f8fafc",
+      "border": "#475569",
+      "nw": 220,
+      "showDesc": true
+    },
+    {
+      "id": 22,
+      "x": 1250,
+      "y": 320,
+      "label": "利率链",
+      "desc": "钱的价格怎么变：央行→银行→企业/居民→资产价格。",
+      "bg": "#eff6ff",
+      "border": "#2563eb",
+      "nw": 180,
+      "showDesc": true
+    },
+    {
+      "id": 23,
+      "x": 1250,
+      "y": 440,
+      "label": "资金链",
+      "desc": "钱实际怎么流：贷款、财政支出、还本付息、存款。",
+      "bg": "#f0fdf4",
+      "border": "#16a34a",
+      "nw": 180,
+      "showDesc": true
+    },
+    {
+      "id": 24,
+      "x": 1250,
+      "y": 560,
+      "label": "实体收入链",
+      "desc": "真实经济怎么循环：企业利润→就业工资→居民消费→企业营收。",
+      "bg": "#fff7ed",
+      "border": "#f59e0b",
+      "nw": 180,
+      "showDesc": true
+    },
+    {
+      "id": 25,
+      "x": 1250,
+      "y": 680,
+      "label": "风险链",
+      "desc": "压力怎么扩散：弱企业/脆弱居民→坏账→银行收紧信用。",
+      "bg": "#fef2f2",
+      "border": "#dc2626",
+      "nw": 180,
+      "showDesc": true
+    }
+  ],
+  "arrows": [
+    {
+      "id": "a1",
+      "from": 1,
+      "fromPort": "bottom",
+      "to": 2,
+      "toPort": "top",
+      "label": "先确定可比对象",
+      "color": "#475569"
+    },
+    {
+      "id": "a2",
+      "from": 1,
+      "fromPort": "bottom",
+      "to": 19,
+      "toPort": "top",
+      "label": "再看谁在行动",
+      "color": "#475569"
+    },
+    {
+      "id": "a3",
+      "from": 1,
+      "fromPort": "bottom",
+      "to": 20,
+      "toPort": "top",
+      "label": "然后看如何传导",
+      "color": "#475569"
+    },
+    {
+      "id": "a4",
+      "from": 1,
+      "fromPort": "bottom",
+      "to": 17,
+      "toPort": "top",
+      "label": "最后判断状态",
+      "color": "#475569"
+    },
+    {
+      "id": "a5",
+      "from": 19,
+      "fromPort": "bottom",
+      "to": 6,
+      "toPort": "top",
+      "label": "主体",
+      "color": "#475569"
+    },
+    {
+      "id": "a6",
+      "from": 19,
+      "fromPort": "bottom",
+      "to": 7,
+      "toPort": "top",
+      "label": "主体",
+      "color": "#475569"
+    },
+    {
+      "id": "a7",
+      "from": 19,
+      "fromPort": "bottom",
+      "to": 8,
+      "toPort": "top",
+      "label": "主体",
+      "color": "#475569"
+    },
+    {
+      "id": "a8",
+      "from": 19,
+      "fromPort": "bottom",
+      "to": 9,
+      "toPort": "top",
+      "label": "主体",
+      "color": "#475569"
+    },
+    {
+      "id": "a9",
+      "from": 19,
+      "fromPort": "bottom",
+      "to": 10,
+      "toPort": "top",
+      "label": "主体",
+      "color": "#475569"
+    },
+    {
+      "id": "a10",
+      "from": 20,
+      "fromPort": "bottom",
+      "to": 22,
+      "toPort": "left",
+      "label": "传导",
+      "color": "#475569"
+    },
+    {
+      "id": "a11",
+      "from": 20,
+      "fromPort": "bottom",
+      "to": 23,
+      "toPort": "left",
+      "label": "传导",
+      "color": "#475569"
+    },
+    {
+      "id": "a12",
+      "from": 20,
+      "fromPort": "bottom",
+      "to": 24,
+      "toPort": "left",
+      "label": "传导",
+      "color": "#475569"
+    },
+    {
+      "id": "a13",
+      "from": 20,
+      "fromPort": "bottom",
+      "to": 25,
+      "toPort": "left",
+      "label": "传导",
+      "color": "#475569"
+    },
+    {
+      "id": "a14",
+      "from": 21,
+      "fromPort": "bottom",
+      "to": 17,
+      "toPort": "right",
+      "label": "使用顺序",
+      "color": "#475569"
+    },
+    {
+      "id": "a15",
+      "from": 9,
+      "fromPort": "bottom",
+      "to": 11,
+      "toPort": "top",
+      "label": "分化",
+      "color": "#475569"
+    },
+    {
+      "id": "a16",
+      "from": 9,
+      "fromPort": "bottom",
+      "to": 12,
+      "toPort": "top",
+      "label": "分化",
+      "color": "#475569"
+    },
+    {
+      "id": "a17",
+      "from": 10,
+      "fromPort": "bottom",
+      "to": 13,
+      "toPort": "top",
+      "label": "分化",
+      "color": "#475569"
+    },
+    {
+      "id": "a18",
+      "from": 10,
+      "fromPort": "bottom",
+      "to": 14,
+      "toPort": "top",
+      "label": "分化",
+      "color": "#475569"
+    },
+    {
+      "id": "a19",
+      "from": 10,
+      "fromPort": "bottom",
+      "to": 15,
+      "toPort": "top",
+      "label": "分化",
+      "color": "#475569"
+    },
+    {
+      "id": "a20",
+      "from": 16,
+      "fromPort": "bottom",
+      "to": 17,
+      "toPort": "right",
+      "label": "市场预期",
+      "color": "#475569"
+    },
+    {
+      "id": "a21",
+      "from": 2,
+      "fromPort": "bottom",
+      "to": 3,
+      "toPort": "top",
+      "label": "筛选",
+      "color": "#7c3aed"
+    },
+    {
+      "id": "a22",
+      "from": 2,
+      "fromPort": "bottom",
+      "to": 4,
+      "toPort": "top",
+      "label": "筛选",
+      "color": "#7c3aed"
+    },
+    {
+      "id": "a23",
+      "from": 2,
+      "fromPort": "bottom",
+      "to": 5,
+      "toPort": "top",
+      "label": "筛选",
+      "color": "#7c3aed"
+    },
+    {
+      "id": "a24",
+      "from": 22,
+      "fromPort": "left",
+      "to": 6,
+      "toPort": "right",
+      "label": "起点",
+      "color": "#2563eb"
+    },
+    {
+      "id": "a25",
+      "from": 6,
+      "fromPort": "bottom",
+      "to": 8,
+      "toPort": "top",
+      "label": "改变资金成本",
+      "color": "#2563eb"
+    },
+    {
+      "id": "a26",
+      "from": 8,
+      "fromPort": "left",
+      "to": 9,
+      "toPort": "top",
+      "label": "贷款利率",
+      "color": "#2563eb"
+    },
+    {
+      "id": "a27",
+      "from": 8,
+      "fromPort": "right",
+      "to": 10,
+      "toPort": "top",
+      "label": "房贷/消费贷利率",
+      "color": "#2563eb"
+    },
+    {
+      "id": "a28",
+      "from": 6,
+      "fromPort": "right",
+      "to": 16,
+      "toPort": "top",
+      "label": "折现率/利差",
+      "color": "#2563eb"
+    },
+    {
+      "id": "a29",
+      "from": 23,
+      "fromPort": "left",
+      "to": 7,
+      "toPort": "right",
+      "label": "财政通道",
+      "color": "#16a34a"
+    },
+    {
+      "id": "a30",
+      "from": 7,
+      "fromPort": "bottom",
+      "to": 9,
+      "toPort": "top",
+      "label": "订单/补贴",
+      "color": "#16a34a"
+    },
+    {
+      "id": "a31",
+      "from": 7,
+      "fromPort": "bottom",
+      "to": 10,
+      "toPort": "top",
+      "label": "转移支付/税",
+      "color": "#16a34a"
+    },
+    {
+      "id": "a32",
+      "from": 8,
+      "fromPort": "left",
+      "to": 9,
+      "toPort": "right",
+      "label": "贷款额度",
+      "color": "#16a34a"
+    },
+    {
+      "id": "a33",
+      "from": 9,
+      "fromPort": "top",
+      "to": 8,
+      "toPort": "left",
+      "label": "还本付息",
+      "color": "#16a34a"
+    },
+    {
+      "id": "a34",
+      "from": 24,
+      "fromPort": "left",
+      "to": 9,
+      "toPort": "right",
+      "label": "生产起点",
+      "color": "#f59e0b"
+    },
+    {
+      "id": "a35",
+      "from": 9,
+      "fromPort": "right",
+      "to": 10,
+      "toPort": "left",
+      "label": "工资/就业",
+      "color": "#f59e0b"
+    },
+    {
+      "id": "a36",
+      "from": 10,
+      "fromPort": "left",
+      "to": 9,
+      "toPort": "bottom",
+      "label": "消费需求",
+      "color": "#f59e0b"
+    },
+    {
+      "id": "a37",
+      "from": 9,
+      "fromPort": "bottom",
+      "to": 17,
+      "toPort": "top",
+      "label": "利润/投资",
+      "color": "#f59e0b"
+    },
+    {
+      "id": "a38",
+      "from": 14,
+      "fromPort": "left",
+      "to": 10,
+      "toPort": "bottom",
+      "label": "决定主流消费能力",
+      "color": "#f59e0b"
+    },
+    {
+      "id": "a39",
+      "from": 25,
+      "fromPort": "left",
+      "to": 12,
+      "toPort": "top",
+      "label": "先看脆弱点",
+      "color": "#dc2626"
+    },
+    {
+      "id": "a40",
+      "from": 12,
+      "fromPort": "left",
+      "to": 8,
+      "toPort": "left",
+      "label": "坏账/NPL",
+      "color": "#dc2626"
+    },
+    {
+      "id": "a41",
+      "from": 15,
+      "fromPort": "right",
+      "to": 8,
+      "toPort": "right",
+      "label": "还款压力",
+      "color": "#dc2626"
+    },
+    {
+      "id": "a42",
+      "from": 14,
+      "fromPort": "top",
+      "to": 8,
+      "toPort": "right",
+      "label": "房贷/消费贷压力",
+      "color": "#dc2626"
+    },
+    {
+      "id": "a43",
+      "from": 8,
+      "fromPort": "left",
+      "to": 9,
+      "toPort": "left",
+      "label": "收紧信用",
+      "color": "#dc2626"
+    },
+    {
+      "id": "a44",
+      "from": 8,
+      "fromPort": "right",
+      "to": 10,
+      "toPort": "right",
+      "label": "收紧贷款",
+      "color": "#dc2626"
+    }
+  ]
+}

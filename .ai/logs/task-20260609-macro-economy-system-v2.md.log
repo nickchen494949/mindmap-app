@@ -1,0 +1,47 @@
+^DI will read the task specification file to understand the requirements.
+I will read the existing v1 macro economy system JSON to understand its structure and schema.
+I will read the v1 JSON in `.ai/outbox` to verify if it is identical to the one in `generated/`.
+I will list the workspace directory contents to check for the presence of `.gitignore` and confirm the structure of the repository.
+I will read `.gitignore` to verify that `node_modules/` is ignored as required by the hard rules.
+I will create a scratch Python script to construct the v2 mindmap JSON structure, ensuring syntax correctness and strict compliance with the required properties, coordinates, and color formatting.
+I will execute the scratch Python script to generate the v2 mindmap JSON files.
+I will create a validation script to double-check the generated JSON files against all structure, syntax, and business logic constraints specified in the instructions.
+I will run the validation script to verify that the generated JSON files fully conform to all constraints.
+I will run `git status` to verify the modified and newly created files in the repository.
+I have successfully completed the task and verified that all requirements and logic constraints are met.
+
+### Summary of Changes:
+
+1. **Created Top-Level Entry Structure:**
+   - Added `国家经济系统` as a real entry point at the top.
+   - Connected `国家经济系统` to four main hub nodes: `比较筛选`, `国内五主体`, `四条传导链`, and `宏观状态输出`, outlining the clear logical flow of analyzing any economy.
+
+2. **Added Comparison Module (Side Module):**
+   - Configured `比较筛选` as a side module grouping `地区可比`, `发展阶段可比`, and `产业角色可比` to organize geographic, developmental, and industrial categories cleanly without cluttering the main map.
+
+3. **Re-arranged the Five Actors:**
+   - Grouped the domestic actors under the `国内五主体` hub.
+   - Arranged actors causally by rows: `央行` and `政府` on the top tier, `银行` in the middle tier, and `企业` and `居民` on the bottom tier.
+
+4. **Added Chain Nodes & Route Optimization:**
+   - Introduced explicit chain nodes under `四条传导链`: `利率链`, `资金链`, `实体收入链`, and `风险链` to route interactions clearly and systematically.
+   - Routed all interaction arrows through these chain nodes (e.g., policy rate transmission through the `利率链`, financial transfers through the `资金链`, GDP and labor circular flow through the `实体收入链`, and credit contraction through the `风险链`). This completely removed parallel/crossed lines and clutter from the diagram.
+
+5. **Enhanced Resident and Enterprise Splits:**
+   - Classified `企业` into `强企业` and `弱企业/僵尸企业`.
+   - Classified `居民` into `高级员工`, `普通员工`, and `零工/失业边缘`.
+   - Linked `普通员工` causally to show their mainstream consumption capability (`普通员工 → 居民` with `决定主流消费能力` label) and debt/credit risk vulnerability (`普通员工 → 银行` with `房贷/消费贷压力` label).
+
+6. **Implemented Reading Method Guide:**
+   - Added a `读图方法` node describing the recommended sequential diagnostic steps. Connected it directly to `宏观状态输出` under the label `使用顺序`.
+
+7. **Validated Style and Color Consistency:**
+   - Used the exact requested color palette across all transmission arrows and nodes:
+     - Blue (`#2563eb`) for the `利率链` transmission.
+     - Green (`#16a34a`) for the `资金链` transmission.
+     - Orange (`#f59e0b`) for the `实体收入链` transmission.
+     - Red (`#dc2626`) for the `风险链` transmission.
+     - Purple (`#7c3aed`) for `比较筛选` navigation.
+     - Gray (`#475569`) for all system structural and navigation lines.
+   - Verified that the total number of nodes is **25** (well under the 30-node limit).
+   - Validated that both output files `.ai/outbox/macro-economy-system-v2.json` and `generated/macro-economy-system-v2.json` parse correctly and match all requirements.
