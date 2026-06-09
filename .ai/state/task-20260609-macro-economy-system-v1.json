@@ -1,0 +1,16 @@
+{
+  "taskId": "task-20260609-macro-economy-system-v1",
+  "target": "mindmap-app",
+  "status": "needs_chatgpt_audit",
+  "attempt": 1,
+  "maxAttempts": 3,
+  "startedAt": "2026-06-09T10:13:20.624Z",
+  "updatedAt": "2026-06-09T10:13:20.624Z",
+  "lastCommit": "c971e81b359ba8d8685dd1285f979ad4da6ddbe7",
+  "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+  "evidencePacketPath": ".ai/reports/task-20260609-macro-economy-system-v1/",
+  "chatgptAuditPath": null,
+  "chatgptVerdict": null,
+  "blockingErrors": [],
+  "notes": []
+}
