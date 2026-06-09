@@ -1784,7 +1784,35 @@ function loadDemo() {
 }
 
 if (!loadFromLocalStorage()) {
-  loadDemo();
+  fetch('generated/macro-economy-system-v3-auto-draw.json')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.version === 2 && data.workspaces && data.workspaces.length > 0) {
+        workspaces = data.workspaces;
+        activeWorkspaceId = data.activeWorkspaceId || workspaces[0].id;
+        var ws = workspaces.find(function(w) { return w.id === activeWorkspaceId; }) || workspaces[0];
+        activeWorkspaceId = ws.id;
+        loadWorkspaceState(ws);
+        renderTabs();
+      } else {
+        var maxId = 0;
+        (data.nodes || []).forEach(function(n) { if (n.id > maxId) maxId = n.id; });
+        createWorkspace('默认画布', {
+          nodes: data.nodes || [],
+          arrows: data.arrows || [],
+          nextId: maxId + 1,
+          zoom: 1,
+          panX: 0,
+          panY: 0
+        });
+      }
+      setMode('select');
+      triggerAutoSave();
+    })
+    .catch(function(err) {
+      console.warn('Failed to auto-load generated file, loading default demo:', err);
+      loadDemo();
+    });
 }
 document.getElementById('btn-drag-mode').classList.add('active');
 

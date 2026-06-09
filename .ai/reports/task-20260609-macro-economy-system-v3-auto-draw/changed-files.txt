@@ -1,0 +1,3 @@
+.ai/inbox/task-20260609-macro-economy-system-v3-auto-draw.md
+.ai/running/task-task-20260609-macro-economy-system-v1-fix.md
+app.js

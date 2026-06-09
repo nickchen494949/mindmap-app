@@ -1,28 +1,39 @@
 {
-  "generatedAt": "2026-06-09T12:52:19.130Z",
+  "generatedAt": "2026-06-09T13:09:34.062Z",
   "watcher": {
     "status": "stale",
-    "lastSeen": "2026-06-09T12:45:15Z",
-    "lastScannedCommit": "42a7d218cd5c6f0dc2bcffcbe1d1009d267ad704",
+    "lastSeen": "2026-06-09T13:04:51Z",
+    "lastScannedCommit": "4b89ebc9dd916e726614648d4e5ef11986d5891f",
     "inboxCount": 0,
     "doneCount": 4,
     "failedCount": 0
   },
   "stats": {
-    "total": 21,
+    "total": 22,
     "pending": 0,
-    "running": 1,
-    "needsChatGPTAudit": 3,
+    "running": 0,
+    "needsChatGPTAudit": 5,
     "done": 4,
     "failed": 0,
     "invalidDone": 13
   },
   "tasks": [
     {
+      "taskId": "task-20260609-macro-economy-system-v3-auto-draw",
+      "target": "mindmap-app",
+      "status": "needs_chatgpt_audit",
+      "location": "review",
+      "evidenceExists": true,
+      "chatgptVerdict": null,
+      "lastCommit": "c9f322fd6eb27c67b4e4ee9bef191e84f2cbe50d",
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "blockingIssues": []
+    },
+    {
       "taskId": "task-20260609-macro-economy-system-v1",
       "target": "mindmap-app",
-      "status": "running",
-      "location": "running",
+      "status": "needs_chatgpt_audit",
+      "location": "review",
       "evidenceExists": true,
       "chatgptVerdict": "FAIL",
       "lastCommit": "b308c60b588337f74b33d5a6284849f5468cad29",

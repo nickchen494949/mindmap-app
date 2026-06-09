@@ -1,10 +1,12 @@
 {
   "pendingTasks": 0,
-  "runningTasks": 1,
-  "reviewTasks": 3,
+  "runningTasks": 0,
+  "reviewTasks": 5,
   "failedTasks": 0,
   "doneTasks": 17,
   "needsChatGPTAudit": [
+    "task-20260609-macro-economy-system-v3-auto-draw",
+    "task-20260609-macro-economy-system-v1",
     "task-test-audit",
     "task-20260603-control-tower-evidence-review-flow",
     "task-20260603-fix-control-tower-public-data"
@@ -12,21 +14,20 @@
   "blocked": [],
   "heartbeat": {
     "name": "watcher",
-    "lastSeen": "2026-06-09T12:45:15Z",
-    "lastScannedCommit": "42a7d218cd5c6f0dc2bcffcbe1d1009d267ad704",
-    "inboxCount": 1,
-    "doneCount": 18,
-    "status": "alive",
-    "lastTask": "task-20260609-macro-economy-system-v2.md",
+    "lastSeen": "2026-06-09T13:04:51Z",
+    "lastScannedCommit": "4b89ebc9dd916e726614648d4e5ef11986d5891f",
+    "inboxCount": 0,
+    "doneCount": 19,
+    "status": "idle",
     "failedCount": 0
   },
-  "lastUpdate": "2026-06-09 12:52:19",
-  "totalTasks": 21,
+  "lastUpdate": "2026-06-09 13:09:34",
+  "totalTasks": 22,
   "pending": [],
-  "running": [
-    "task-20260609-macro-economy-system-v1"
-  ],
+  "running": [],
   "review": [
+    "task-20260609-macro-economy-system-v3-auto-draw",
+    "task-20260609-macro-economy-system-v1",
     "task-test-audit",
     "task-20260603-control-tower-evidence-review-flow",
     "task-20260603-fix-control-tower-public-data"
@@ -57,10 +58,24 @@
     "us-macro-dashboard"
   ],
   "taskDetails": {
+    "task-20260609-macro-economy-system-v3-auto-draw": {
+      "title": "Task",
+      "target": "mindmap-app",
+      "status": "needs_chatgpt_audit",
+      "completedAt": "",
+      "summary": "Task index updated",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "lastCommit": "c9f322fd6eb27c67b4e4ee9bef191e84f2cbe50d",
+      "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+      "evidencePacketPath": ".ai/reports/task-20260609-macro-economy-system-v3-auto-draw/",
+      "chatgptVerdict": null,
+      "blockingErrors": []
+    },
     "task-20260609-macro-economy-system-v1": {
       "title": "Fix Task for task-20260609-macro-economy-system-v1 (Attempt 2)",
       "target": "mindmap-app",
-      "status": "running",
+      "status": "needs_chatgpt_audit",
       "completedAt": "",
       "summary": "Task index updated",
       "attempt": 2,
@@ -439,41 +454,5 @@
       ]
     }
   },
-  "activityLog": [
-    {
-      "time": "Tue Jun  9 20:45:13",
-      "sender": "watcher",
-      "action": "+08 2026 Running DeepSeek API Auto-Review..."
-    },
-    {
-      "time": "Tue Jun  9 20:45:18",
-      "sender": "watcher",
-      "action": "+08 2026 === Watcher run finished"
-    },
-    {
-      "time": "Tue Jun  9 20:47:18",
-      "sender": "watcher",
-      "action": "+08 2026 === Watcher run started"
-    },
-    {
-      "time": "Tue Jun  9 20:47:18",
-      "sender": "watcher",
-      "action": "+08 2026 Pulling latest..."
-    },
-    {
-      "time": "Tue Jun  9 20:47:20",
-      "sender": "watcher",
-      "action": "+08 2026 Found task: .ai/inbox/task-task-20260609-macro-economy-system-v1-fix.md"
-    },
-    {
-      "time": "Tue Jun  9 20:47:21",
-      "sender": "watcher",
-      "action": "+08 2026 Target: mindmap-app → /Users/happygolucky/mindmap-repo"
-    },
-    {
-      "time": "Tue Jun  9 20:47:21",
-      "sender": "agy",
-      "action": "+08 2026 Running agy..."
-    }
-  ]
+  "activityLog": []
 }

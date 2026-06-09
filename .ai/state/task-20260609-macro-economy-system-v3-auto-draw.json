@@ -1,0 +1,16 @@
+{
+  "taskId": "task-20260609-macro-economy-system-v3-auto-draw",
+  "target": "mindmap-app",
+  "status": "needs_chatgpt_audit",
+  "attempt": 1,
+  "maxAttempts": 3,
+  "startedAt": "2026-06-09T13:09:33.916Z",
+  "updatedAt": "2026-06-09T13:09:33.916Z",
+  "lastCommit": "c9f322fd6eb27c67b4e4ee9bef191e84f2cbe50d",
+  "liveUrl": "https://nickchen494949.github.io/mindmap-app/",
+  "evidencePacketPath": ".ai/reports/task-20260609-macro-economy-system-v3-auto-draw/",
+  "chatgptAuditPath": null,
+  "chatgptVerdict": null,
+  "blockingErrors": [],
+  "notes": []
+}

@@ -1,1 +1,9 @@
-{"name":"watcher","lastSeen":"2026-06-09T13:04:51Z","lastScannedCommit":"4b89ebc9dd916e726614648d4e5ef11986d5891f","inboxCount":0,"doneCount":19,"failedCount":0,"status":"idle"}
+{
+  "name": "watcher",
+  "lastSeen": "2026-06-09T13:04:51Z",
+  "lastScannedCommit": "4b89ebc9dd916e726614648d4e5ef11986d5891f",
+  "inboxCount": 0,
+  "doneCount": 19,
+  "status": "idle",
+  "failedCount": 0
+}

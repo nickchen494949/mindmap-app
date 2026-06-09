@@ -1,0 +1,102 @@
+^DI will start by listing the files in the directory to see what project we have and find the task file.
+I will view the contents of the task file to understand the requirements.
+I will view `PROJECT_CONTEXT.md` first.
+I will view `.ai/RULES.md`.
+I will view the `generated/macro-economy-system-v2.json` file.
+I will search `app.js` for "fetch", "load", "auto", "import", "read" to see how diagrams are imported or loaded automatically.
+I will search for "load" in `app.js`.
+I will search for "auto" in `app.js`.
+I will list the contents of the `scripts` directory to see if there are any automation or loader scripts.
+I will view the `package.json` file to check for validation or build scripts.
+I will search for scripts in `index.html`.
+I will view lines 195 to 350 of `index.html` to inspect the scripts and see how imports or auto-loads are handled.
+I will view the rest of the scripts in `index.html`.
+I will view lines 1770 to 1820 of `app.js` to see how the demo data is loaded or if there is any other auto-load or import mechanism.
+I will view lines 275 to 310 of `app.js`.
+I will run a command to check the recent git commits to see what changes were made to introduce the auto-draw feature.
+I will view git changes to understand what features have been added recently.
+I will view a longer git history to find when features were added or changed.
+I will check if there are any uncommitted changes in the repository.
+I will list the contents of the `generated/` directory to see all generated files.
+I will search for "load" in `index.html` to see how it might be fetching or loading data from files on startup.
+I will search the codebase for "macro-economy" to find any references.
+I will search for `URLSearchParams` or `window.location` in `app.js` and `index.html` to see if the app supports loading a diagram via query parameters.
+I will search for ".json" in `app.js` to see what JSON files or patterns are referenced.
+I will search the `scripts` directory for references to "load" or "import" to see if a script handles loading the diagram into the browser or localStorage.
+I will search for `localStorage` in the `scripts` directory to see if there is any injection or state restoration code.
+I will view `scripts/collect-evidence.js` from line 1 to 150 to understand how it interacts with the page.
+I will view lines 151 to 300 of `scripts/collect-evidence.js` to see how playwright handles the page rendering and state.
+I will search for ".json" in `index.html` to see if there are any other JSON files or paths.
+I will search for initialization events like DOMContentLoaded in the codebase.
+I will search for `onload` in the codebase.
+I will view the end of `app.js` (lines 1939 to 2089).
+I will view `scripts/pipeline-helper.js` lines 1 to 150.
+I will search for "generated" in `app.js` and `index.html` to check if they have any references to the generated folder.
+I will view lines 150 to 300 of `scripts/pipeline-helper.js`.
+I will search the codebase for "param" to see if there is any parameter-based loading.
+I will search for "import" in `app.js`.
+I will search for "import" in `index.html`.
+I will list the contents of the `.ai` directory.
+I will view the `.ai/PROJECT_CONTEXT.md` file.
+I will check the git log for `app.js` and `index.html` to see if there were any recent commits that added auto-draw/auto-load support.
+I will check the commit history of `app.js` and `index.html`.
+I will check the stat of commit `add10ca` to see which files were added or modified.
+I will view `scripts/run-ai-inbox.sh` lines 1 to 150.
+I will view the rest of `scripts/run-ai-inbox.sh` to see how it handles validation, git commits, and task processing.
+I will view `VISION.md` to see if it discusses the auto-draw or auto-load feature.
+I will search for the title of `dashboard.html` to see what it represents.
+I will search `app.js` for "v2" references.
+I will view lines 1500 to 1560 of `app.js` to see how the app saves and loads workspace JSON files (multi-tab format v2).
+I will check git branches to see if there are other branches.
+I will list the completed tasks in the `.ai/done/` directory to see what was done in earlier iterations of macro economy or other diagrams.
+I will view `.ai/done/task-20260609-macro-economy-system-v2.md` to see what changes were made in the v2 step.
+I will search the codebase for `sysMap` to see how workspace states are stored and retrieved.
+I will view lines 301 to 450 of `scripts/collect-evidence.js` to see what else it checks.
+I will run a command to list all non-hidden files in the repository to make sure I haven't missed any.
+I will view the `cache/projects.json` file.
+I will search the codebase for "draw".
+I will search the codebase for "generate".
+I will search `index.html` for "localStorage".
+I will run a command to see what changes were made to `index.html` in commit `add10ca`.
+I will check the stat of commit `7fb8aca`.
+I will search for `tryExecuteCode` references in the codebase.
+I will view the git diffs for the last 10 commits affecting `app.js` and `index.html` to see exactly what changes were made.
+I will list the contents of `.ai/checks/`.
+I will write a script to wrap `generated/macro-economy-system-v2.json` into the multi-tab version 2 project format and output it to the required locations.
+I will run the scratch script to wrap the JSON file.
+I will check the first 30 lines of the wrapped JSON file.
+I will view `app.js` from line 1780 to 1792 to pinpoint the exact target for replacement.
+I will edit `app.js` using the `replace_file_content` tool to add the auto-loading path.
+I will run the evidence collection script to test the page loading, component detection, and screenshot capture.
+I will list the files in the reports directory for this task to see if all evidence was generated.
+I will view the `live-audit.json` file to confirm that the audit details look correct.
+I will search `app.js` for "node" class references.
+I will search for `classList.add` in `app.js` to see what CSS classes are assigned to nodes.
+I will search `app.js` for the definition of `createNode`.
+I will view `app.js` from line 615 to 650.
+I will search for `renderNode` in `app.js`.
+I will view lines 663 to 700 of `app.js`.
+I will view the `page-text.txt` captured during evidence collection to confirm the diagram nodes were successfully loaded.
+I will verify the task state in `.ai/task-index.json`.
+I will view the task status in the task index.
+I will check git status to make sure all modified and generated files are ready and tracked correctly.
+I have successfully completed the task! Here is a summary of what I did:
+
+### 1. Source Files Used
+* **`generated/macro-economy-system-v2.json`**: Used as the canonical layout and content source for the macro economic diagram.
+* **`.ai/inbox/task-20260609-macro-economy-system-v3-auto-draw.md`**: Read to ensure compliance with all requirements and quality checks.
+
+### 2. Generated and Updated Files
+* **`generated/macro-economy-system-v3-auto-draw.json`**: Constructed by wrapping the v2 canonical diagram data into the multi-tab Project Format (version 2) expected by the app.
+* **`.ai/outbox/macro-economy-system-v3-auto-draw.json`**: Created as a duplicate copy in the outbox as requested.
+* **`app.js`**: Modified the startup initialization logic to automatically load the wrapped macro economy diagram from the generated file.
+
+### 3. How the App Auto-Loads
+* If the app is launched in a clean state (empty `localStorage`), `app.js` now sends a `fetch` request for `generated/macro-economy-system-v3-auto-draw.json`. 
+* When successfully loaded, it parses the version 2 project format, recovers the workspaces list, maps all nodes and arrows, and renders them.
+* If the request fails (for example, if opened via the `file://` protocol where CORS blocks local fetch requests), the app gracefully falls back to the original hardcoded mock demo.
+
+### 4. Validation Results
+* **Passed**: The Playwright verification script `scripts/collect-evidence.js` executed without any console or network errors.
+* The captured page text was verified to contain all 25 nodes (such as `比较筛选`, `国内五主体`, `四条传导链`, `强企业`, `弱企业/僵尸企业`, `高级员工`, `普通员工`, `零工/失业边缘`, and `宏观状态输出`) and all 44 transmission arrows/labels, confirming the diagram was fully drawn and loaded on startup.
+* Evidence packets, logs, and screenshots were successfully saved to `.ai/reports/task-20260609-macro-economy-system-v3-auto-draw/`.
