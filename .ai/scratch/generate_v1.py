@@ -1,0 +1,518 @@
+import json
+import os
+
+# Define nodes
+nodes = [
+    {
+        "id": 1,
+        "x": 850,
+        "y": 50,
+        "label": "国家经济系统",
+        "desc": "看一个国家不是看单个数据，而是看五类主体、四条链条和最后状态。",
+        "bg": "#f8fafc",
+        "border": "#475569",
+        "nw": 240,
+        "showDesc": True
+    },
+    {
+        "id": 2,
+        "x": 300,
+        "y": 160,
+        "label": "国家分类法",
+        "desc": "在分析具体国家前先进行分类，避免将不同经济体模型的结论生搬硬套。",
+        "bg": "#f5f3ff",
+        "border": "#7c3aed",
+        "nw": 180,
+        "showDesc": True
+    },
+    {
+        "id": 3,
+        "x": 80,
+        "y": 300,
+        "label": "地区可比",
+        "desc": "地缘与文化相似性。如东亚模式（出口导向）、拉美陷阱、欧元区成员等。",
+        "bg": "#f5f3ff",
+        "border": "#7c3aed",
+        "nw": 180,
+        "showDesc": True
+    },
+    {
+        "id": 4,
+        "x": 300,
+        "y": 300,
+        "label": "发展阶段可比",
+        "desc": "所处发展水平相似。如发达国家（服务业主导）、新兴市场（制造与建设期）、低收入国家。",
+        "bg": "#f5f3ff",
+        "border": "#7c3aed",
+        "nw": 180,
+        "showDesc": True
+    },
+    {
+        "id": 5,
+        "x": 520,
+        "y": 300,
+        "label": "产业角色可比",
+        "desc": "在国际分工中的生态位。如资源国（沙特、澳）、制造国（中、德）、消费与金融国（美）。",
+        "bg": "#f5f3ff",
+        "border": "#7c3aed",
+        "nw": 180,
+        "showDesc": True
+    },
+    {
+        "id": 6,
+        "x": 730,
+        "y": 220,
+        "label": "央行",
+        "desc": "货币政策掌控者。通过调节基准利率、准备金率和提供流动性，维护本币币值稳定与金融体系安全。",
+        "bg": "#eff6ff",
+        "border": "#1d4ed8",
+        "nw": 200,
+        "showDesc": True
+    },
+    {
+        "id": 7,
+        "x": 970,
+        "y": 220,
+        "label": "政府",
+        "desc": "财政政策制定者。通过税收、发行国债筹资，进行财政支出和转移支付，调节社会总需求与公共投资。",
+        "bg": "#fffbeb",
+        "border": "#b45309",
+        "nw": 200,
+        "showDesc": True
+    },
+    {
+        "id": 8,
+        "x": 850,
+        "y": 380,
+        "label": "银行",
+        "desc": "金融中介与信贷创造枢纽。吸收居民和企业存款，向实体经济发放贷款，是货币政策传导的实际通道。",
+        "bg": "#ecfdf5",
+        "border": "#047857",
+        "nw": 200,
+        "showDesc": True
+    },
+    {
+        "id": 9,
+        "x": 600,
+        "y": 540,
+        "label": "企业",
+        "desc": "实体生产与就业创造的核心。通过雇佣居民、投资生产来获取利润，其投资意愿是经济增长的发动机。",
+        "bg": "#fff7ed",
+        "border": "#c2410c",
+        "nw": 200,
+        "showDesc": True
+    },
+    {
+        "id": 10,
+        "x": 1100,
+        "y": 540,
+        "label": "居民",
+        "desc": "劳动力供给与最终消费主体。向企业提供劳动获取收入，向银行存款，并通过消费拉动市场总需求。",
+        "bg": "#fdf2f8",
+        "border": "#be185d",
+        "nw": 200,
+        "showDesc": True
+    },
+    {
+        "id": 11,
+        "x": 550,
+        "y": 700,
+        "label": "强企业",
+        "desc": "拥有高壁垒、低负债或强盈利能力，能抵御经济下行，维持高研发与人才投入。",
+        "bg": "#fff7ed",
+        "border": "#ea580c",
+        "nw": 180,
+        "showDesc": True
+    },
+    {
+        "id": 12,
+        "x": 550,
+        "y": 820,
+        "label": "弱企业/僵尸企业",
+        "desc": "高负债、无核心竞争力，依赖持续融资或政府补贴苟延残喘，对利率高度敏感。",
+        "bg": "#fef2f2",
+        "border": "#dc2626",
+        "nw": 180,
+        "showDesc": True
+    },
+    {
+        "id": 13,
+        "x": 950,
+        "y": 700,
+        "label": "高级员工",
+        "desc": "核心人才或高净值群体，受强企业保护，收入稳定或持续增长，资产配置能力强。",
+        "bg": "#fdf2f8",
+        "border": "#db2777",
+        "nw": 180,
+        "showDesc": True
+    },
+    {
+        "id": 14,
+        "x": 1150,
+        "y": 700,
+        "label": "普通员工",
+        "desc": "工薪阶层，收入随企业状况波动，面临房贷与日常消费的双重挤压。",
+        "bg": "#fdf2f8",
+        "border": "#e11d48",
+        "nw": 180,
+        "showDesc": True
+    },
+    {
+        "id": 15,
+        "x": 950,
+        "y": 820,
+        "label": "零工/失业边缘",
+        "desc": "缺乏稳定合同的灵活就业或失业群体，抗风险能力极差，首先面临违约风险。",
+        "bg": "#fff5f5",
+        "border": "#ef4444",
+        "nw": 180,
+        "showDesc": True
+    },
+    {
+        "id": 16,
+        "x": 1350,
+        "y": 380,
+        "label": "资产价格/汇率",
+        "desc": "股市、债市、楼市与本币汇率。反映市场对主权信用和经济预期的定价，影响财富效应与国际资本流向。",
+        "bg": "#f0fdfa",
+        "border": "#0f766e",
+        "nw": 200,
+        "showDesc": True
+    },
+    {
+        "id": 17,
+        "x": 850,
+        "y": 920,
+        "label": "宏观状态输出",
+        "desc": "最后判断不是单个指标，而是增长、通胀、就业、信用、汇率、资产价格和坏账是否同向恶化。",
+        "bg": "#fafaf9",
+        "border": "#57534e",
+        "nw": 240,
+        "showDesc": True
+    },
+    {
+        "id": 18,
+        "x": 1350,
+        "y": 160,
+        "label": "箭头图例",
+        "desc": "蓝=利率链；绿=资金链；橙=实体收入链；红=风险链。",
+        "bg": "#ffffff",
+        "border": "#94a3b8",
+        "nw": 200,
+        "showDesc": True
+    }
+]
+
+# Define arrows
+arrows = [
+    # Left filter
+    {
+        "id": "a1",
+        "from": 2,
+        "fromPort": "bottom",
+        "to": 3,
+        "toPort": "top",
+        "label": "先筛选",
+        "color": "#7c3aed"
+    },
+    {
+        "id": "a2",
+        "from": 2,
+        "fromPort": "bottom",
+        "to": 4,
+        "toPort": "top",
+        "label": "先筛选",
+        "color": "#7c3aed"
+    },
+    {
+        "id": "a3",
+        "from": 2,
+        "fromPort": "bottom",
+        "to": 5,
+        "toPort": "top",
+        "label": "先筛选",
+        "color": "#7c3aed"
+    },
+    
+    # 1. Interest-rate chain: blue
+    {
+        "id": "a4",
+        "from": 6,
+        "fromPort": "bottom",
+        "to": 8,
+        "toPort": "top",
+        "label": "提高/降低资金成本",
+        "color": "#2563eb"
+    },
+    {
+        "id": "a5",
+        "from": 8,
+        "fromPort": "left",
+        "to": 9,
+        "toPort": "top",
+        "label": "改变贷款利率",
+        "color": "#2563eb"
+    },
+    {
+        "id": "a6",
+        "from": 8,
+        "fromPort": "right",
+        "to": 10,
+        "toPort": "top",
+        "label": "改变房贷/消费贷",
+        "color": "#2563eb"
+    },
+    {
+        "id": "a7",
+        "from": 6,
+        "fromPort": "right",
+        "to": 16,
+        "toPort": "top",
+        "label": "改变折现率/利差",
+        "color": "#2563eb"
+    },
+    
+    # 2. Money/credit chain: green
+    {
+        "id": "a8",
+        "from": 8,
+        "fromPort": "bottom",
+        "to": 9,
+        "toPort": "left",
+        "label": "放贷",
+        "color": "#16a34a"
+    },
+    {
+        "id": "a9",
+        "from": 8,
+        "fromPort": "bottom",
+        "to": 10,
+        "toPort": "right",
+        "label": "按揭/消费贷",
+        "color": "#16a34a"
+    },
+    {
+        "id": "a10",
+        "from": 7,
+        "fromPort": "bottom",
+        "to": 9,
+        "toPort": "top",
+        "label": "订单/补贴",
+        "color": "#16a34a"
+    },
+    {
+        "id": "a11",
+        "from": 7,
+        "fromPort": "bottom",
+        "to": 10,
+        "toPort": "top",
+        "label": "转移支付/税",
+        "color": "#16a34a"
+    },
+    {
+        "id": "a12",
+        "from": 9,
+        "fromPort": "top",
+        "to": 8,
+        "toPort": "left",
+        "label": "还本付息",
+        "color": "#16a34a"
+    },
+    {
+        "id": "a13",
+        "from": 10,
+        "fromPort": "top",
+        "to": 8,
+        "toPort": "right",
+        "label": "还贷/存款",
+        "color": "#16a34a"
+    },
+    
+    # 3. Real economy loop: orange
+    {
+        "id": "a14",
+        "from": 9,
+        "fromPort": "right",
+        "to": 10,
+        "toPort": "left",
+        "label": "工资/就业",
+        "color": "#f59e0b"
+    },
+    {
+        "id": "a15",
+        "from": 10,
+        "fromPort": "left",
+        "to": 9,
+        "toPort": "bottom",
+        "label": "消费需求",
+        "color": "#f59e0b"
+    },
+    {
+        "id": "a16",
+        "from": 9,
+        "fromPort": "bottom",
+        "to": 9,
+        "toPort": "left",
+        "label": "利润→投资/裁员",
+        "color": "#f59e0b"
+    },
+    {
+        "id": "a17",
+        "from": 11,
+        "fromPort": "right",
+        "to": 13,
+        "toPort": "left",
+        "label": "高薪岗位",
+        "color": "#f59e0b"
+    },
+    {
+        "id": "a18",
+        "from": 12,
+        "fromPort": "right",
+        "to": 15,
+        "toPort": "left",
+        "label": "裁员/低薪",
+        "color": "#f59e0b"
+    },
+    
+    # Internal Splits Causal Connections (to satisfy structure and splits requirements)
+    {
+        "id": "a18_split1",
+        "from": 9,
+        "fromPort": "bottom",
+        "to": 11,
+        "toPort": "top",
+        "label": "强劲分化",
+        "color": "#f59e0b"
+    },
+    {
+        "id": "a18_split2",
+        "from": 9,
+        "fromPort": "bottom",
+        "to": 12,
+        "toPort": "top",
+        "label": "弱势分化",
+        "color": "#dc2626"
+    },
+    {
+        "id": "a18_split3",
+        "from": 10,
+        "fromPort": "bottom",
+        "to": 13,
+        "toPort": "top",
+        "label": "高收入层",
+        "color": "#f59e0b"
+    },
+    {
+        "id": "a18_split4",
+        "from": 10,
+        "fromPort": "bottom",
+        "to": 14,
+        "toPort": "top",
+        "label": "普通工薪",
+        "color": "#f59e0b"
+    },
+    {
+        "id": "a18_split5",
+        "from": 10,
+        "fromPort": "bottom",
+        "to": 15,
+        "toPort": "top",
+        "label": "脆弱人群",
+        "color": "#dc2626"
+    },
+    
+    # 4. Risk chain: red
+    {
+        "id": "a19",
+        "from": 12,
+        "fromPort": "left",
+        "to": 8,
+        "toPort": "left",
+        "label": "坏账/NPL",
+        "color": "#dc2626"
+    },
+    {
+        "id": "a20",
+        "from": 15,
+        "fromPort": "right",
+        "to": 8,
+        "toPort": "right",
+        "label": "还款压力",
+        "color": "#dc2626"
+    },
+    {
+        "id": "a21",
+        "from": 8,
+        "fromPort": "left",
+        "to": 9,
+        "toPort": "left",
+        "label": "收紧信用",
+        "color": "#dc2626"
+    },
+    {
+        "id": "a22",
+        "from": 8,
+        "fromPort": "right",
+        "to": 10,
+        "toPort": "right",
+        "label": "收紧贷款",
+        "color": "#dc2626"
+    },
+    
+    # 5. Status Output (causal flow to macro state output, matching colors)
+    {
+        "id": "a23",
+        "from": 9,
+        "fromPort": "bottom",
+        "to": 17,
+        "toPort": "top",
+        "label": "利润/投资",
+        "color": "#f59e0b" # Orange
+    },
+    {
+        "id": "a24",
+        "from": 10,
+        "fromPort": "bottom",
+        "to": 17,
+        "toPort": "top",
+        "label": "收入/消费",
+        "color": "#f59e0b" # Orange
+    },
+    {
+        "id": "a25",
+        "from": 8,
+        "fromPort": "bottom",
+        "to": 17,
+        "toPort": "top",
+        "label": "信用/NPL",
+        "color": "#16a34a", # Green
+        "isStraight": True
+    },
+    {
+        "id": "a26",
+        "from": 16,
+        "fromPort": "bottom",
+        "to": 17,
+        "toPort": "right",
+        "label": "市场预期",
+        "color": "#2563eb" # Blue
+    }
+]
+
+output_data = {
+    "nodes": nodes,
+    "arrows": arrows
+}
+
+# Write out
+os.makedirs(".ai/outbox", exist_ok=True)
+os.makedirs("generated", exist_ok=True)
+
+with open(".ai/outbox/macro-economy-system-v1.json", "w", encoding="utf-8") as f:
+    json.dump(output_data, f, ensure_ascii=False, indent=2)
+
+with open("generated/macro-economy-system-v1.json", "w", encoding="utf-8") as f:
+    json.dump(output_data, f, ensure_ascii=False, indent=2)
+
+print("SUCCESS: Wrote JSON files to both locations.")

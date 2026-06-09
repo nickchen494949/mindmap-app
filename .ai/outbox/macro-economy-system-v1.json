@@ -363,6 +363,51 @@
       "color": "#f59e0b"
     },
     {
+      "id": "a18_split1",
+      "from": 9,
+      "fromPort": "bottom",
+      "to": 11,
+      "toPort": "top",
+      "label": "强劲分化",
+      "color": "#f59e0b"
+    },
+    {
+      "id": "a18_split2",
+      "from": 9,
+      "fromPort": "bottom",
+      "to": 12,
+      "toPort": "top",
+      "label": "弱势分化",
+      "color": "#dc2626"
+    },
+    {
+      "id": "a18_split3",
+      "from": 10,
+      "fromPort": "bottom",
+      "to": 13,
+      "toPort": "top",
+      "label": "高收入层",
+      "color": "#f59e0b"
+    },
+    {
+      "id": "a18_split4",
+      "from": 10,
+      "fromPort": "bottom",
+      "to": 14,
+      "toPort": "top",
+      "label": "普通工薪",
+      "color": "#f59e0b"
+    },
+    {
+      "id": "a18_split5",
+      "from": 10,
+      "fromPort": "bottom",
+      "to": 15,
+      "toPort": "top",
+      "label": "脆弱人群",
+      "color": "#dc2626"
+    },
+    {
       "id": "a19",
       "from": 12,
       "fromPort": "left",
@@ -405,7 +450,7 @@
       "to": 17,
       "toPort": "top",
       "label": "利润/投资",
-      "color": "#ea580c"
+      "color": "#f59e0b"
     },
     {
       "id": "a24",
@@ -414,7 +459,7 @@
       "to": 17,
       "toPort": "top",
       "label": "收入/消费",
-      "color": "#db2777"
+      "color": "#f59e0b"
     },
     {
       "id": "a25",
@@ -423,7 +468,7 @@
       "to": 17,
       "toPort": "top",
       "label": "信用/NPL",
-      "color": "#047857",
+      "color": "#16a34a",
       "isStraight": true
     },
     {
@@ -433,7 +478,7 @@
       "to": 17,
       "toPort": "right",
       "label": "市场预期",
-      "color": "#0f766e"
+      "color": "#2563eb"
     }
   ]
 }
