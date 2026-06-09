@@ -1,0 +1,5 @@
+.ai/logs/task-20260609-macro-economy-system-v2.md.log
+.ai/outbox/macro-economy-system-v2.json
+.ai/state/task-20260609-macro-economy-system-v2.md.json
+.gitignore
+generated/macro-economy-system-v2.json
