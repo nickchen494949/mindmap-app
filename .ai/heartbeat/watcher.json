@@ -1,10 +1,1 @@
-{
-  "name": "watcher",
-  "lastSeen": "2026-06-09T12:45:15Z",
-  "lastScannedCommit": "42a7d218cd5c6f0dc2bcffcbe1d1009d267ad704",
-  "inboxCount": 1,
-  "doneCount": 18,
-  "status": "alive",
-  "lastTask": "task-20260609-macro-economy-system-v2.md",
-  "failedCount": 0
-}
+{"name":"watcher","lastSeen":"2026-06-09T12:54:32Z","lastScannedCommit":"cc83a3dd6e5f6c6cba257da823ea61a67dca65ef","inboxCount":0,"doneCount":19,"failedCount":0,"status":"idle"}
